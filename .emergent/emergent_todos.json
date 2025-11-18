@@ -13,11 +13,15 @@
   },
   {
     "content": "Phase 1 POC: Run test_core.py and fix until all tests PASS",
-    "status": "in_progress"
+    "status": "completed"
+  },
+  {
+    "content": "Phase 1: All POC user stories validated and working",
+    "status": "completed"
   },
   {
     "content": "Phase 2: Build complete backend REST API with JWT auth and all endpoints",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 2: Get design guidelines from design_agent",
