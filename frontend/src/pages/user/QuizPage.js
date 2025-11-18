@@ -208,7 +208,7 @@ export function QuizPage() {
                 }`}
                 data-testid={`option-${option.key}`}
               >
-                <div className=\"flex items-center space-x-4\">
+                <div className="flex items-center space-x-4">
                   <motion.div 
                     animate={answers[currentQ._id] === option.key ? {
                       scale: [1, 1.2, 1],
