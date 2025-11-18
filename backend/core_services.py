@@ -300,14 +300,14 @@ def upsert_best_result(user_id: str, pack_date, quiz_index: int,
     return is_best
 
 
-def compute_leaderboard(pack_date: date, quiz_index: int, 
+def compute_leaderboard(pack_date, quiz_index: int, 
                         group_id: Optional[str] = None) -> List[Dict[str, Any]]:
     """
     Compute leaderboard for a quiz.
     Sort by: percentage DESC, then time_ms ASC
     
     Args:
-        pack_date: Date of the pack
+        pack_date: date object or string (YYYY-MM-DD)
         quiz_index: Quiz index (0-9 for regular, 10 for bonus)
         group_id: Optional group filter
     
@@ -322,9 +322,12 @@ def compute_leaderboard(pack_date: date, quiz_index: int,
             }
         ]
     """
+    # Convert date to string if needed
+    date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
+    
     # Build query filter
     query = {
-        'date': pack_date,
+        'date': date_str,
         'quiz_index': quiz_index
     }
     
