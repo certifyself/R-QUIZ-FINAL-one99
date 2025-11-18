@@ -141,11 +141,11 @@ export function Layout({ children }) {
         >
           <div className="p-6 space-y-2">
             {[
-              { to: '/', icon: Home, label: 'Home', testId: 'desktop-nav-home' },
-              { to: '/rankings', icon: Trophy, label: 'Rankings', testId: 'desktop-nav-rankings' },
-              { to: '/groups', icon: Users, label: 'Groups', testId: 'desktop-nav-groups' },
-              { to: '/profile', icon: User, label: 'Profile', testId: 'desktop-nav-profile' },
-              ...(isAdmin ? [{ to: '/admin', icon: LayoutDashboard, label: 'Admin', testId: 'desktop-nav-admin' }] : [])
+              { to: '/', icon: Home, label: t('nav.home'), testId: 'desktop-nav-home' },
+              { to: '/rankings', icon: Trophy, label: t('nav.rankings'), testId: 'desktop-nav-rankings' },
+              { to: '/groups', icon: Users, label: t('nav.groups'), testId: 'desktop-nav-groups' },
+              { to: '/profile', icon: User, label: t('nav.profile'), testId: 'desktop-nav-profile' },
+              ...(isAdmin ? [{ to: '/admin', icon: LayoutDashboard, label: t('nav.admin'), testId: 'desktop-nav-admin' }] : [])
             ].map(({ to, icon: Icon, label, testId }) => (
               <Link
                 key={to}
