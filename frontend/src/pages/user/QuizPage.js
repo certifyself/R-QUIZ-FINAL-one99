@@ -5,9 +5,10 @@ import { Button } from '../../components/ui/button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { BannerAdPlaceholder } from '../../components/BannerAdPlaceholder';
 import { RewardedGate } from '../../components/RewardedGate';
-import { Clock, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime } from '../../lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function QuizPage() {
   const { quizIndex } = useParams();
