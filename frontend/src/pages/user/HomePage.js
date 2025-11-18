@@ -195,17 +195,17 @@ export function HomePage() {
                     {quiz.is_locked ? (
                       <div className="px-3 py-2 bg-slate-100 rounded-lg">
                         <Lock className="w-5 h-5 text-slate-500 mx-auto mb-1" />
-                        <span className="text-xs text-slate-500 font-medium block">Locked</span>
+                        <span className="text-xs text-slate-500 font-medium block">{t('home.locked')}</span>
                       </div>
                     ) : quiz.attempt_count >= 3 ? (
                       <div className="px-3 py-2 bg-amber-50 rounded-lg border border-amber-200">
                         <span className="text-sm font-bold text-amber-700 block">3/3</span>
-                        <span className="text-xs text-amber-600">attempts</span>
+                        <span className="text-xs text-amber-600">{t('home.attempts')}</span>
                       </div>
                     ) : (
                       <div className="px-3 py-2 bg-teal-50 rounded-lg border border-teal-200">
                         <span className="text-sm font-bold text-teal-700 block">{quiz.attempt_count}/3</span>
-                        <span className="text-xs text-teal-600">attempts</span>
+                        <span className="text-xs text-teal-600">{t('home.attempts')}</span>
                       </div>
                     )}
                   </div>
