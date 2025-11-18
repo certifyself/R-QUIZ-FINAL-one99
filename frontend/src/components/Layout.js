@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Home, Trophy, Users, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import { motion } from 'framer-motion';
 
 export function Layout({ children }) {
   const { user, logout, isAdmin } = useAuth();
@@ -17,162 +18,149 @@ export function Layout({ children }) {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-slate-100">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <motion.header 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className="bg-white/80 backdrop-blur-lg border-b border-slate-200 sticky top-0 z-50 shadow-sm"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">?</span>
+          <div className="flex justify-between items-center h-20">
+            <Link to="/" className="flex items-center space-x-3 group">
+              <motion.div 
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
+              >
+                <img 
+                  src="/logo.jpeg" 
+                  alt="SocraQuest" 
+                  className="w-14 h-14 rounded-full object-cover shadow-lg ring-2 ring-teal-500/20 group-hover:ring-teal-500/40 transition-all"
+                />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+              <div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-teal-700 via-teal-600 to-teal-500 bg-clip-text text-transparent font-['Space_Grotesk']">
+                  SocraQuest
+                </span>
+                <p className="text-xs text-slate-500 font-medium">Daily Trivia Challenge</p>
               </div>
-              <span className="text-xl font-bold text-slate-900 font-['Space_Grotesk']">SocraQuest</span>
             </Link>
             
             <div className="flex items-center space-x-4">
               {user && (
                 <>
-                  <span className="text-sm text-slate-600 hidden sm:block">{user.nickname}</span>
-                  <Button onClick={handleLogout} variant="ghost" size="sm" data-testid="logout-button">
-                    <LogOut className="w-4 h-4" />
-                  </Button>
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="hidden sm:flex items-center space-x-3 px-4 py-2 bg-gradient-to-r from-teal-50 to-teal-100 rounded-full"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                      {user.nickname?.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-sm font-medium text-teal-900">{user.nickname}</span>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button 
+                      onClick={handleLogout} 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-slate-700 hover:text-teal-700 hover:bg-teal-50"
+                      data-testid="logout-button"
+                    >
+                      <LogOut className="w-4 h-4" />
+                    </Button>
+                  </motion.div>
                 </>
               )}
             </div>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:ml-64">
-        {children}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:ml-64">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {children}
+        </motion.div>
       </main>
 
       {/* Bottom Navigation (Mobile) */}
       {user && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 md:hidden">
+        <motion.nav 
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 z-50 md:hidden shadow-lg"
+        >
           <div className="flex justify-around items-center h-16">
-            <Link
-              to="/"
-              className={`flex flex-col items-center justify-center flex-1 h-full ${
-                isActive('/') ? 'text-teal-600' : 'text-slate-600'
-              }`}
-              data-testid="nav-home"
-            >\n              <Home className="w-6 h-6" />
-              <span className="text-xs mt-1">Home</span>
-            </Link>
-            
-            <Link
-              to="/rankings"
-              className={`flex flex-col items-center justify-center flex-1 h-full ${
-                isActive('/rankings') ? 'text-teal-600' : 'text-slate-600'
-              }`}
-              data-testid="nav-rankings"
-            >
-              <Trophy className="w-6 h-6" />
-              <span className="text-xs mt-1">Rankings</span>
-            </Link>
-            
-            <Link
-              to="/groups"
-              className={`flex flex-col items-center justify-center flex-1 h-full ${
-                isActive('/groups') ? 'text-teal-600' : 'text-slate-600'
-              }`}
-              data-testid="nav-groups"
-            >
-              <Users className="w-6 h-6" />
-              <span className="text-xs mt-1">Groups</span>
-            </Link>
-            
-            <Link
-              to="/profile"
-              className={`flex flex-col items-center justify-center flex-1 h-full ${
-                isActive('/profile') ? 'text-teal-600' : 'text-slate-600'
-              }`}
-              data-testid="nav-profile"
-            >
-              <User className="w-6 h-6" />
-              <span className="text-xs mt-1">Profile</span>
-            </Link>
-
-            {isAdmin && (
+            {[
+              { to: '/', icon: Home, label: 'Home', testId: 'nav-home' },
+              { to: '/rankings', icon: Trophy, label: 'Rankings', testId: 'nav-rankings' },
+              { to: '/groups', icon: Users, label: 'Groups', testId: 'nav-groups' },
+              { to: '/profile', icon: User, label: 'Profile', testId: 'nav-profile' },
+              ...(isAdmin ? [{ to: '/admin', icon: LayoutDashboard, label: 'Admin', testId: 'nav-admin' }] : [])
+            ].map(({ to, icon: Icon, label, testId }) => (
               <Link
-                to="/admin"
-                className={`flex flex-col items-center justify-center flex-1 h-full ${
-                  location.pathname.startsWith('/admin') ? 'text-teal-600' : 'text-slate-600'
+                key={to}
+                to={to}
+                className={`flex flex-col items-center justify-center flex-1 h-full transition-all ${
+                  isActive(to) || (to === '/admin' && location.pathname.startsWith('/admin'))
+                    ? 'text-teal-600 scale-110' 
+                    : 'text-slate-600 hover:text-teal-500'
                 }`}
-                data-testid="nav-admin"
+                data-testid={testId}
               >
-                <LayoutDashboard className="w-6 h-6" />
-                <span className="text-xs mt-1">Admin</span>
+                <motion.div whileTap={{ scale: 0.9 }}>
+                  <Icon className="w-6 h-6" />
+                  <span className="text-xs mt-1 font-medium">{label}</span>
+                </motion.div>
               </Link>
-            )}
+            ))}
           </div>
-        </nav>
+        </motion.nav>
       )}
 
-      {/* Desktop Navigation (Tablet and above) */}
+      {/* Desktop Navigation (Sidebar) */}
       {user && (
-        <nav className="hidden md:block fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-slate-200 z-40">
-          <div className="p-4 space-y-2">
-            <Link
-              to="/"
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive('/') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
-              }`}
-              data-testid="desktop-nav-home"
-            >
-              <Home className="w-5 h-5" />
-              <span className="font-medium">Home</span>
-            </Link>
-            
-            <Link
-              to="/rankings"
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive('/rankings') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
-              }`}
-              data-testid="desktop-nav-rankings"
-            >
-              <Trophy className="w-5 h-5" />
-              <span className="font-medium">Rankings</span>
-            </Link>
-            
-            <Link
-              to="/groups"
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive('/groups') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
-              }`}
-              data-testid="desktop-nav-groups"
-            >
-              <Users className="w-5 h-5" />
-              <span className="font-medium">Groups</span>
-            </Link>
-            
-            <Link
-              to="/profile"
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive('/profile') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
-              }`}
-              data-testid="desktop-nav-profile"
-            >
-              <User className="w-5 h-5" />
-              <span className="font-medium">Profile</span>
-            </Link>
-
-            {isAdmin && (
+        <motion.nav 
+          initial={{ x: -300 }}
+          animate={{ x: 0 }}
+          className="hidden md:block fixed left-0 top-20 bottom-0 w-64 bg-white/80 backdrop-blur-lg border-r border-slate-200 z-40 shadow-xl"
+        >
+          <div className="p-6 space-y-2">
+            {[
+              { to: '/', icon: Home, label: 'Home', testId: 'desktop-nav-home' },
+              { to: '/rankings', icon: Trophy, label: 'Rankings', testId: 'desktop-nav-rankings' },
+              { to: '/groups', icon: Users, label: 'Groups', testId: 'desktop-nav-groups' },
+              { to: '/profile', icon: User, label: 'Profile', testId: 'desktop-nav-profile' },
+              ...(isAdmin ? [{ to: '/admin', icon: LayoutDashboard, label: 'Admin', testId: 'desktop-nav-admin' }] : [])
+            ].map(({ to, icon: Icon, label, testId }) => (
               <Link
-                to="/admin"
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                  location.pathname.startsWith('/admin') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
-                }`}
-                data-testid="desktop-nav-admin"
+                key={to}
+                to={to}
+                data-testid={testId}
               >
-                <LayoutDashboard className="w-5 h-5" />
-                <span className="font-medium">Admin</span>
+                <motion.div
+                  whileHover={{ x: 8, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
+                    isActive(to) || (to === '/admin' && location.pathname.startsWith('/admin'))
+                      ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg shadow-teal-500/50' 
+                      : 'text-slate-700 hover:bg-teal-50 hover:text-teal-700'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="font-semibold">{label}</span>
+                </motion.div>
               </Link>
-            )}
+            ))}
           </div>
-        </nav>
+        </motion.nav>
       )}
       
       {/* Padding for bottom nav on mobile */}
