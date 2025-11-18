@@ -64,7 +64,19 @@
     "status": "completed"
   },
   {
-    "content": "Phase 3: Multi-language support framework implemented",
-    "status": "completed"
+    "content": "Phase 4: Update Question model to support multilingual content",
+    "status": "in_progress"
+  },
+  {
+    "content": "Phase 4: Update seed data with Slovak translations",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 4: Update API to return questions in user's language",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 4: Test multilingual quiz flow",
+    "status": "pending"
   }
 ]
