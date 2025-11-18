@@ -216,57 +216,147 @@ export function HomePage() {
 
       {/* Bonus Quiz */}
       {pack.bonus_quiz && (
-        <div>
-          <h2 className="text-xl font-bold text-slate-900 mb-4 font-['Space_Grotesk'] flex items-center space-x-2">
-            <Trophy className="w-6 h-6 text-amber-500" />
-            <span>Bonus Quiz</span>
-          </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <motion.h2 
+            className="text-2xl font-bold text-slate-900 mb-6 font-['Space_Grotesk'] flex items-center space-x-2"
+          >
+            <div className="w-1 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full" />
+            <Trophy className="w-7 h-7 text-amber-500" />
+            <span>Bonus Challenge</span>
+          </motion.h2>
           
-          <div
+          <motion.div
+            whileHover={pack.bonus_quiz.unlocked && !pack.bonus_quiz.is_locked && pack.bonus_quiz.attempt_count < 3 ? { scale: 1.02, y: -5 } : {}}
+            whileTap={pack.bonus_quiz.unlocked && !pack.bonus_quiz.is_locked && pack.bonus_quiz.attempt_count < 3 ? { scale: 0.98 } : {}}
             onClick={() => pack.bonus_quiz.unlocked && !pack.bonus_quiz.is_locked && pack.bonus_quiz.attempt_count < 3 && navigate('/quiz/10')}
-            className={`border-2 rounded-xl p-6 transition-all ${
+            className={`relative overflow-hidden border-3 rounded-3xl p-8 transition-all ${
               pack.bonus_quiz.unlocked
                 ? pack.bonus_quiz.is_locked
                   ? 'border-slate-300 bg-slate-50'
                   : pack.bonus_quiz.status === 'completed'
-                  ? 'border-amber-300 bg-amber-50'
-                  : 'border-amber-400 bg-gradient-to-br from-amber-50 to-amber-100 hover:shadow-lg cursor-pointer'
+                  ? 'border-amber-300 bg-gradient-to-br from-amber-50 via-white to-amber-50 shadow-xl shadow-amber-500/20 cursor-pointer'
+                  : 'border-amber-400 bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-100 shadow-2xl shadow-amber-500/30 cursor-pointer hover:shadow-amber-500/40'
                 : 'border-slate-300 bg-slate-100'
             }`}
             data-testid="bonus-quiz-card"
           >
-            {pack.bonus_quiz.unlocked ? (
-              <div>
-                <div className="flex items-center space-x-3 mb-2">
-                  <Trophy className="w-6 h-6 text-amber-500" />
-                  <h3 className="font-semibold text-slate-900 font-['Space_Grotesk'] text-lg">Bonus Challenge</h3>
-                </div>
-                <p className="text-sm text-slate-600 mb-2">{pack.bonus_quiz.topic?.name}</p>
-                
-                {pack.bonus_quiz.best_score && (
-                  <div className="flex items-center space-x-4 text-xs text-slate-600">
-                    <span>Best: {pack.bonus_quiz.best_score.percentage.toFixed(0)}%</span>
-                    <span>Time: {(pack.bonus_quiz.best_score.time_ms / 1000).toFixed(0)}s</span>
-                  </div>
-                )}
-                
-                {pack.bonus_quiz.is_locked ? (
-                  <span className="text-xs text-slate-500 mt-2 block">Locked after viewing answers</span>
-                ) : pack.bonus_quiz.attempt_count >= 3 ? (
-                  <span className="text-xs text-slate-600 mt-2 block">3/3 attempts used</span>
-                ) : (
-                  <span className="text-xs text-slate-600 mt-2 block">{pack.bonus_quiz.attempt_count}/3 attempts</span>
-                )}
-              </div>
-            ) : (
-              <div className="text-center py-4">
-                <Lock className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                <p className="text-sm text-slate-600 font-medium">Complete all 10 regular quizzes to unlock</p>
-                <p className="text-xs text-slate-500 mt-1">{pack.quizzes.filter(q => q.attempt_count > 0).length}/10 completed</p>
-              </div>
+            {/* Animated Background */}
+            {pack.bonus_quiz.unlocked && !pack.bonus_quiz.is_locked && (
+              <>
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.5, 1],
+                    opacity: [0.3, 0.6, 0.3]
+                  }}
+                  transition={{ 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="absolute -top-10 -right-10 w-40 h-40 bg-amber-400/20 rounded-full blur-3xl"
+                />
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.3, 1],
+                    opacity: [0.2, 0.5, 0.2]
+                  }}
+                  transition={{ 
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                  className="absolute -bottom-10 -left-10 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl"
+                />
+              </>
             )}
-          </div>
-        </div>
+            
+            <div className="relative z-10">
+              {pack.bonus_quiz.unlocked ? (
+                <div>
+                  <div className="flex items-center space-x-3 mb-4">
+                    <motion.div
+                      animate={{ 
+                        rotate: [0, 10, -10, 0],
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Trophy className="w-10 h-10 text-amber-500" fill="currentColor" />
+                    </motion.div>
+                    <div>
+                      <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-2xl">Bonus Challenge</h3>
+                      <p className="text-sm text-amber-700 font-semibold">{pack.bonus_quiz.topic?.name}</p>
+                    </div>
+                  </div>
+                  
+                  {pack.bonus_quiz.best_score && (
+                    <div className="flex items-center space-x-4 text-sm mb-4">
+                      <span className="px-4 py-2 bg-amber-200 text-amber-900 rounded-full font-bold shadow-sm">
+                        Best: {pack.bonus_quiz.best_score.percentage.toFixed(0)}%
+                      </span>
+                      <span className="text-slate-700 font-mono font-semibold">
+                        {(pack.bonus_quiz.best_score.time_ms / 1000).toFixed(0)}s
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between">
+                    {pack.bonus_quiz.is_locked ? (
+                      <div className="flex items-center space-x-2 text-slate-600">
+                        <Lock className="w-5 h-5" />
+                        <span className="text-sm font-medium">Locked after viewing answers</span>
+                      </div>
+                    ) : pack.bonus_quiz.attempt_count >= 3 ? (
+                      <div className="px-4 py-2 bg-amber-100 rounded-lg border border-amber-300">
+                        <span className="text-sm font-bold text-amber-800">3/3 attempts used</span>
+                      </div>
+                    ) : (
+                      <div className="px-4 py-2 bg-white rounded-lg border-2 border-amber-400 shadow-sm">
+                        <span className="text-sm font-bold text-amber-700">{pack.bonus_quiz.attempt_count}/3 attempts</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <motion.div
+                    animate={{ 
+                      rotate: [0, 5, -5, 0]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <Lock className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                  </motion.div>
+                  <p className="text-lg text-slate-700 font-semibold mb-2">Complete all 10 quizzes to unlock</p>
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-full max-w-xs bg-slate-200 rounded-full h-3">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(pack.quizzes.filter(q => q.attempt_count > 0).length / 10) * 100}%` }}
+                        transition={{ duration: 1 }}
+                        className="bg-gradient-to-r from-teal-500 to-cyan-500 h-3 rounded-full"
+                      />
+                    </div>
+                    <span className="text-sm font-bold text-slate-600">{pack.quizzes.filter(q => q.attempt_count > 0).length}/10</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
       )}
     </div>
   );
