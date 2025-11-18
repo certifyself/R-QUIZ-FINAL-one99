@@ -194,13 +194,68 @@ export function AdminQuestionsPage() {
           <h1 className="text-3xl font-bold text-slate-900 font-['Space_Grotesk']">Manage Questions</h1>
         </div>
         
-        <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-teal-500 to-teal-600" data-testid="create-question-button">
-              <Plus className="w-4 h-4 mr-2" />
-              Create Question
-            </Button>
-          </DialogTrigger>
+        <div className="flex items-center space-x-2">
+          <Button 
+            onClick={handleDownloadTemplate} 
+            variant="outline"
+            data-testid="download-template-button"
+          >
+            Download Template
+          </Button>
+          
+          <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" data-testid="bulk-upload-button">
+                <Plus className="w-4 h-4 mr-2" />
+                Bulk Upload
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Bulk Upload Questions</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <p className="text-sm text-slate-600">
+                  Upload an Excel file with questions in both English and Slovak.
+                </p>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center">
+                  <input
+                    type="file"
+                    accept=".xlsx,.xls"
+                    onChange={handleBulkUpload}
+                    className="hidden"
+                    id="excel-upload"
+                    disabled={uploading}
+                  />
+                  <label
+                    htmlFor="excel-upload"
+                    className="cursor-pointer inline-block"
+                  >
+                    <div className="text-slate-600">
+                      <Plus className="w-12 h-12 mx-auto mb-2 text-slate-400" />
+                      <p className="font-medium">
+                        {uploading ? 'Uploading...' : 'Click to select Excel file'}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">.xlsx or .xls format</p>
+                    </div>
+                  </label>
+                </div>
+                <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                  <p className="text-xs text-teal-800">
+                    <strong>Tip:</strong> Download the template first to see the required format!
+                  </p>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+          
+          <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-teal-500 to-teal-600" data-testid="create-question-button">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Question
+              </Button>
+            </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create New Question</DialogTitle>
