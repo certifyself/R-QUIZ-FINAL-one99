@@ -41,7 +41,7 @@ export function QuizPage() {
 
   const loadQuiz = async () => {
     try {
-      const res = await userAPI.getQuiz(quizIndex);
+      const res = await userAPI.getQuiz(quizIndex, t.i18n.language);
       setQuiz(res.data);
       setStartTime(Date.now());
       
