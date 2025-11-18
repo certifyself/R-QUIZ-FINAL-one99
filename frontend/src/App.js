@@ -20,6 +20,7 @@ import { ProfilePage } from './pages/user/ProfilePage';
 // Admin Pages
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminTopicsPage } from './pages/admin/AdminTopicsPage';
+import { AdminQuestionsPage } from './pages/admin/AdminQuestionsPage';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
