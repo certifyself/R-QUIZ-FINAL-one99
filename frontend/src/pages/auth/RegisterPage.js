@@ -70,7 +70,7 @@ export function RegisterPage() {
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: 'spring', duration: 0.8 }}
             whileHover={{ scale: 1.1, rotate: 5 }}
-            className="w-20 h-20 mx-auto mb-6 relative"
+            className="w-20 h-20 mx-auto mb-4 relative"
           >
             <img 
               src="/logo.jpeg" 
@@ -90,6 +90,16 @@ export function RegisterPage() {
               className="absolute inset-0 rounded-full bg-gradient-to-tr from-teal-500/20 to-cyan-500/20"
             />
           </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-2xl font-bold mb-4 font-['Space_Grotesk']"
+          >
+            <span className="bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+              SocraQuest
+            </span>
+          </motion.h2>
           <h1 className="text-3xl font-bold mb-2 font-['Space_Grotesk']">
             <span className="bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
               Join SocraQuest
