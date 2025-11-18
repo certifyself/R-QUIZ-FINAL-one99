@@ -295,7 +295,7 @@ export function HomePage() {
                       <Trophy className="w-10 h-10 text-amber-500" fill="currentColor" />
                     </motion.div>
                     <div>
-                      <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-2xl">Bonus Challenge</h3>
+                      <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-2xl">{t('home.bonus_challenge')}</h3>
                       <p className="text-sm text-amber-700 font-semibold">{pack.bonus_quiz.topic?.name}</p>
                     </div>
                   </div>
