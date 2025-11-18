@@ -713,7 +713,7 @@ def get_quiz_answers(
         topic_id = pack['quiz_topic_ids'][quiz_index]
     
     # Get questions with correct answers
-    questions = get_quiz_questions(topic_id, attempt_num=1)
+    questions = get_quiz_questions(topic_id, attempt_num=1, language=lang)
     
     # Get user's last attempt answers
     last_attempt = attempts_col.find_one(
