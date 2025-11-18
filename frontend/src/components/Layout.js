@@ -52,6 +52,9 @@ export function Layout({ children }) {
             </Link>
             
             <div className="flex items-center space-x-4">
+              {/* Language Switcher - Always visible */}
+              <LanguageSwitcher />
+              
               {user && (
                 <>
                   <motion.div 
@@ -71,6 +74,7 @@ export function Layout({ children }) {
                       size="sm" 
                       className="text-slate-700 hover:text-teal-700 hover:bg-teal-50"
                       data-testid="logout-button"
+                      title={t('auth.logout')}
                     >
                       <LogOut className="w-4 h-4" />
                     </Button>
