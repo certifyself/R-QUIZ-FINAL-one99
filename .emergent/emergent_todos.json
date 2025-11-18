@@ -45,11 +45,11 @@
   },
   {
     "content": "Phase 3: Install react-i18next for multi-language support",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 3: Create language context and translation files (English + Slovak)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 3: Add language switcher to header",
