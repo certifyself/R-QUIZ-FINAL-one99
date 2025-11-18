@@ -12,6 +12,7 @@ export function HomePage() {
   const [pack, setPack] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadTodayPack();
