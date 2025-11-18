@@ -212,13 +212,16 @@ def record_attempt(user_id: str, pack_date: date, quiz_index: int,
             'is_best': bool
         }
     """
+    # Convert date to string for MongoDB storage
+    date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
+    
     # Score the attempt
     score = score_attempt(answers)
     
     # Save attempt record
     attempt_doc = {
         'user_id': ObjectId(user_id),
-        'date': pack_date,
+        'date': date_str,
         'quiz_index': quiz_index,
         'attempt_num': attempt_num,
         'answers': answers,
@@ -232,7 +235,7 @@ def record_attempt(user_id: str, pack_date: date, quiz_index: int,
     attempt_id = str(result.inserted_id)
     
     # Update best result
-    is_best = upsert_best_result(user_id, pack_date, quiz_index, 
+    is_best = upsert_best_result(user_id, date_str, quiz_index, 
                                    score['percentage'], time_ms)
     
     return {
