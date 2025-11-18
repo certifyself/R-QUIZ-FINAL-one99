@@ -104,7 +104,7 @@ export function LoginPage() {
             className="text-2xl font-bold mb-4 font-['Space_Grotesk']"
           >
             <span className="bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
-              SocraQuest
+              {t('app.name')}
             </span>
           </motion.h2>
           <h1 className="text-3xl font-bold mb-2 font-['Space_Grotesk']">
