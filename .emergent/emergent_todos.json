@@ -65,15 +65,15 @@
   },
   {
     "content": "Phase 4: Update Question model to support multilingual content",
-    "status": "in_progress"
-  },
-  {
-    "content": "Phase 4: Update seed data with Slovak translations",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 4: Update API to return questions in user's language",
-    "status": "pending"
+    "status": "completed"
+  },
+  {
+    "content": "Phase 4: Update seed data with Slovak translations",
+    "status": "in_progress"
   },
   {
     "content": "Phase 4: Test multilingual quiz flow",
