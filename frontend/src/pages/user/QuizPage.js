@@ -244,7 +244,7 @@ export function QuizPage() {
             data-testid="previous-button"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Previous
+            {t('quiz.previous')}
           </Button>
         </motion.div>
 
@@ -266,7 +266,7 @@ export function QuizPage() {
               className="bg-gradient-to-r from-teal-600 via-teal-500 to-cyan-600 px-8 shadow-lg"
               data-testid="submit-button"
             >
-              {submitting ? 'Submitting...' : 'Submit Quiz'}
+              {submitting ? t('quiz.submitting') : t('quiz.submit_quiz')}
             </Button>
           </motion.div>
         ) : (
@@ -277,7 +277,7 @@ export function QuizPage() {
               className="bg-gradient-to-r from-teal-500 to-cyan-600 px-6"
               data-testid="next-button"
             >
-              Next
+              {t('quiz.next')}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </motion.div>
