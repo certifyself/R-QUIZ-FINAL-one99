@@ -172,7 +172,7 @@ export function QuizPage() {
           />
         </div>
         <p className="text-xs text-slate-600 mt-2 text-center">
-          Question {currentQuestion + 1} of {quiz.questions.length}
+          {t('quiz.question')} {currentQuestion + 1} {t('quiz.of')} {quiz.questions.length}
         </p>
       </div>
 
