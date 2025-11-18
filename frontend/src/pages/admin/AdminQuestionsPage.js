@@ -21,6 +21,8 @@ export function AdminQuestionsPage() {
   const [editOpen, setEditOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   
   const [formData, setFormData] = useState({
     topic_id: topicFilter || '',
