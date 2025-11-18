@@ -693,6 +693,7 @@ def submit_quiz(
 @app.get("/api/quizzes/{quiz_index}/answers")
 def get_quiz_answers(
     quiz_index: int,
+    lang: str = Query('en', regex='^(en|sk)$'),
     current_user: Dict = Depends(get_current_user)
 ):
     user_id = current_user['_id']
