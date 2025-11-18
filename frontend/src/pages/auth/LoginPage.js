@@ -124,7 +124,7 @@ export function LoginPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Label htmlFor="email" className="text-slate-700 font-semibold">Email</Label>
+            <Label htmlFor="email" className="text-slate-700 font-semibold">{t('auth.email')}</Label>
             <div className="relative mt-2">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
               <Input
@@ -145,7 +145,7 @@ export function LoginPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <Label htmlFor="password" className="text-slate-700 font-semibold">Password</Label>
+            <Label htmlFor="password" className="text-slate-700 font-semibold">{t('auth.password')}</Label>
             <div className="relative mt-2">
               <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
               <Input
@@ -172,16 +172,7 @@ export function LoginPage() {
               className="w-full h-12 bg-gradient-to-r from-teal-600 via-teal-500 to-cyan-600 hover:from-teal-700 hover:via-teal-600 hover:to-cyan-700 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all"
               data-testid="login-button"
             >
-              {loading ? (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                >
-                  Signing in...
-                </motion.div>
-              ) : (
-                'Sign In'
-              )}
+              {loading ? t('auth.signing_in') : t('auth.sign_in')}
             </Button>
           </motion.div>
         </form>
@@ -192,9 +183,9 @@ export function LoginPage() {
           transition={{ delay: 0.5 }}
           className="text-center text-sm text-slate-600 mt-6"
         >
-          Don't have an account?{' '}
+          {t('auth.no_account')}{' '}
           <Link to="/register" className="text-teal-600 font-bold hover:text-teal-700 hover:underline">
-            Sign up
+            {t('auth.sign_up')}
           </Link>
         </motion.p>
       </motion.div>
