@@ -143,7 +143,7 @@ export function HomePage() {
           className="text-2xl font-bold text-slate-900 mb-6 font-['Space_Grotesk'] flex items-center space-x-2"
         >
           <div className="w-1 h-8 bg-gradient-to-b from-teal-500 to-teal-600 rounded-full" />
-          <span>Regular Quizzes</span>
+          <span>{t('home.regular_quizzes')}</span>
         </motion.h2>
         <div className="grid gap-4">
           <AnimatePresence>
