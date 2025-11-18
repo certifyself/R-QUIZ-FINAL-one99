@@ -57,10 +57,10 @@
   },
   {
     "content": "Phase 3: Translate all UI text across the app",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 3: Test language switching functionality",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]
