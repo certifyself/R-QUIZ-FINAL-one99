@@ -53,6 +53,14 @@ export const adminAPI = {
   createQuestion: (data) => api.post('/api/admin/questions', data),
   updateQuestion: (id, data) => api.put(`/api/admin/questions/${id}`, data),
   deleteQuestion: (id) => api.delete(`/api/admin/questions/${id}`),
+  downloadTemplate: () => api.get('/api/admin/questions/template', { responseType: 'blob' }),
+  bulkUploadQuestions: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post('/api/admin/questions/bulk-upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
   
   // Packs
   getPacks: (date) => api.get('/api/admin/packs', { params: { date } }),
