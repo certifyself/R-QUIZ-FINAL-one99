@@ -50,7 +50,7 @@ export function Layout({ children }) {
 
       {/* Bottom Navigation (Mobile) */}
       {user && (
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
+        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 md:hidden">
           <div className="flex justify-around items-center h-16">
             <Link
               to="/"
@@ -58,8 +58,7 @@ export function Layout({ children }) {
                 isActive('/') ? 'text-teal-600' : 'text-slate-600'
               }`}
               data-testid="nav-home"
-            >
-              <Home className="w-6 h-6" />
+            >\n              <Home className="w-6 h-6" />
               <span className="text-xs mt-1">Home</span>
             </Link>
             
@@ -106,6 +105,70 @@ export function Layout({ children }) {
               >
                 <LayoutDashboard className="w-6 h-6" />
                 <span className="text-xs mt-1">Admin</span>
+              </Link>
+            )}
+          </div>
+        </nav>
+      )}
+
+      {/* Desktop Navigation (Tablet and above) */}
+      {user && (
+        <nav className="hidden md:block fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-slate-200 z-40">
+          <div className="p-4 space-y-2">
+            <Link
+              to="/"
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                isActive('/') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
+              }`}
+              data-testid="desktop-nav-home"
+            >
+              <Home className="w-5 h-5" />
+              <span className="font-medium">Home</span>
+            </Link>
+            
+            <Link
+              to="/rankings"
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                isActive('/rankings') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
+              }`}
+              data-testid="desktop-nav-rankings"
+            >
+              <Trophy className="w-5 h-5" />
+              <span className="font-medium">Rankings</span>
+            </Link>
+            
+            <Link
+              to="/groups"
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                isActive('/groups') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
+              }`}
+              data-testid="desktop-nav-groups"
+            >
+              <Users className="w-5 h-5" />
+              <span className="font-medium">Groups</span>
+            </Link>
+            
+            <Link
+              to="/profile"
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                isActive('/profile') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
+              }`}
+              data-testid="desktop-nav-profile"
+            >
+              <User className="w-5 h-5" />
+              <span className="font-medium">Profile</span>
+            </Link>
+
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                  location.pathname.startsWith('/admin') ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-100'
+                }`}
+                data-testid="desktop-nav-admin"
+              >
+                <LayoutDashboard className="w-5 h-5" />
+                <span className="font-medium">Admin</span>
               </Link>
             )}
           </div>
