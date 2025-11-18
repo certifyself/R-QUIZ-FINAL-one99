@@ -245,20 +245,25 @@ def record_attempt(user_id: str, pack_date: date, quiz_index: int,
     }
 
 
-def upsert_best_result(user_id: str, pack_date: date, quiz_index: int,
+def upsert_best_result(user_id: str, pack_date, quiz_index: int,
                        percentage: float, time_ms: int) -> bool:
     """
     Update best result for user/date/quiz if current is better.
     Better = higher percentage, or same percentage but faster time.
     
+    Args:
+        pack_date: date object or string (YYYY-MM-DD)
+    
     Returns:
         True if this is the new best result
     """
+    # Convert date to string if needed
+    date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
     user_oid = ObjectId(user_id)
     
     existing = results_col.find_one({
         'user_id': user_oid,
-        'date': pack_date,
+        'date': date_str,
         'quiz_index': quiz_index
     })
     
@@ -268,7 +273,7 @@ def upsert_best_result(user_id: str, pack_date: date, quiz_index: int,
         # First attempt - always best
         results_col.insert_one({
             'user_id': user_oid,
-            'date': pack_date,
+            'date': date_str,
             'quiz_index': quiz_index,
             'best_pct': percentage,
             'best_time_ms': time_ms,
