@@ -15,13 +15,14 @@ export function ResultsPage() {
   const [showAnswers, setShowAnswers] = useState(false);
   const [answers, setAnswers] = useState(null);
   const [locking, setLocking] = useState(false);
+  const { t, i18n } = useTranslation();
 
   const canViewAnswers = result?.attempt_number >= 3 && result?.can_view_answers;
   const canRetry = result?.attempts_remaining > 0;
 
   const handleViewAnswers = async () => {
     try {
-      const res = await userAPI.getAnswers(quizIndex);
+      const res = await userAPI.getAnswers(quizIndex, i18n.language);
       setAnswers(res.data.questions);
       setShowAnswers(true);
     } catch (error) {
