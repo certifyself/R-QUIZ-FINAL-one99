@@ -49,15 +49,15 @@
   },
   {
     "content": "Phase 3: Create language context and translation files (English + Slovak)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 3: Add language switcher to header",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 3: Translate all UI text across the app",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 3: Test language switching functionality",
