@@ -355,22 +355,26 @@ export function AdminQuestionsPage() {
             <p className="text-slate-600">No questions found. Create your first question to get started.</p>
           </div>
         ) : (
-          questions.map((question) => (
-            <div key={question._id} className="bg-white rounded-xl p-6 border border-slate-200">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <span className="text-xs font-medium px-2 py-1 bg-teal-100 text-teal-700 rounded">
-                      {question.topic_name}
-                    </span>
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      question.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                    }`}>
-                      {question.active ? 'Active' : 'Inactive'}
-                    </span>
+          questions.map((question) => {
+            // Extract English text for display in admin panel
+            const questionText = typeof question.text === 'object' ? question.text.en : question.text;
+            
+            return (
+              <div key={question._id} className="bg-white rounded-xl p-6 border border-slate-200">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <span className="text-xs font-medium px-2 py-1 bg-teal-100 text-teal-700 rounded">
+                        {question.topic_name}
+                      </span>
+                      <span className={`text-xs px-2 py-1 rounded ${
+                        question.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                      }`}>
+                        {question.active ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                    <p className="text-slate-900 font-medium">{questionText}</p>
                   </div>
-                  <p className="text-slate-900 font-medium">{question.text}</p>
-                </div>
                 <div className="flex items-center space-x-2">
                   <Button
                     onClick={() => openEditDialog(question)}
