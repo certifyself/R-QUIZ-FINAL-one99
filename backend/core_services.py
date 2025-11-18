@@ -46,6 +46,13 @@ def serialize_doc(doc: Optional[Dict]) -> Optional[Dict]:
             else:
                 result[key] = value
         return result
+    # Handle ObjectId at the top level (when called on list items)
+    if isinstance(doc, ObjectId):
+        return str(doc)
+    if isinstance(doc, datetime):
+        return doc.isoformat()
+    if isinstance(doc, date):
+        return doc.isoformat()
     return doc
 
 
