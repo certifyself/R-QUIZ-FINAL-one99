@@ -72,9 +72,9 @@ export function HomePage() {
             className="flex items-center space-x-2 mb-3"
           >
             <Sparkles className="w-6 h-6 text-amber-300" />
-            <span className="text-teal-100 text-sm font-semibold uppercase tracking-wider">Daily Challenge</span>
+            <span className="text-teal-100 text-sm font-semibold uppercase tracking-wider">{t('home.daily_challenge')}</span>
           </motion.div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 font-['Space_Grotesk'] drop-shadow-lg">Today's Quest</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 font-['Space_Grotesk'] drop-shadow-lg">{t('home.todays_quest')}</h1>
           <div className="flex items-center space-x-2 text-teal-100">
             <Clock className="w-5 h-5" />
             <p>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
