@@ -1,7 +1,7 @@
 [
   {
     "content": "Phase 1 POC: Create core MongoDB models and service functions (generate_daily_pack, randomize_answers, score_attempt, compute_leaderboard, lock_quiz)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 1 POC: Create seed data script with 10+ topics and 30+ questions",
