@@ -174,7 +174,7 @@ export function HomePage() {
                         {getStatusIcon(quiz)}
                       </motion.div>
                       <div>
-                        <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-lg">Quiz {quiz.index + 1}</h3>
+                        <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-lg">{t('home.quiz')} {quiz.index + 1}</h3>
                         <p className="text-sm text-slate-600 font-medium">{quiz.topic?.name}</p>
                       </div>
                     </div>
