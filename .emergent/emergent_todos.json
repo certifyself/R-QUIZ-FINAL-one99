@@ -42,5 +42,25 @@
   {
     "content": "Phase 2: All user stories validated and working",
     "status": "completed"
+  },
+  {
+    "content": "Phase 3: Install react-i18next for multi-language support",
+    "status": "in_progress"
+  },
+  {
+    "content": "Phase 3: Create language context and translation files (English + Slovak)",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 3: Add language switcher to header",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 3: Translate all UI text across the app",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 3: Test language switching functionality",
+    "status": "pending"
   }
 ]
