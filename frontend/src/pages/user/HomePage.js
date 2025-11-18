@@ -315,15 +315,15 @@ export function HomePage() {
                     {pack.bonus_quiz.is_locked ? (
                       <div className="flex items-center space-x-2 text-slate-600">
                         <Lock className="w-5 h-5" />
-                        <span className="text-sm font-medium">Locked after viewing answers</span>
+                        <span className="text-sm font-medium">{t('home.locked_after_answers')}</span>
                       </div>
                     ) : pack.bonus_quiz.attempt_count >= 3 ? (
                       <div className="px-4 py-2 bg-amber-100 rounded-lg border border-amber-300">
-                        <span className="text-sm font-bold text-amber-800">3/3 attempts used</span>
+                        <span className="text-sm font-bold text-amber-800">3/3 {t('home.attempts')}</span>
                       </div>
                     ) : (
                       <div className="px-4 py-2 bg-white rounded-lg border-2 border-amber-400 shadow-sm">
-                        <span className="text-sm font-bold text-amber-700">{pack.bonus_quiz.attempt_count}/3 attempts</span>
+                        <span className="text-sm font-bold text-amber-700">{pack.bonus_quiz.attempt_count}/3 {t('home.attempts')}</span>
                       </div>
                     )}
                   </div>
