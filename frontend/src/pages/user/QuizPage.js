@@ -154,13 +154,13 @@ export function QuizPage() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 font-['Space_Grotesk']">
-              {quizIndex === '10' ? 'Bonus Quiz' : `Quiz ${parseInt(quizIndex) + 1}`}
+              {quizIndex === '10' ? t('quiz.bonus_quiz') : `${t('home.quiz')} ${parseInt(quizIndex) + 1}`}
             </h1>
             <p className="text-sm text-slate-600">{quiz.topic?.name}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-slate-600">Attempt {quiz.attempt_number}/3</p>
-            <p className="text-xs text-slate-500">{quiz.attempts_remaining} remaining</p>
+            <p className="text-sm text-slate-600">{t('quiz.attempt')} {quiz.attempt_number}/3</p>
+            <p className="text-xs text-slate-500">{quiz.attempts_remaining} {t('quiz.remaining')}</p>
           </div>
         </div>
 
