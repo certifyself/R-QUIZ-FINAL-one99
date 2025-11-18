@@ -1,0 +1,105 @@
+import React, { useState, useEffect } from 'react';
+import { userAPI } from '../../lib/api';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
+import { Trophy, Crown } from 'lucide-react';
+import { toast } from 'sonner';
+import { useAuth } from '../../contexts/AuthContext';
+import { getInitials } from '../../lib/utils';
+
+export function RankingsPage() {
+  const { user } = useAuth();
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadLeaderboard();
+  }, [quizIndex]);
+
+  const loadLeaderboard = async () => {
+    setLoading(true);
+    try {
+      const res = await userAPI.getLeaderboard(quizIndex);
+      setLeaderboard(res.data.leaderboard || []);
+    } catch (error) {
+      toast.error('Failed to load leaderboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-6">
+      <h1 className="text-3xl font-bold text-slate-900 font-['Space_Grotesk']">Rankings</h1>
+
+      {/* Quiz Selector */}
+      <div className="bg-white rounded-xl p-4 border border-slate-200">
+        <label className="text-sm font-medium text-slate-700 mb-2 block">Select Quiz</label>
+        <select
+          value={quizIndex}
+          onChange={(e) => setQuizIndex(parseInt(e.target.value))}
+          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          data-testid="quiz-selector"
+        >
+          {[...Array(10)].map((_, i) => (
+            <option key={i} value={i}>Quiz {i + 1}</option>
+          ))}
+          <option value={10}>Bonus Quiz</option>
+        </select>
+      </div>
+
+      {/* Leaderboard */}
+      {loading ? (
+        <LoadingSpinner className="py-20" />
+      ) : leaderboard.length === 0 ? (
+        <div className="bg-white rounded-xl p-12 border border-slate-200 text-center">
+          <Trophy className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <p className="text-slate-600">No rankings available yet</p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <div className="divide-y divide-slate-200">
+            {leaderboard.map((entry) => {
+              const isCurrentUser = entry.user_id === user._id;
+              const isTop3 = entry.rank <= 3;
+              
+              return (
+                <div
+                  key={entry.user_id}
+                  className={`p-4 flex items-center space-x-4 ${
+                    isCurrentUser ? 'bg-teal-50 border-l-4 border-teal-600' : ''
+                  }`}
+                  data-testid={`leaderboard-entry-${entry.rank}`}
+                >
+                  <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold ${
+                    entry.rank === 1 ? 'bg-amber-100 text-amber-700' :
+                    entry.rank === 2 ? 'bg-slate-200 text-slate-700' :
+                    entry.rank === 3 ? 'bg-amber-50 text-amber-600' :
+                    'bg-slate-100 text-slate-600'
+                  }`}>
+                    {isTop3 ? <Crown className="w-6 h-6" /> : entry.rank}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <p className={`font-semibold ${
+                      isCurrentUser ? 'text-teal-900' : 'text-slate-900'
+                    }`}>
+                      {entry.nickname} {isCurrentUser && '(You)'}
+                    </p>
+                    <p className="text-sm text-slate-600">
+                      {entry.percentage.toFixed(1)}% • {(entry.time_ms / 1000).toFixed(0)}s
+                    </p>
+                  </div>
+                  
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-slate-900 font-['Azeret_Mono']">#{entry.rank}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
