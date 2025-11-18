@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../lib/api';
 import { Button } from '../../components/ui/button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { Lock, CheckCircle2, Play, Trophy } from 'lucide-react';
+import { Lock, CheckCircle2, Play, Trophy, Sparkles, Clock } from 'lucide-react';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function HomePage() {
   const [pack, setPack] = useState(null);
