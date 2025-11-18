@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Home, Trophy, Users, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export function Layout({ children }) {
   const { user, logout, isAdmin } = useAuth();
