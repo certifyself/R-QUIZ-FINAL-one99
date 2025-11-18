@@ -395,22 +395,27 @@ export function AdminQuestionsPage() {
               </div>
 
               <div className="space-y-2">
-                {question.options.map((option) => (
-                  <div
-                    key={option.key}
-                    className={`flex items-center space-x-3 p-3 rounded-lg ${
-                      option.key === question.correct_key
-                        ? 'bg-emerald-50 border border-emerald-200'
-                        : 'bg-slate-50'
-                    }`}
-                  >
-                    <span className="font-semibold text-slate-700">{option.key}.</span>
-                    <span className="text-slate-700">{option.label}</span>
-                    {option.key === question.correct_key && (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 ml-auto" />
-                    )}
-                  </div>
-                ))}
+                {question.options.map((option) => {
+                  // Extract English label for display
+                  const optionLabel = typeof option.label === 'object' ? option.label.en : option.label;
+                  
+                  return (
+                    <div
+                      key={option.key}
+                      className={`flex items-center space-x-3 p-3 rounded-lg ${
+                        option.key === question.correct_key
+                          ? 'bg-emerald-50 border border-emerald-200'
+                          : 'bg-slate-50'
+                      }`}
+                    >
+                      <span className="font-semibold text-slate-700">{option.key}.</span>
+                      <span className="text-slate-700">{optionLabel}</span>
+                      {option.key === question.correct_key && (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 ml-auto" />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))
