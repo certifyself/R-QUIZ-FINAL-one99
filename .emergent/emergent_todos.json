@@ -1,0 +1,38 @@
+[
+  {
+    "content": "Phase 1 POC: Create core MongoDB models and service functions (generate_daily_pack, randomize_answers, score_attempt, compute_leaderboard, lock_quiz)",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 1 POC: Create seed data script with 10+ topics and 30+ questions",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 1 POC: Write test_core.py covering all 6 POC user stories",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 1 POC: Run test_core.py and fix until all tests PASS",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: Build complete backend REST API with JWT auth and all endpoints",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: Get design guidelines from design_agent",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: Build complete React PWA frontend (user app + admin panel)",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: End to End Testing using Testing Agent - verify all 10 user stories",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: Fix all bugs found by testing agent",
+    "status": "pending"
+  }
+]
