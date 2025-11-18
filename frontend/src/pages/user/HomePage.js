@@ -228,7 +228,7 @@ export function HomePage() {
           >
             <div className="w-1 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full" />
             <Trophy className="w-7 h-7 text-amber-500" />
-            <span>Bonus Challenge</span>
+            <span>{t('home.bonus_challenge')}</span>
           </motion.h2>
           
           <motion.div
