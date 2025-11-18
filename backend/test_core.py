@@ -342,9 +342,10 @@ def test_story_6_deterministic_generation():
     print("=" * 60)
     
     test_date = date(2025, 1, 15)
+    test_date_str = test_date.isoformat()
     
     # Clear any existing pack for this date
-    daily_packs_col.delete_many({'date': test_date})
+    daily_packs_col.delete_many({'date': test_date_str})
     
     # Generate pack first time
     print(f"\n   Generating pack for {test_date}...")
@@ -354,7 +355,7 @@ def test_story_6_deterministic_generation():
     print(f"   ✓ First generation: {len(topics1)} topics + bonus")
     
     # Clear and generate again
-    daily_packs_col.delete_many({'date': test_date})
+    daily_packs_col.delete_many({'date': test_date_str})
     print(f"\n   Regenerating pack for same date...")
     pack2 = generate_daily_pack(test_date)
     topics2 = pack2['quiz_topic_ids']
