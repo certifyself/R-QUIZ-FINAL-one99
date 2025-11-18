@@ -4,6 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide Emergent Badge */
+#emergent-badge {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 @layer base {
   * {
     @apply border-border;
