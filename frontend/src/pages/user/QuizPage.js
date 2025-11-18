@@ -9,6 +9,7 @@ import { Clock, CheckCircle, XCircle, ArrowLeft, ArrowRight } from 'lucide-react
 import { toast } from 'sonner';
 import { formatTime } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export function QuizPage() {
   const { quizIndex } = useParams();
