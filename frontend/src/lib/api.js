@@ -69,9 +69,9 @@ export const userAPI = {
   getTodayPack: () => api.get('/api/packs/today'),
   
   // Quiz
-  getQuiz: (quizIndex) => api.get(`/api/quizzes/${quizIndex}`),
+  getQuiz: (quizIndex, lang = 'en') => api.get(`/api/quizzes/${quizIndex}`, { params: { lang } }),
   submitQuiz: (quizIndex, data) => api.post(`/api/quizzes/${quizIndex}/submit`, data),
-  getAnswers: (quizIndex) => api.get(`/api/quizzes/${quizIndex}/answers`),
+  getAnswers: (quizIndex, lang = 'en') => api.get(`/api/quizzes/${quizIndex}/answers`, { params: { lang } }),
   lockQuiz: (quizIndex) => api.post(`/api/quizzes/${quizIndex}/lock`),
   getLeaderboard: (quizIndex, groupId) => api.get(`/api/quizzes/${quizIndex}/leaderboard`, { params: { group_id: groupId } }),
   
