@@ -140,7 +140,7 @@ export function QuizPage() {
           data-testid="back-button"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
+          {t('quiz.back')}
         </Button>
         
         <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg border border-slate-200">
