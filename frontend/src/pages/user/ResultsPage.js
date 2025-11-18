@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Trophy, Clock, Home, Eye, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatTime } from '../../lib/utils';
+import { useTranslation } from 'react-i18next';
 
 export function ResultsPage() {
   const { quizIndex } = useParams();
