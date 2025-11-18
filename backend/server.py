@@ -489,6 +489,173 @@ def get_metrics_admin(current_user: Dict = Depends(get_current_admin)):
     }
 
 # ============================================================================
+# ADMIN - BULK UPLOAD
+# ============================================================================
+
+@app.get("/api/admin/questions/template")
+def download_excel_template(current_user: Dict = Depends(get_current_admin)):
+    """Download Excel template for bulk question upload"""
+    # Create sample template
+    template_data = {
+        'topic_name': ['History', 'Geography', 'Science'],
+        'question_en': [
+            'In which year did World War II end?',
+            'What is the capital of France?',
+            'What is the chemical symbol for water?'
+        ],
+        'question_sk': [
+            'V ktorom roku skončila druhá svetová vojna?',
+            'Aké je hlavné mesto Francúzska?',
+            'Aká je chemická značka pre vodu?'
+        ],
+        'option_a_en': ['1943', 'London', 'H2O'],
+        'option_a_sk': ['1943', 'Londýn', 'H2O'],
+        'option_b_en': ['1945', 'Berlin', 'CO2'],
+        'option_b_sk': ['1945', 'Berlín', 'CO2'],
+        'option_c_en': ['1947', 'Madrid', 'O2'],
+        'option_c_sk': ['1947', 'Madrid', 'O2'],
+        'option_d_en': ['1950', 'Paris', 'N2'],
+        'option_d_sk': ['1950', 'Paríž', 'N2'],
+        'correct_answer': ['B', 'D', 'A']
+    }
+    
+    df = pd.DataFrame(template_data)
+    
+    # Create Excel file in memory
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Questions')
+    
+    output.seek(0)
+    
+    return StreamingResponse(
+        output,
+        media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={'Content-Disposition': 'attachment; filename=questions_template.xlsx'}
+    )
+
+@app.post("/api/admin/questions/bulk-upload")
+async def bulk_upload_questions(
+    file: UploadFile = File(...),
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Bulk upload questions from Excel file"""
+    
+    if not file.filename.endswith(('.xlsx', '.xls')):
+        raise HTTPException(status_code=400, detail="File must be Excel format (.xlsx or .xls)")
+    
+    try:
+        # Read Excel file
+        contents = await file.read()
+        df = pd.read_excel(io.BytesIO(contents))
+        
+        # Validate required columns
+        required_cols = [
+            'topic_name', 'question_en', 'question_sk',
+            'option_a_en', 'option_a_sk',
+            'option_b_en', 'option_b_sk',
+            'option_c_en', 'option_c_sk',
+            'option_d_en', 'option_d_sk',
+            'correct_answer'
+        ]
+        
+        missing_cols = [col for col in required_cols if col not in df.columns]
+        if missing_cols:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Missing required columns: {', '.join(missing_cols)}"
+            )
+        
+        # Process each row
+        imported_count = 0
+        errors = []
+        
+        for idx, row in df.iterrows():
+            try:
+                # Find or create topic
+                topic_name = str(row['topic_name']).strip()
+                topic = topics_col.find_one({'name': topic_name})
+                
+                if not topic:
+                    # Create topic if doesn't exist
+                    result = topics_col.insert_one({
+                        'name': topic_name,
+                        'active': True,
+                        'created_at': datetime.utcnow()
+                    })
+                    topic_id = result.inserted_id
+                else:
+                    topic_id = topic['_id']
+                
+                # Validate correct answer
+                correct = str(row['correct_answer']).strip().upper()
+                if correct not in ['A', 'B', 'C', 'D']:
+                    errors.append(f"Row {idx + 2}: Invalid correct_answer '{correct}' (must be A, B, C, or D)")
+                    continue
+                
+                # Build multilingual question
+                question_doc = {
+                    'topic_id': topic_id,
+                    'text': {
+                        'en': str(row['question_en']).strip(),
+                        'sk': str(row.get('question_sk', row['question_en'])).strip()
+                    },
+                    'options': [
+                        {
+                            'key': 'A',
+                            'label': {
+                                'en': str(row['option_a_en']).strip(),
+                                'sk': str(row.get('option_a_sk', row['option_a_en'])).strip()
+                            }
+                        },
+                        {
+                            'key': 'B',
+                            'label': {
+                                'en': str(row['option_b_en']).strip(),
+                                'sk': str(row.get('option_b_sk', row['option_b_en'])).strip()
+                            }
+                        },
+                        {
+                            'key': 'C',
+                            'label': {
+                                'en': str(row['option_c_en']).strip(),
+                                'sk': str(row.get('option_c_sk', row['option_c_en'])).strip()
+                            }
+                        },
+                        {
+                            'key': 'D',
+                            'label': {
+                                'en': str(row['option_d_en']).strip(),
+                                'sk': str(row.get('option_d_sk', row['option_d_en'])).strip()
+                            }
+                        }
+                    ],
+                    'correct_key': correct,
+                    'active': True,
+                    'created_at': datetime.utcnow()
+                }
+                
+                questions_col.insert_one(question_doc)
+                imported_count += 1
+                
+            except Exception as e:
+                errors.append(f"Row {idx + 2}: {str(e)}")
+        
+        result_msg = f"Successfully imported {imported_count} questions"
+        if errors:
+            result_msg += f". {len(errors)} errors occurred."
+        
+        return {
+            'success': True,
+            'imported': imported_count,
+            'errors': errors[:10],  # Return first 10 errors
+            'message': result_msg
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to process Excel file: {str(e)}")
+
+# ============================================================================
 # USER - DAILY PACKS
 # ============================================================================
 
