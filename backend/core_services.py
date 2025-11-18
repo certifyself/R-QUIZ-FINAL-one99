@@ -56,14 +56,17 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     
     Returns:
         {
-            'date': date,
+            'date': str (YYYY-MM-DD),
             'quiz_topic_ids': [ObjectId x 10],
             'bonus_topic_id': ObjectId,
             'generated_at': datetime
         }
     """
+    # Convert date to string for MongoDB storage
+    date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
+    
     # Check if pack already exists
-    existing = daily_packs_col.find_one({'date': pack_date})
+    existing = daily_packs_col.find_one({'date': date_str})
     if existing:
         return serialize_doc(existing)
     
@@ -93,7 +96,7 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     
     # Create pack document
     pack = {
-        'date': pack_date,
+        'date': date_str,
         'quiz_topic_ids': quiz_topics,
         'bonus_topic_id': bonus_topic,
         'generated_at': datetime.utcnow()
