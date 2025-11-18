@@ -616,7 +616,7 @@ def get_quiz(
     
     # Get questions with randomized options
     next_attempt = attempt_count + 1
-    questions = get_quiz_questions(topic_id, next_attempt)
+    questions = get_quiz_questions(topic_id, next_attempt, lang)
     
     # Remove correct_key from questions (only show after 3rd attempt)
     for q in questions:
