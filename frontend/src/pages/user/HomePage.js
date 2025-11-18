@@ -134,43 +134,83 @@ export function HomePage() {
 
       {/* Regular Quizzes */}
       <div>
-        <h2 className="text-xl font-bold text-slate-900 mb-4 font-['Space_Grotesk']">Regular Quizzes</h2>
+        <motion.h2 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-2xl font-bold text-slate-900 mb-6 font-['Space_Grotesk'] flex items-center space-x-2"
+        >
+          <div className="w-1 h-8 bg-gradient-to-b from-teal-500 to-teal-600 rounded-full" />
+          <span>Regular Quizzes</span>
+        </motion.h2>
         <div className="grid gap-4">
-          {pack.quizzes.map((quiz) => (
-            <div
-              key={quiz.index}
-              onClick={() => !quiz.is_locked && quiz.attempt_count < 3 && navigate(`/quiz/${quiz.index}`)}
-              className={`border-2 rounded-xl p-4 transition-all ${getStatusColor(quiz)}`}
-              data-testid={`quiz-card-${quiz.index}`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    {getStatusIcon(quiz)}
-                    <h3 className="font-semibold text-slate-900 font-['Space_Grotesk']">Quiz {quiz.index + 1}</h3>
-                  </div>
-                  <p className="text-sm text-slate-600 mb-2">{quiz.topic?.name}</p>
-                  
-                  {quiz.best_score && (
-                    <div className="flex items-center space-x-4 text-xs text-slate-600">
-                      <span>Best: {quiz.best_score.percentage.toFixed(0)}%</span>
-                      <span>Time: {(quiz.best_score.time_ms / 1000).toFixed(0)}s</span>
-                    </div>
-                  )}
-                </div>
+          <AnimatePresence>
+            {pack.quizzes.map((quiz, index) => (
+              <motion.div
+                key={quiz.index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + (index * 0.05) }}
+                whileHover={{ scale: 1.02, x: 8 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => !quiz.is_locked && quiz.attempt_count < 3 && navigate(`/quiz/${quiz.index}`)}
+                className={`group relative border-2 rounded-2xl p-5 transition-all cursor-pointer overflow-hidden ${getStatusColor(quiz)}`}
+                data-testid={`quiz-card-${quiz.index}`}
+              >
+                {/* Background Glow Effect */}
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${
+                  quiz.is_locked ? '' : 'bg-gradient-to-r from-teal-500/10 to-transparent'
+                }`} />
                 
-                <div className="text-right">
-                  {quiz.is_locked ? (
-                    <span className="text-xs text-slate-500">Locked</span>
-                  ) : quiz.attempt_count >= 3 ? (
-                    <span className="text-xs text-slate-600">3/3 attempts</span>
-                  ) : (
-                    <span className="text-xs text-slate-600">{quiz.attempt_count}/3 attempts</span>
-                  )}
+                <div className="relative flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <motion.div
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {getStatusIcon(quiz)}
+                      </motion.div>
+                      <div>
+                        <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-lg">Quiz {quiz.index + 1}</h3>
+                        <p className="text-sm text-slate-600 font-medium">{quiz.topic?.name}</p>
+                      </div>
+                    </div>
+                    
+                    {quiz.best_score && (
+                      <div className="flex items-center space-x-4 text-sm">
+                        <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full font-semibold">
+                          Best: {quiz.best_score.percentage.toFixed(0)}%
+                        </span>
+                        <span className="text-slate-600 font-mono">
+                          {(quiz.best_score.time_ms / 1000).toFixed(0)}s
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="text-right">
+                    {quiz.is_locked ? (
+                      <div className="px-3 py-2 bg-slate-100 rounded-lg">
+                        <Lock className="w-5 h-5 text-slate-500 mx-auto mb-1" />
+                        <span className="text-xs text-slate-500 font-medium block">Locked</span>
+                      </div>
+                    ) : quiz.attempt_count >= 3 ? (
+                      <div className="px-3 py-2 bg-amber-50 rounded-lg border border-amber-200">
+                        <span className="text-sm font-bold text-amber-700 block">3/3</span>
+                        <span className="text-xs text-amber-600">attempts</span>
+                      </div>
+                    ) : (
+                      <div className="px-3 py-2 bg-teal-50 rounded-lg border border-teal-200">
+                        <span className="text-sm font-bold text-teal-700 block">{quiz.attempt_count}/3</span>
+                        <span className="text-xs text-teal-600">attempts</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
 
