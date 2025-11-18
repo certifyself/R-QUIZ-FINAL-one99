@@ -93,20 +93,44 @@ export function HomePage() {
       </motion.div>
 
       {/* Progress Stats */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl p-6 border border-slate-200">
-          <p className="text-sm text-slate-600 mb-1">Completed</p>
-          <p className="text-3xl font-bold text-teal-600 font-['Azeret_Mono']">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        className="grid grid-cols-2 gap-4"
+      >
+        <motion.div 
+          whileHover={{ scale: 1.05, y: -5 }}
+          className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <p className="text-sm text-slate-600 mb-1 font-medium">Completed</p>
+          <p className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-teal-500 bg-clip-text text-transparent font-['Azeret_Mono']">
             {pack.quizzes.filter(q => q.attempt_count > 0).length}/10
           </p>
-        </div>
-        <div className="bg-white rounded-xl p-6 border border-slate-200">
-          <p className="text-sm text-slate-600 mb-1">Best Score</p>
-          <p className="text-3xl font-bold text-slate-900 font-['Azeret_Mono']">
+          <div className="mt-2 w-full bg-slate-200 rounded-full h-2">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${(pack.quizzes.filter(q => q.attempt_count > 0).length / 10) * 100}%` }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="bg-gradient-to-r from-teal-500 to-cyan-500 h-2 rounded-full"
+            />
+          </div>
+        </motion.div>
+        <motion.div 
+          whileHover={{ scale: 1.05, y: -5 }}
+          className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <p className="text-sm text-slate-600 mb-1 font-medium">Best Score</p>
+          <p className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent font-['Azeret_Mono']">
             {Math.max(...pack.quizzes.map(q => q.best_score?.percentage || 0).concat(0)).toFixed(0)}%
           </p>
-        </div>
-      </div>
+          <div className="flex items-center space-x-1 mt-2 text-amber-600">
+            {[...Array(3)].map((_, i) => (
+              <Trophy key={i} className="w-4 h-4" fill="currentColor" />
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
 
       {/* Regular Quizzes */}
       <div>
