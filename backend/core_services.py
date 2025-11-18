@@ -359,20 +359,25 @@ def compute_leaderboard(pack_date, quiz_index: int,
     return leaderboard
 
 
-def lock_quiz_after_answers(user_id: str, pack_date: date, quiz_index: int) -> bool:
+def lock_quiz_after_answers(user_id: str, pack_date, quiz_index: int) -> bool:
     """
     Lock quiz for user after they view correct answers.
     User cannot attempt quiz again after this.
     
+    Args:
+        pack_date: date object or string (YYYY-MM-DD)
+    
     Returns:
         True if successfully locked
     """
+    # Convert date to string if needed
+    date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
     user_oid = ObjectId(user_id)
     
     result = results_col.update_one(
         {
             'user_id': user_oid,
-            'date': pack_date,
+            'date': date_str,
             'quiz_index': quiz_index
         },
         {
@@ -387,20 +392,24 @@ def lock_quiz_after_answers(user_id: str, pack_date: date, quiz_index: int) -> b
     return result.modified_count > 0 or result.upserted_id is not None
 
 
-def get_attempt_count(user_id: str, pack_date: date, quiz_index: int) -> int:
+def get_attempt_count(user_id: str, pack_date, quiz_index: int) -> int:
     """Get number of attempts user has made for a quiz"""
+    # Convert date to string if needed
+    date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
     return attempts_col.count_documents({
         'user_id': ObjectId(user_id),
-        'date': pack_date,
+        'date': date_str,
         'quiz_index': quiz_index
     })
 
 
-def is_quiz_locked(user_id: str, pack_date: date, quiz_index: int) -> bool:
+def is_quiz_locked(user_id: str, pack_date, quiz_index: int) -> bool:
     """Check if quiz is locked for user"""
+    # Convert date to string if needed
+    date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
     result = results_col.find_one({
         'user_id': ObjectId(user_id),
-        'date': pack_date,
+        'date': date_str,
         'quiz_index': quiz_index,
         'locked_after_answers': True
     })
