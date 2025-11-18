@@ -175,37 +175,61 @@ export function QuizPage() {
       </div>
 
       {/* Question Card */}
-      <div className="bg-white rounded-xl p-8 border border-slate-200">
-        <h2 className="text-xl font-medium text-slate-900 mb-6 font-['Space_Grotesk']">
+      <motion.div 
+        key={currentQuestion}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -50 }}
+        className="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg"
+      >
+        <motion.h2 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-xl font-medium text-slate-900 mb-6 font-['Space_Grotesk'] leading-relaxed"
+        >
           {currentQ.text}
-        </h2>
+        </motion.h2>
 
         <div className="space-y-3">
-          {currentQ.options.map((option) => (
-            <button
-              key={option.key}
-              onClick={() => handleAnswer(currentQ._id, option.key)}
-              className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
-                answers[currentQ._id] === option.key
-                  ? 'border-teal-500 bg-teal-50'
-                  : 'border-slate-200 bg-white hover:border-teal-300'
-              }`}
-              data-testid={`option-${option.key}`}
-            >
-              <div className="flex items-center space-x-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${
+          <AnimatePresence mode="wait">
+            {currentQ.options.map((option, idx) => (
+              <motion.button
+                key={option.key}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ scale: 1.02, x: 5 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleAnswer(currentQ._id, option.key)}
+                className={`w-full text-left p-5 rounded-xl border-2 transition-all shadow-sm hover:shadow-md ${
                   answers[currentQ._id] === option.key
-                    ? 'bg-teal-600 text-white'
-                    : 'bg-slate-100 text-slate-700'
-                }`}>
-                  {option.key}
+                    ? 'border-teal-500 bg-gradient-to-r from-teal-50 to-cyan-50 shadow-lg shadow-teal-500/20'
+                    : 'border-slate-200 bg-white hover:border-teal-300'
+                }`}
+                data-testid={`option-${option.key}`}
+              >
+                <div className=\"flex items-center space-x-4\">
+                  <motion.div 
+                    animate={answers[currentQ._id] === option.key ? {
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 360]
+                    } : {}}
+                    transition={{ duration: 0.5 }}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
+                      answers[currentQ._id] === option.key
+                        ? 'bg-gradient-to-br from-teal-600 to-cyan-600 text-white shadow-lg'
+                        : 'bg-slate-100 text-slate-700'
+                    }`}
+                  >
+                    {option.key}
+                  </motion.div>
+                  <span className="text-slate-700 font-medium">{option.label}</span>
                 </div>
-                <span className="text-slate-700">{option.label}</span>
-              </div>
-            </button>
-          ))}
+              </motion.button>
+            ))}
+          </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
 
       {/* Navigation */}
       <div className="flex justify-between items-center">
