@@ -66,6 +66,11 @@ export function LoginPage() {
         transition={{ duration: 0.5 }}
         className="max-w-md w-full bg-white/80 backdrop-blur-xl rounded-3xl p-10 border border-slate-200 shadow-2xl relative z-10"
       >
+        {/* Language Switcher - Top Right */}
+        <div className="absolute top-4 right-4">
+          <LanguageSwitcher />
+        </div>
+        
         <div className="text-center mb-8">
           <motion.div
             initial={{ scale: 0, rotate: -180 }}
