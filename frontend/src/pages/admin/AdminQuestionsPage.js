@@ -108,6 +108,44 @@ export function AdminQuestionsPage() {
     }
   };
 
+  const handleDownloadTemplate = async () => {
+    try {
+      const response = await adminAPI.downloadTemplate();
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'questions_template.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      toast.success('Template downloaded successfully!');
+    } catch (error) {
+      toast.error('Failed to download template');
+    }
+  };
+
+  const handleBulkUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const res = await adminAPI.bulkUploadQuestions(file);
+      toast.success(res.data.message);
+      if (res.data.errors && res.data.errors.length > 0) {
+        console.error('Upload errors:', res.data.errors);
+        toast.warning(`${res.data.errors.length} rows had errors. Check console for details.`);
+      }
+      setUploadDialogOpen(false);
+      loadData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to upload file');
+    } finally {
+      setUploading(false);
+      e.target.value = ''; // Reset file input
+    }
+  };
+
   const openEditDialog = (question) => {
     setSelectedQuestion(question);
     setFormData({
