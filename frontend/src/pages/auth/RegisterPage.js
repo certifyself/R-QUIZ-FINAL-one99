@@ -4,9 +4,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
+import { LanguageSwitcher } from '../../components/LanguageSwitcher';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Mail, Lock as LockIcon, User as UserIcon, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function RegisterPage() {
   const [email, setEmail] = useState('');
