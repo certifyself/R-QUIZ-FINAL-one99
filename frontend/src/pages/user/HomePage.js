@@ -342,7 +342,7 @@ export function HomePage() {
                   >
                     <Lock className="w-16 h-16 text-slate-400 mx-auto mb-4" />
                   </motion.div>
-                  <p className="text-lg text-slate-700 font-semibold mb-2">Complete all 10 quizzes to unlock</p>
+                  <p className="text-lg text-slate-700 font-semibold mb-2">{t('home.unlock_bonus')}</p>
                   <div className="flex items-center justify-center space-x-2">
                     <div className="w-full max-w-xs bg-slate-200 rounded-full h-3">
                       <motion.div 
