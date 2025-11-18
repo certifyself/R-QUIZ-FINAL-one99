@@ -106,11 +106,11 @@ export function Layout({ children }) {
         >
           <div className="flex justify-around items-center h-16">
             {[
-              { to: '/', icon: Home, label: 'Home', testId: 'nav-home' },
-              { to: '/rankings', icon: Trophy, label: 'Rankings', testId: 'nav-rankings' },
-              { to: '/groups', icon: Users, label: 'Groups', testId: 'nav-groups' },
-              { to: '/profile', icon: User, label: 'Profile', testId: 'nav-profile' },
-              ...(isAdmin ? [{ to: '/admin', icon: LayoutDashboard, label: 'Admin', testId: 'nav-admin' }] : [])
+              { to: '/', icon: Home, label: t('nav.home'), testId: 'nav-home' },
+              { to: '/rankings', icon: Trophy, label: t('nav.rankings'), testId: 'nav-rankings' },
+              { to: '/groups', icon: Users, label: t('nav.groups'), testId: 'nav-groups' },
+              { to: '/profile', icon: User, label: t('nav.profile'), testId: 'nav-profile' },
+              ...(isAdmin ? [{ to: '/admin', icon: LayoutDashboard, label: t('nav.admin'), testId: 'nav-admin' }] : [])
             ].map(({ to, icon: Icon, label, testId }) => (
               <Link
                 key={to}
