@@ -337,6 +337,7 @@ export function AdminQuestionsPage() {
           </DialogContent>
         </Dialog>
       </div>
+      </div>
 
       {/* Filter */}
       {topicFilter && (
