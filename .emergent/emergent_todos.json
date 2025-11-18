@@ -20,12 +20,12 @@
     "status": "completed"
   },
   {
-    "content": "Phase 2: Build complete backend REST API with JWT auth and all endpoints",
-    "status": "in_progress"
+    "content": "Phase 2: Get design guidelines from design_agent",
+    "status": "completed"
   },
   {
-    "content": "Phase 2: Get design guidelines from design_agent",
-    "status": "pending"
+    "content": "Phase 2: Build complete backend REST API with JWT auth and all endpoints",
+    "status": "in_progress"
   },
   {
     "content": "Phase 2: Build complete React PWA frontend (user app + admin panel)",
