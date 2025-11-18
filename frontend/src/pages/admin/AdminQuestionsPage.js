@@ -418,7 +418,8 @@ export function AdminQuestionsPage() {
                 })}
               </div>
             </div>
-          ))
+            );
+          })
         )}
       </div>
 
