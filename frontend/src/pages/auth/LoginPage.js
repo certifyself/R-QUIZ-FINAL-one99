@@ -109,12 +109,12 @@ export function LoginPage() {
           </motion.h2>
           <h1 className="text-3xl font-bold mb-2 font-['Space_Grotesk']">
             <span className="bg-gradient-to-r from-teal-700 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
-              Welcome Back
+              {t('auth.welcome_back')}
             </span>
           </h1>
           <p className="text-slate-600 flex items-center justify-center space-x-2">
             <Sparkles className="w-4 h-4 text-teal-500" />
-            <span>Sign in to continue your quest</span>
+            <span>{t('auth.sign_in_continue')}</span>
           </p>
         </div>
 
