@@ -105,7 +105,7 @@ export function HomePage() {
           whileHover={{ scale: 1.05, y: -5 }}
           className="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg hover:shadow-xl transition-shadow"
         >
-          <p className="text-sm text-slate-600 mb-1 font-medium">Completed</p>
+          <p className="text-sm text-slate-600 mb-1 font-medium">{t('home.completed')}</p>
           <p className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-teal-500 bg-clip-text text-transparent font-['Azeret_Mono']">
             {pack.quizzes.filter(q => q.attempt_count > 0).length}/10
           </p>
