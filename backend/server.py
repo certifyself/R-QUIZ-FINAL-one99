@@ -576,6 +576,7 @@ def get_today_pack(current_user: Dict = Depends(get_current_user)):
 @app.get("/api/quizzes/{quiz_index}")
 def get_quiz(
     quiz_index: int,
+    lang: str = Query('en', regex='^(en|sk)$'),
     current_user: Dict = Depends(get_current_user)
 ):
     if quiz_index < 0 or quiz_index > 10:
