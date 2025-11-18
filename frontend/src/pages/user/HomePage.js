@@ -56,10 +56,41 @@ export function HomePage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-teal-600 to-teal-500 rounded-2xl p-8 text-white">
-        <h1 className="text-3xl md:text-4xl font-bold mb-2 font-['Space_Grotesk']">Today's Quest</h1>
-        <p className="text-teal-100">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden bg-gradient-to-br from-teal-600 via-teal-500 to-cyan-500 rounded-3xl p-8 text-white shadow-2xl"
+      >
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
+        <div className="relative z-10">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring' }}
+            className="flex items-center space-x-2 mb-3"
+          >
+            <Sparkles className="w-6 h-6 text-amber-300" />
+            <span className="text-teal-100 text-sm font-semibold uppercase tracking-wider">Daily Challenge</span>
+          </motion.div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 font-['Space_Grotesk'] drop-shadow-lg">Today's Quest</h1>
+          <div className="flex items-center space-x-2 text-teal-100">
+            <Clock className="w-5 h-5" />
+            <p>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          </div>
+        </div>
+        <motion.div
+          animate={{ 
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360]
+          }}
+          transition={{ 
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"
+        />
+      </motion.div>
 
       {/* Progress Stats */}
       <div className="grid grid-cols-2 gap-4">
