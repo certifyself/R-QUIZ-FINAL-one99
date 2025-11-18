@@ -115,17 +115,23 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     return serialize_doc(pack)
 
 
-def get_quiz_questions(topic_id: str, attempt_num: int = 1) -> List[Dict[str, Any]]:
+def get_quiz_questions(topic_id: str, attempt_num: int = 1, language: str = 'en') -> List[Dict[str, Any]]:
     """
     Get 3 questions for a topic with randomized answer options.
     Different randomization for each attempt.
+    Returns questions in specified language.
+    
+    Args:
+        topic_id: Topic ID
+        attempt_num: Attempt number (for randomization seed)
+        language: 'en' or 'sk'
     
     Returns:
         [
             {
                 '_id': str,
-                'text': str,
-                'options': [{'key': 'A', 'label': 'text'}, ...],
+                'text': str (in specified language),
+                'options': [{'key': 'A', 'label': str (in specified language)}, ...],
                 'correct_key': str (only for answer reveal)
             }
         ]
@@ -148,13 +154,28 @@ def get_quiz_questions(topic_id: str, attempt_num: int = 1) -> List[Dict[str, An
         seed = str(q['_id']) + str(attempt_num)
         rng = random.Random(seed)
         
+        # Get text in specified language
+        text = q['text']
+        if isinstance(text, dict):
+            text = text.get(language, text.get('en', ''))
+        
+        # Get options and translate
+        options = []
+        for opt in q['options']:
+            label = opt['label']
+            if isinstance(label, dict):
+                label = label.get(language, label.get('en', ''))
+            options.append({
+                'key': opt['key'],
+                'label': label
+            })
+        
         # Shuffle options
-        options = q['options'].copy()
         rng.shuffle(options)
         
         result.append({
             '_id': str(q['_id']),
-            'text': q['text'],
+            'text': text,
             'options': options,
             'correct_key': q['correct_key']
         })
