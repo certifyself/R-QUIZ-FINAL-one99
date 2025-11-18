@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 export function QuizPage() {
   const { quizIndex } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
