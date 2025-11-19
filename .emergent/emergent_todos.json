@@ -1,22 +1,30 @@
 [
   {
-    "content": "Phase 5: Install Excel processing library (openpyxl)",
-    "status": "completed"
+    "content": "Phase 6: Update backend to support image_url field in questions",
+    "status": "in_progress"
   },
   {
-    "content": "Phase 5: Create backend endpoint for bulk Excel upload",
-    "status": "completed"
+    "content": "Phase 6: Update Excel template to include image_url column",
+    "status": "pending"
   },
   {
-    "content": "Phase 5: Add Excel upload UI to admin panel",
-    "status": "completed"
+    "content": "Phase 6: Update bulk upload to handle image URLs",
+    "status": "pending"
   },
   {
-    "content": "Phase 5: Create downloadable Excel template",
-    "status": "completed"
+    "content": "Phase 6: Update QuizPage to display images",
+    "status": "pending"
   },
   {
-    "content": "Phase 5: Test bulk upload functionality",
-    "status": "completed"
+    "content": "Phase 6: Update ResultsPage to show images in answer review",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 6: Update AdminQuestionsPage to handle images",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 6: Test image display in quiz flow",
+    "status": "pending"
   }
 ]
