@@ -31,7 +31,8 @@ export function ResultsPage() {
 
   const handleViewAnswers = async () => {
     try {
-      const res = await userAPI.getAnswers(quizIndex, i18n.language);
+      const currentLang = i18n.language.startsWith('sk') ? 'sk' : 'en';
+      const res = await userAPI.getAnswers(quizIndex, currentLang);
       setAnswers(res.data.questions);
       setShowAnswers(true);
     } catch (error) {
