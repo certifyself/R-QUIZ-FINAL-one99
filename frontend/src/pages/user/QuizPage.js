@@ -41,7 +41,8 @@ export function QuizPage() {
 
   const loadQuiz = async () => {
     try {
-      const currentLang = i18n.language || 'en';
+      // Ensure language is 'en' or 'sk' only
+      const currentLang = i18n.language.startsWith('sk') ? 'sk' : 'en';
       const res = await userAPI.getQuiz(quizIndex, currentLang);
       setQuiz(res.data);
       setStartTime(Date.now());
