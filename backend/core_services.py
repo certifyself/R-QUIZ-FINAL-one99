@@ -177,7 +177,8 @@ def get_quiz_questions(topic_id: str, attempt_num: int = 1, language: str = 'en'
             '_id': str(q['_id']),
             'text': text,
             'options': options,
-            'correct_key': q['correct_key']
+            'correct_key': q['correct_key'],
+            'image_url': q.get('image_url', None)  # Include image URL if present
         })
     
     return result
