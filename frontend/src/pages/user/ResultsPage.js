@@ -116,7 +116,7 @@ export function ResultsPage() {
               className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
               data-testid="retry-button"
             >
-              Try to Improve Score ({result.attempts_remaining} attempts left)
+              {t('results.improve_score')} ({result.attempts_remaining} {t('results.attempts_left')})
             </Button>
           )}
 
@@ -128,7 +128,7 @@ export function ResultsPage() {
               data-testid="view-answers-button"
             >
               <Eye className="w-4 h-4 mr-2" />
-              View Correct Answers
+              {t('results.view_answers')}
             </Button>
           )}
 
@@ -139,7 +139,7 @@ export function ResultsPage() {
             data-testid="home-button"
           >
             <Home className="w-4 h-4 mr-2" />
-            Back to Today's Quest
+            {t('results.back_to_quest')}
           </Button>
         </div>
       </div>
