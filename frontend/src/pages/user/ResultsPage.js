@@ -20,6 +20,15 @@ export function ResultsPage() {
   const canViewAnswers = result?.attempt_number >= 3 && result?.can_view_answers;
   const canRetry = result?.attempts_remaining > 0;
 
+  // Debug logging
+  console.log('Results Debug:', {
+    attempt_number: result?.attempt_number,
+    can_view_answers: result?.can_view_answers,
+    attempts_remaining: result?.attempts_remaining,
+    canViewAnswers,
+    canRetry
+  });
+
   const handleViewAnswers = async () => {
     try {
       const res = await userAPI.getAnswers(quizIndex, i18n.language);
