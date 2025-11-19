@@ -85,6 +85,7 @@ class QuestionCreate(BaseModel):
     text: str = Field(min_length=5)
     options: List[QuestionOption] = Field(min_length=4, max_length=4)
     correct_key: str  # A, B, C, or D
+    image_url: Optional[str] = None  # Optional image URL
     active: bool = True
 
 class QuestionUpdate(BaseModel):
