@@ -17,6 +17,10 @@
   },
   {
     "content": "Phase 8: Test complete flow",
-    "status": "in_progress"
+    "status": "completed"
+  },
+  {
+    "content": "Phase 8: Updated quiz logic complete",
+    "status": "completed"
   }
 ]
