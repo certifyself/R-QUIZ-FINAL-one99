@@ -31,7 +31,8 @@ from core_services import (
     daily_packs_col,
     attempts_col,
     results_col,
-    groups_col
+    groups_col,
+    ads_config_col
 )
 
 app = FastAPI(title="SocraQuest API")
