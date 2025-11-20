@@ -90,6 +90,18 @@ export function QuizPage() {
     }));
   };
 
+  const handleTimeExpired = () => {
+    // Time expired - move to next question or submit
+    if (currentQuestion < quiz.questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      toast.warning('Time expired! Moving to next question.');
+    } else {
+      // Last question - auto submit
+      toast.warning('Time expired! Auto-submitting quiz.');
+      handleSubmit();
+    }
+  };
+
   const handleNext = () => {
     if (currentQuestion < quiz.questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
