@@ -513,6 +513,11 @@ def download_excel_template(current_user: Dict = Depends(get_current_admin)):
             'Aké je hlavné mesto Francúzska?',
             'Aká je chemická značka pre vodu?'
         ],
+        'image_url': [
+            '',  # No image for History question
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/800px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg',  # Eiffel Tower for Paris
+            ''  # No image for Science question
+        ],
         'option_a_en': ['1943', 'London', 'H2O'],
         'option_a_sk': ['1943', 'Londýn', 'H2O'],
         'option_b_en': ['1945', 'Berlin', 'CO2'],
