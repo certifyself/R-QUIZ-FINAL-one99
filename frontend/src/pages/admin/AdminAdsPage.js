@@ -12,6 +12,16 @@ export function AdminAdsPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [manualAds, setManualAds] = useState([]);
+  const [createAdOpen, setCreateAdOpen] = useState(false);
+  const [adForm, setAdForm] = useState({
+    name: '',
+    type: 'banner',
+    image_url: '',
+    video_url: '',
+    click_url: '',
+    active: true
+  });
   
   const [config, setConfig] = useState({
     google_adsense: {
