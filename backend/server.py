@@ -325,6 +325,10 @@ def create_question_admin(data: QuestionCreate, current_user: Dict = Depends(get
         'created_at': datetime.utcnow()
     }
     
+    # Add image_url if provided
+    if data.image_url:
+        question_doc['image_url'] = data.image_url
+    
     result = questions_col.insert_one(question_doc)
     question_doc['_id'] = result.inserted_id
     question_doc['topic_name'] = topic['name']
