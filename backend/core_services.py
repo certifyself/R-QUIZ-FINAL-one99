@@ -190,6 +190,7 @@ def score_attempt(answers: List[Dict[str, str]]) -> Dict[str, Any]:
     
     Args:
         answers: [{'question_id': str, 'choice_key': str}, ...]
+                 choice_key can be 'UNANSWERED' if time expired
     
     Returns:
         {
@@ -209,7 +210,9 @@ def score_attempt(answers: List[Dict[str, str]]) -> Dict[str, Any]:
         if not question:
             continue
         
-        is_correct = ans['choice_key'] == question['correct_key']
+        # Check if answered and correct
+        is_correct = (ans['choice_key'] != 'UNANSWERED' and 
+                     ans['choice_key'] == question['correct_key'])
         if is_correct:
             correct_count += 1
         
