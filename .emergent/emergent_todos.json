@@ -1,27 +1,27 @@
 [
   {
     "content": "Phase 10: Create Ads configuration model in backend",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 10: Create admin endpoints for ad management",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 10: Create Admin Ads Placement UI page",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 10: Add Google AdSense configuration form",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 10: Add Taboola configuration form",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 10: Update BannerAdPlaceholder to load real ads",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 10: Update RewardedGate to load real video ads",
