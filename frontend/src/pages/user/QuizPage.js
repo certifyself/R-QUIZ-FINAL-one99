@@ -41,6 +41,28 @@ export function QuizPage() {
     }
   }, [startTime]);
 
+  // Question timer - 12 seconds per question
+  useEffect(() => {
+    if (!quiz) return;
+    
+    // Reset timer when question changes
+    setQuestionTimer(QUESTION_TIME_LIMIT);
+    
+    const timer = setInterval(() => {
+      setQuestionTimer((prev) => {
+        if (prev <= 1) {
+          // Time's up - auto advance to next question
+          clearInterval(timer);
+          handleTimeExpired();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [currentQuestion, quiz]);
+
   const loadQuiz = async () => {
     try {
       // Ensure language is 'en' or 'sk' only
