@@ -21,6 +21,7 @@ import { ProfilePage } from './pages/user/ProfilePage';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminTopicsPage } from './pages/admin/AdminTopicsPage';
 import { AdminQuestionsPage } from './pages/admin/AdminQuestionsPage';
+import { AdminAdsPage } from './pages/admin/AdminAdsPage';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
