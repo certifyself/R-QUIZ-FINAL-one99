@@ -23,6 +23,7 @@ results_col = db['results']
 users_col = db['users']
 groups_col = db['groups']
 ads_config_col = db['ads_config']  # Ad configuration collection
+manual_ads_col = db['manual_ads']  # Manual ads collection
 
 
 def serialize_doc(doc: Optional[Dict]) -> Optional[Dict]:
