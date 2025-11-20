@@ -278,6 +278,154 @@ export function AdminAdsPage() {
         </div>
       </div>
 
+      {/* Manual Ads Management */}
+      <div className="bg-white rounded-xl p-6 border border-slate-200">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-slate-900 font-['Space_Grotesk']">Manual Ads</h2>
+          <Dialog open={createAdOpen} onOpenChange={setCreateAdOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-teal-500 to-teal-600">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Ad
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create Manual Ad</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleCreateAd} className="space-y-4">
+                <div>
+                  <Label htmlFor="ad-name">Ad Name</Label>
+                  <Input
+                    id="ad-name"
+                    value={adForm.name}
+                    onChange={(e) => setAdForm({...adForm, name: e.target.value})}
+                    placeholder="e.g., Summer Sale Banner"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="ad-type">Ad Type</Label>
+                  <select
+                    id="ad-type"
+                    value={adForm.type}
+                    onChange={(e) => setAdForm({...adForm, type: e.target.value})}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                  >
+                    <option value="banner">Banner Ad (Image)</option>
+                    <option value="video">Video Ad</option>
+                  </select>
+                </div>
+
+                {adForm.type === 'banner' && (
+                  <div>
+                    <Label htmlFor="image-url">Image URL</Label>
+                    <Input
+                      id="image-url"
+                      value={adForm.image_url}
+                      onChange={(e) => setAdForm({...adForm, image_url: e.target.value})}
+                      placeholder="https://example.com/ad-image.jpg"
+                      required
+                    />
+                  </div>
+                )}
+
+                {adForm.type === 'video' && (
+                  <div>
+                    <Label htmlFor="video-url">Video URL</Label>
+                    <Input
+                      id="video-url"
+                      value={adForm.video_url}
+                      onChange={(e) => setAdForm({...adForm, video_url: e.target.value})}
+                      placeholder="https://example.com/ad-video.mp4"
+                      required
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <Label htmlFor="click-url">Click URL (Optional)</Label>
+                  <Input
+                    id="click-url"
+                    value={adForm.click_url}
+                    onChange={(e) => setAdForm({...adForm, click_url: e.target.value})}
+                    placeholder="https://yourwebsite.com/promo"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Where users go when clicking the ad</p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={adForm.active}
+                    onChange={(e) => setAdForm({...adForm, active: e.target.checked})}
+                    className="w-4 h-4 text-teal-600 border-gray-300 rounded"
+                    id="ad-active"
+                  />
+                  <Label htmlFor="ad-active">Active</Label>
+                </div>
+
+                <Button type="submit" disabled={saving} className="w-full">
+                  {saving ? 'Creating...' : 'Create Ad'}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Manual Ads List */}
+        {manualAds.length === 0 ? (
+          <div className="text-center py-8 text-slate-600">
+            <ImageIcon className="w-12 h-12 text-slate-300 mx-auto mb-2" />
+            <p>No manual ads yet. Create your first ad!</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {manualAds.map((ad) => (
+              <div key={ad._id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <div className="flex items-center space-x-4">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                    ad.type === 'banner' ? 'bg-blue-100' : 'bg-purple-100'
+                  }`}>
+                    {ad.type === 'banner' ? (
+                      <ImageIcon className={`w-5 h-5 ${ad.type === 'banner' ? 'text-blue-600' : 'text-purple-600'}`} />
+                    ) : (
+                      <Video className="w-5 h-5 text-purple-600" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-900">{ad.name}</p>
+                    <p className="text-xs text-slate-600">{ad.type === 'banner' ? 'Banner Ad' : 'Video Ad'}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => toggleAdStatus(ad)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      ad.active 
+                        ? 'bg-emerald-100 text-emerald-700' 
+                        : 'bg-slate-100 text-slate-600'
+                    }`}
+                  >
+                    {ad.active ? 'Active' : 'Inactive'}
+                  </button>
+                  <Button
+                    onClick={() => handleDeleteAd(ad._id)}
+                    variant="ghost"
+                    size="sm"
+                    className="text-rose-600 hover:text-rose-700"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Instructions */}
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
         <h3 className="font-bold text-blue-900 mb-3">How to Set Up Ads:</h3>
