@@ -195,6 +195,26 @@ export function QuizPage() {
           </div>
         </div>
 
+        {/* Question Timer - 12 seconds */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-slate-700">Question Timer</span>
+            <span className={`text-2xl font-bold font-['Azeret_Mono'] ${
+              questionTimer <= 3 ? 'text-rose-600' : 'text-teal-600'
+            }`}>
+              {questionTimer}s
+            </span>
+          </div>
+          <div className="w-full bg-slate-200 rounded-full h-3">
+            <div 
+              className={`h-3 rounded-full transition-all duration-1000 ${
+                questionTimer <= 3 ? 'bg-rose-500' : 'bg-gradient-to-r from-teal-500 to-teal-600'
+              }`}
+              style={{ width: `${(questionTimer / QUESTION_TIME_LIMIT) * 100}%` }}
+            />
+          </div>
+        </div>
+
         {/* Progress Bar */}
         <div className="w-full bg-slate-200 rounded-full h-2">
           <div 
