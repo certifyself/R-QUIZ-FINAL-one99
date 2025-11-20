@@ -69,6 +69,10 @@ export const adminAPI = {
   
   // Metrics
   getMetrics: () => api.get('/api/admin/metrics'),
+  
+  // Ads
+  getAdConfig: () => api.get('/api/admin/ads/config'),
+  updateAdConfig: (data) => api.post('/api/admin/ads/config', data),
 };
 
 // User APIs
