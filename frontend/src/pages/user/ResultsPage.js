@@ -281,22 +281,34 @@ export function ResultsPage() {
             ))}
           </div>
 
-          {/* Lock Quiz Warning */}
-          <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <p className="text-sm text-amber-800 mb-3">
-              <Lock className="w-4 h-4 inline mr-1" />
-              After viewing answers, this quiz will be locked and you won't be able to attempt it again.
-            </p>
-            <Button
-              onClick={handleLockQuiz}
-              disabled={locking}
-              variant="outline"
-              className="w-full border-amber-300 text-amber-800 hover:bg-amber-100"
-              data-testid="lock-quiz-button"
-            >
-              {locking ? 'Locking...' : 'I Understand, Lock Quiz'}
-            </Button>
-          </div>
+          {/* Lock Info (only show if quiz is locked) */}
+          {isLocked && (
+            <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <p className="text-sm text-amber-800">
+                <Lock className="w-4 h-4 inline mr-1" />
+                This quiz is now locked. You cannot attempt it again.
+              </p>
+            </div>
+          )}
+          
+          {/* Manual lock warning (if viewing answers before 3 attempts) */}
+          {!isLocked && showAnswers && (
+            <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <p className="text-sm text-amber-800 mb-3">
+                <Lock className="w-4 h-4 inline mr-1" />
+                After viewing answers, this quiz will be locked and you won't be able to attempt it again.
+              </p>
+              <Button
+                onClick={handleLockQuiz}
+                disabled={locking}
+                variant="outline"
+                className="w-full border-amber-300 text-amber-800 hover:bg-amber-100"
+                data-testid="lock-quiz-button"
+              >
+                {locking ? 'Locking...' : 'I Understand, Lock Quiz'}
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>
