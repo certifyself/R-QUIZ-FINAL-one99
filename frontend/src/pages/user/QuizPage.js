@@ -115,13 +115,6 @@ export function QuizPage() {
   };
 
   const handleSubmit = async () => {
-    // Check all questions answered
-    const allAnswered = quiz.questions.every(q => answers[q._id]);
-    if (!allAnswered) {
-      toast.error('Please answer all questions before submitting');
-      return;
-    }
-
     const timeMs = Date.now() - startTime;
 
     setSubmitting(true);
@@ -129,7 +122,7 @@ export function QuizPage() {
       const res = await userAPI.submitQuiz(quizIndex, {
         answers: quiz.questions.map(q => ({
           question_id: q._id,
-          choice_key: answers[q._id]
+          choice_key: answers[q._id] || 'UNANSWERED' // Mark as unanswered if no answer
         })),
         time_ms: timeMs
       });
