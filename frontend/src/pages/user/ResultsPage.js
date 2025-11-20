@@ -358,32 +358,58 @@ export function ResultsPage() {
             ))}
           </div>
 
-          {/* Lock Info (only show if quiz is locked) */}
-          {isLocked && (
-            <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <p className="text-sm text-amber-800">
-                <Lock className="w-4 h-4 inline mr-1" />
-                This quiz is now locked. You cannot attempt it again.
+          {/* After viewing answers - show navigation options */}
+          {!isLocked && showAnswers && (
+            <div className="mt-6 bg-teal-50 border border-teal-200 rounded-lg p-4">
+              <p className="text-sm text-teal-800 mb-3 font-medium">
+                Quiz is now locked. Choose what to do next:
               </p>
+              <div className="flex space-x-3">
+                {getNextQuizIndex() !== null && (
+                  <Button
+                    onClick={() => navigate(`/quiz/${getNextQuizIndex()}`)}
+                    className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600"
+                  >
+                    Next Quiz <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                )}
+                <Button
+                  onClick={() => navigate('/')}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Back to Home
+                </Button>
+              </div>
             </div>
           )}
           
-          {/* Manual lock warning (if viewing answers before 3 attempts) */}
-          {!isLocked && showAnswers && (
-            <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <p className="text-sm text-amber-800 mb-3">
-                <Lock className="w-4 h-4 inline mr-1" />
-                After viewing answers, this quiz will be locked and you won't be able to attempt it again.
+          {/* After 3 attempts - just show locked message */}
+          {isLocked && showAnswers && (
+            <div className="mt-6 bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <p className="text-sm text-slate-700 mb-3 font-medium flex items-center">
+                <Lock className="w-4 h-4 mr-2" />
+                Quiz locked after 3 attempts.
               </p>
-              <Button
-                onClick={handleLockQuiz}
-                disabled={locking}
-                variant="outline"
-                className="w-full border-amber-300 text-amber-800 hover:bg-amber-100"
-                data-testid="lock-quiz-button"
-              >
-                {locking ? 'Locking...' : 'I Understand, Lock Quiz'}
-              </Button>
+              <div className="flex space-x-3">
+                {getNextQuizIndex() !== null && (
+                  <Button
+                    onClick={() => navigate(`/quiz/${getNextQuizIndex()}`)}
+                    className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600"
+                  >
+                    Next Quiz <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                )}
+                <Button
+                  onClick={() => navigate('/')}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Back to Home
+                </Button>
+              </div>
             </div>
           )}
         </div>
