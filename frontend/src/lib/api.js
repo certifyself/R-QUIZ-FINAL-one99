@@ -96,4 +96,7 @@ export const userAPI = {
   
   // Profile
   getProfile: () => api.get('/api/profile'),
+  
+  // Public Ads Config
+  getAdsConfig: () => api.get('/api/ads/config'),
 };
