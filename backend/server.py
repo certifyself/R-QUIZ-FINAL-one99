@@ -738,6 +738,79 @@ def get_public_ad_config():
     }
 
 # ============================================================================
+# ADMIN - MANUAL ADS
+# ============================================================================
+
+@app.get("/api/admin/ads/manual")
+def get_manual_ads(current_user: Dict = Depends(get_current_admin)):
+    """Get all manual ads"""
+    ads = list(manual_ads_col.find())
+    return {'ads': serialize_doc(ads)}
+
+@app.post("/api/admin/ads/manual")
+def create_manual_ad(
+    ad_data: Dict[str, Any],
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Create manual ad"""
+    ad_doc = {
+        'name': ad_data.get('name', 'Untitled Ad'),
+        'type': ad_data.get('type', 'banner'),  # banner or video
+        'image_url': ad_data.get('image_url', ''),
+        'video_url': ad_data.get('video_url', ''),
+        'click_url': ad_data.get('click_url', ''),
+        'active': ad_data.get('active', True),
+        'created_at': datetime.utcnow()
+    }
+    
+    result = manual_ads_col.insert_one(ad_doc)
+    ad_doc['_id'] = result.inserted_id
+    
+    return {'ad': serialize_doc(ad_doc)}
+
+@app.put("/api/admin/ads/manual/{ad_id}")
+def update_manual_ad(
+    ad_id: str,
+    ad_data: Dict[str, Any],
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Update manual ad"""
+    ad_data['updated_at'] = datetime.utcnow()
+    
+    result = manual_ads_col.update_one(
+        {'_id': ObjectId(ad_id)},
+        {'$set': ad_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Ad not found")
+    
+    ad = manual_ads_col.find_one({'_id': ObjectId(ad_id)})
+    return {'ad': serialize_doc(ad)}
+
+@app.delete("/api/admin/ads/manual/{ad_id}")
+def delete_manual_ad(
+    ad_id: str,
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Delete manual ad"""
+    result = manual_ads_col.delete_one({'_id': ObjectId(ad_id)})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Ad not found")
+    
+    return {'success': True}
+
+@app.get("/api/ads/manual")
+def get_active_manual_ads(ad_type: str = Query('banner')):
+    """Get active manual ads for public use"""
+    ads = list(manual_ads_col.find({
+        'active': True,
+        'type': ad_type
+    }))
+    return {'ads': serialize_doc(ads)}
+
+# ============================================================================
 # USER - DAILY PACKS
 # ============================================================================
 
