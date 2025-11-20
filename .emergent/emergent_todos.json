@@ -1,30 +1,30 @@
 [
   {
     "content": "Phase 7: Update ResultsPage - Different buttons based on score (100% vs <100%)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 7: Add 'Next Quiz' button for 100% scores",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 7: Allow viewing answers at any time (optional)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 7: Auto-lock quiz after attempt 3",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 7: Add special messaging for 100% scores",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 7: Update backend to auto-lock after 3rd attempt",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 7: Test updated quiz flow",
-    "status": "pending"
+    "status": "completed"
   }
 ]
