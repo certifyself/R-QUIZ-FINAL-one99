@@ -13,18 +13,18 @@
   },
   {
     "content": "Phase 6: Update QuizPage to display images",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 6: Update ResultsPage to show images in answer review",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 6: Update AdminQuestionsPage to handle images",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 6: Test image display in quiz flow",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]
