@@ -45,6 +45,14 @@ export function ResultsPage() {
   };
 
   const handleLockQuiz = async () => {
+    // Quiz is already locked after 3rd attempt, just navigate away
+    if (isLocked) {
+      toast.info('Quiz is now locked. You cannot attempt it again.');
+      setTimeout(() => navigate('/'), 1500);
+      return;
+    }
+    
+    // Manual lock (when viewing answers before 3 attempts)
     setLocking(true);
     try {
       await userAPI.lockQuiz(quizIndex);
