@@ -936,20 +936,37 @@ def get_quiz_answers(
 @app.post("/api/quizzes/{quiz_index}/lock")
 def lock_quiz(
     quiz_index: int,
+    apply_penalty: bool = False,
     current_user: Dict = Depends(get_current_user)
 ):
     user_id = current_user['_id']
     today = date.today()
-    
-    # Must have completed 3 attempts
-    attempt_count = get_attempt_count(user_id, today, quiz_index)
-    if attempt_count < 3:
-        raise HTTPException(status_code=403, detail="Complete 3 attempts before locking")
+    today_str = today.isoformat()
     
     # Lock the quiz
     success = lock_quiz_after_answers(user_id, today, quiz_index)
     
-    return {'success': success, 'locked': True}
+    # Apply score penalty if viewing answers early
+    if apply_penalty:
+        # Set best score to 0
+        results_col.update_one(
+            {
+                'user_id': ObjectId(user_id),
+                'date': today_str,
+                'quiz_index': quiz_index
+            },
+            {
+                '$set': {
+                    'best_pct': 0,
+                    'best_time_ms': 0,
+                    'penalized': True,
+                    'penalty_reason': 'Viewed answers before completing 3 attempts'
+                }
+            },
+            upsert=True
+        )
+    
+    return {'success': success, 'locked': True, 'penalty_applied': apply_penalty}
 
 @app.get("/api/quizzes/{quiz_index}/leaderboard")
 def get_quiz_leaderboard(
