@@ -103,4 +103,5 @@ export const userAPI = {
   
   // Public Ads Config
   getAdsConfig: () => api.get('/api/ads/config'),
+  getManualAds: (type) => api.get('/api/ads/manual', { params: { ad_type: type } }),
 };
