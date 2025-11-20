@@ -840,8 +840,9 @@ def submit_quiz(
         raise HTTPException(status_code=403, detail="Maximum 3 attempts reached")
     
     # Validate answer count (should be 3 questions)
+    # Allow submission even if some are unanswered (marked as 'UNANSWERED')
     if len(data.answers) != 3:
-        raise HTTPException(status_code=400, detail="Must answer exactly 3 questions")
+        raise HTTPException(status_code=400, detail="Must submit exactly 3 answers")
     
     # Record attempt
     next_attempt = attempt_count + 1
