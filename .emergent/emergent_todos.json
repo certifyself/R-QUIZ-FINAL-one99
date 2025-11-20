@@ -1,30 +1,26 @@
 [
   {
-    "content": "Phase 10: Create Ads configuration model in backend",
-    "status": "completed"
+    "content": "Phase 11: Create manual ads collection and model in backend",
+    "status": "in_progress"
   },
   {
-    "content": "Phase 10: Create admin endpoints for ad management",
-    "status": "completed"
+    "content": "Phase 11: Create endpoints for manual ad CRUD",
+    "status": "pending"
   },
   {
-    "content": "Phase 10: Create Admin Ads Placement UI page",
-    "status": "completed"
+    "content": "Phase 11: Add Manual Ads section to Admin Ads page",
+    "status": "pending"
   },
   {
-    "content": "Phase 10: Add Google AdSense configuration form",
-    "status": "completed"
+    "content": "Phase 11: Update ad components to support manual ads",
+    "status": "pending"
   },
   {
-    "content": "Phase 10: Add Taboola configuration form",
-    "status": "completed"
+    "content": "Phase 11: Add priority system (manual > automated)",
+    "status": "pending"
   },
   {
-    "content": "Phase 10: Update BannerAdPlaceholder to load real ads",
-    "status": "completed"
-  },
-  {
-    "content": "Phase 10: Ads management system complete",
-    "status": "completed"
+    "content": "Phase 11: Test manual ad display",
+    "status": "pending"
   }
 ]
