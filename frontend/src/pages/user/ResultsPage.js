@@ -35,6 +35,17 @@ export function ResultsPage() {
   });
 
   const handleViewAnswers = async () => {
+    // If before 3rd attempt, show warning
+    if (!isLocked) {
+      setShowWarningDialog(true);
+      return;
+    }
+    
+    // After 3 attempts, directly show answers
+    await loadAndShowAnswers();
+  };
+  
+  const loadAndShowAnswers = async () => {
     try {
       const currentLang = i18n.language.startsWith('sk') ? 'sk' : 'en';
       const res = await userAPI.getAnswers(quizIndex, currentLang);
@@ -42,6 +53,24 @@ export function ResultsPage() {
       setShowAnswers(true);
     } catch (error) {
       toast.error('Failed to load answers');
+    }
+  };
+  
+  const confirmViewAnswersWithPenalty = async () => {
+    setShowWarningDialog(false);
+    setLocking(true);
+    
+    try {
+      // Lock quiz with penalty
+      await userAPI.lockQuiz(quizIndex, true);
+      toast.warning('Quiz locked. Score set to 0.');
+      
+      // Load and show answers
+      await loadAndShowAnswers();
+    } catch (error) {
+      toast.error('Failed to lock quiz');
+    } finally {
+      setLocking(false);
     }
   };
 
