@@ -88,6 +88,51 @@ export function AdminAdsPage() {
     }));
   };
 
+  const handleCreateAd = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await adminAPI.createManualAd(adForm);
+      toast.success('Manual ad created successfully!');
+      setCreateAdOpen(false);
+      setAdForm({
+        name: '',
+        type: 'banner',
+        image_url: '',
+        video_url: '',
+        click_url: '',
+        active: true
+      });
+      loadConfig();
+    } catch (error) {
+      toast.error('Failed to create ad');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDeleteAd = async (adId) => {
+    if (!window.confirm('Are you sure you want to delete this ad?')) return;
+    
+    try {
+      await adminAPI.deleteManualAd(adId);
+      toast.success('Ad deleted successfully!');
+      loadConfig();
+    } catch (error) {
+      toast.error('Failed to delete ad');
+    }
+  };
+
+  const toggleAdStatus = async (ad) => {
+    try {
+      await adminAPI.updateManualAd(ad._id, { ...ad, active: !ad.active });
+      toast.success(`Ad ${!ad.active ? 'activated' : 'deactivated'}!`);
+      loadConfig();
+    } catch (error) {
+      toast.error('Failed to update ad');
+    }
+  };
+
   if (loading) {
     return <LoadingSpinner className="py-20" />;
   }
