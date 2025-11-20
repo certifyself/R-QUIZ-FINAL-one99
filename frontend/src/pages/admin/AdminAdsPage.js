@@ -4,8 +4,9 @@ import { adminAPI } from '../../lib/api';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { ArrowLeft, Save, Video, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save, Video, Image as ImageIcon, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function AdminAdsPage() {
