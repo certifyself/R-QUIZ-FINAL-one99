@@ -43,8 +43,12 @@ export function AdminAdsPage() {
 
   const loadConfig = async () => {
     try {
-      const res = await adminAPI.getAdConfig();
-      setConfig(res.data);
+      const [configRes, adsRes] = await Promise.all([
+        adminAPI.getAdConfig(),
+        adminAPI.getManualAds()
+      ]);
+      setConfig(configRes.data);
+      setManualAds(adsRes.data.ads || []);
     } catch (error) {
       toast.error('Failed to load ad configuration');
     } finally {
