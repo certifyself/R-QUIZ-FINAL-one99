@@ -1,30 +1,22 @@
 [
   {
-    "content": "Phase 7: Update ResultsPage - Different buttons based on score (100% vs <100%)",
-    "status": "completed"
+    "content": "Phase 8: Add warning popup for viewing answers before attempt 3",
+    "status": "in_progress"
   },
   {
-    "content": "Phase 7: Add 'Next Quiz' button for 100% scores",
-    "status": "completed"
+    "content": "Phase 8: Implement score penalty (0 points) for early answer viewing",
+    "status": "pending"
   },
   {
-    "content": "Phase 7: Allow viewing answers at any time (optional)",
-    "status": "completed"
+    "content": "Phase 8: Update backend to handle early lock with penalty",
+    "status": "pending"
   },
   {
-    "content": "Phase 7: Auto-lock quiz after attempt 3",
-    "status": "completed"
+    "content": "Phase 8: Add Next Quiz button after viewing answers",
+    "status": "pending"
   },
   {
-    "content": "Phase 7: Add special messaging for 100% scores",
-    "status": "completed"
-  },
-  {
-    "content": "Phase 7: Update backend to auto-lock after 3rd attempt",
-    "status": "completed"
-  },
-  {
-    "content": "Phase 7: Test updated quiz flow",
-    "status": "completed"
+    "content": "Phase 8: Test complete flow",
+    "status": "pending"
   }
 ]
