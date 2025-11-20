@@ -258,6 +258,52 @@ export function ResultsPage() {
         </div>
       </div>
 
+      {/* Warning Dialog for Early Answer Viewing */}
+      <Dialog open={showWarningDialog} onOpenChange={setShowWarningDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2 text-amber-700">
+              <AlertTriangle className="w-6 h-6" />
+              <span>Warning!</span>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <p className="text-amber-900 font-medium mb-2">
+                If you view the correct answers now:
+              </p>
+              <ul className="text-sm text-amber-800 space-y-1 list-disc list-inside">
+                <li>Your quiz will be <strong>permanently locked</strong> 🔒</li>
+                <li>Your score will be set to <strong>0 points</strong> ⚠️</li>
+                <li>You cannot attempt this quiz again</li>
+              </ul>
+            </div>
+            
+            <p className="text-slate-700 text-sm">
+              You have <strong>{result.attempts_remaining} attempts remaining</strong>. 
+              Are you sure you want to view answers and give up?
+            </p>
+            
+            <div className="flex space-x-3">
+              <Button
+                onClick={() => setShowWarningDialog(false)}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancel - Keep Playing
+              </Button>
+              <Button
+                onClick={confirmViewAnswersWithPenalty}
+                disabled={locking}
+                className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
+              >
+                {locking ? 'Locking...' : 'Yes, View Answers'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Answers Review */}
       {showAnswers && answers && (
         <div className="bg-white rounded-xl p-6 border border-slate-200">
