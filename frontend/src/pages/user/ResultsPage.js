@@ -15,6 +15,7 @@ export function ResultsPage() {
   const [showAnswers, setShowAnswers] = useState(false);
   const [answers, setAnswers] = useState(null);
   const [locking, setLocking] = useState(false);
+  const [showWarningDialog, setShowWarningDialog] = useState(false);
   const { t, i18n } = useTranslation();
 
   const canViewAnswers = result?.can_view_answers;  // Can view after any attempt now
