@@ -162,6 +162,18 @@ export function ResultsPage() {
           <div className="space-y-6">
             {answers.map((q, idx) => (
               <div key={q._id} className="border-b border-slate-200 pb-6 last:border-0">
+                {/* Question Image (if available) */}
+                {q.image_url && (
+                  <div className="mb-4 rounded-lg overflow-hidden border border-slate-200">
+                    <img 
+                      src={q.image_url} 
+                      alt="Question visual" 
+                      className="w-full h-48 object-cover"
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                  </div>
+                )}
+                
                 <h3 className="font-medium text-slate-900 mb-3">
                   {idx + 1}. {q.text}
                 </h3>
