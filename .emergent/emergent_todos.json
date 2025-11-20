@@ -1,22 +1,22 @@
 [
   {
     "content": "Phase 9: Add 12-second countdown timer per question",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 9: Auto-advance to next question when time expires",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 9: Mark as wrong/unanswered if timer expires",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 9: Add visual timer countdown UI",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 9: Test timer functionality",
-    "status": "pending"
+    "status": "completed"
   }
 ]
