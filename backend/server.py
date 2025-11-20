@@ -648,6 +648,10 @@ async def bulk_upload_questions(
                     'created_at': datetime.utcnow()
                 }
                 
+                # Add image URL if provided
+                if 'image_url' in row and pd.notna(row['image_url']) and str(row['image_url']).strip():
+                    question_doc['image_url'] = str(row['image_url']).strip()
+                
                 questions_col.insert_one(question_doc)
                 imported_count += 1
                 
