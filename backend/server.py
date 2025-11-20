@@ -569,6 +569,9 @@ async def bulk_upload_questions(
             'correct_answer'
         ]
         
+        # image_url is optional
+        optional_cols = ['image_url']
+        
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
             raise HTTPException(
