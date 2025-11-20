@@ -73,6 +73,10 @@ export const adminAPI = {
   // Ads
   getAdConfig: () => api.get('/api/admin/ads/config'),
   updateAdConfig: (data) => api.post('/api/admin/ads/config', data),
+  getManualAds: () => api.get('/api/admin/ads/manual'),
+  createManualAd: (data) => api.post('/api/admin/ads/manual', data),
+  updateManualAd: (id, data) => api.put(`/api/admin/ads/manual/${id}`, data),
+  deleteManualAd: (id) => api.delete(`/api/admin/ads/manual/${id}`),
 };
 
 // User APIs
