@@ -1,19 +1,19 @@
 [
   {
     "content": "Phase 6: Update backend to support image_url field in questions",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 6: Update Excel template to include image_url column",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 6: Update bulk upload to handle image URLs",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 6: Update QuizPage to display images",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Phase 6: Update ResultsPage to show images in answer review",
