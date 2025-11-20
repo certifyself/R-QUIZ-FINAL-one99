@@ -17,14 +17,18 @@ export function ResultsPage() {
   const [locking, setLocking] = useState(false);
   const { t, i18n } = useTranslation();
 
-  const canViewAnswers = result?.attempt_number >= 3 && result?.can_view_answers;
-  const canRetry = result?.attempts_remaining > 0;
+  const canViewAnswers = result?.can_view_answers;  // Can view after any attempt now
+  const canRetry = result?.attempts_remaining > 0 && !result?.quiz_locked;
+  const isPerfect = result?.is_perfect || result?.score?.percentage === 100;
+  const isLocked = result?.quiz_locked || result?.attempt_number >= 3;
 
   // Debug logging
   console.log('Results Debug:', {
     attempt_number: result?.attempt_number,
     can_view_answers: result?.can_view_answers,
     attempts_remaining: result?.attempts_remaining,
+    is_perfect: isPerfect,
+    quiz_locked: isLocked,
     canViewAnswers,
     canRetry
   });
