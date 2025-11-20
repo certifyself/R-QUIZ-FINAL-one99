@@ -25,6 +25,10 @@
   },
   {
     "content": "Phase 6: Test image display in quiz flow",
-    "status": "in_progress"
+    "status": "completed"
+  },
+  {
+    "content": "Phase 6: Image support feature complete",
+    "status": "completed"
   }
 ]
