@@ -132,7 +132,15 @@ export function ResultsPage() {
 
         {/* Feedback */}
         <div className="text-center mb-6">
-          {isExcellent && <p className="text-emerald-600 font-medium">Excellent work! Outstanding performance!</p>}
+          {isPerfect && result.attempt_number === 1 && (
+            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+              <p className="text-lg font-bold text-emerald-800 mb-2">🎉 Perfect Score!</p>
+              <p className="text-sm text-emerald-700">
+                Excellent! You scored 100%. Do you want to improve your time?
+              </p>
+            </div>
+          )}
+          {isExcellent && !isPerfect && <p className="text-emerald-600 font-medium">Excellent work! Outstanding performance!</p>}
           {isGood && !isExcellent && <p className="text-teal-600 font-medium">Great job! Well done!</p>}
           {isFair && !isGood && <p className="text-amber-600 font-medium">Good effort! Keep practicing!</p>}
           {!isFair && <p className="text-rose-600 font-medium">Nice try! Practice makes perfect!</p>}
@@ -140,17 +148,43 @@ export function ResultsPage() {
 
         {/* Actions */}
         <div className="space-y-3">
-          {canRetry && (
+          {/* Perfect Score - Show both options */}
+          {isPerfect && canRetry && (
+            <>
+              <Button
+                onClick={() => navigate(`/quiz/${quizIndex}`)}
+                className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
+                data-testid="improve-time-button"
+              >
+                ⚡ Improve Time ({result.attempts_remaining} attempts left)
+              </Button>
+              
+              {getNextQuizIndex() !== null && (
+                <Button
+                  onClick={() => navigate(`/quiz/${getNextQuizIndex()}`)}
+                  variant="outline"
+                  className="w-full border-teal-500 text-teal-700 hover:bg-teal-50"
+                  data-testid="next-quiz-button"
+                >
+                  Next Quiz →
+                </Button>
+              )}
+            </>
+          )}
+          
+          {/* Not Perfect - Show retry only */}
+          {!isPerfect && canRetry && (
             <Button
               onClick={() => navigate(`/quiz/${quizIndex}`)}
               className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
               data-testid="retry-button"
             >
-              {t('results.improve_score')} ({result.attempts_remaining} {t('results.attempts_left')})
+              Try Again ({result.attempts_remaining} attempts left)
             </Button>
           )}
 
-          {canViewAnswers && !showAnswers && (
+          {/* View Answers - Always available after submitting */}
+          {canViewAnswers && !showAnswers && !isLocked && (
             <Button
               onClick={handleViewAnswers}
               variant="outline"
@@ -158,8 +192,27 @@ export function ResultsPage() {
               data-testid="view-answers-button"
             >
               <Eye className="w-4 h-4 mr-2" />
-              {t('results.view_answers')}
+              View Correct Answers (Optional)
             </Button>
+          )}
+          
+          {/* After 3 attempts - Show answers and locked message */}
+          {isLocked && !showAnswers && (
+            <>
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p className="text-sm text-amber-800 font-medium">
+                  🔒 All 3 attempts used. Quiz is now locked.
+                </p>
+              </div>
+              <Button
+                onClick={handleViewAnswers}
+                className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
+                data-testid="view-answers-button"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View All Correct Answers
+              </Button>
+            </>
           )}
 
           <Button
