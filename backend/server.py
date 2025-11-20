@@ -854,6 +854,10 @@ def submit_quiz(
         time_ms=data.time_ms
     )
     
+    # Auto-lock quiz after 3rd attempt
+    if next_attempt >= 3:
+        lock_quiz_after_answers(user_id, today, quiz_index)
+    
     # Update user stats
     users_col.update_one(
         {'_id': ObjectId(user_id)},
@@ -868,13 +872,18 @@ def submit_quiz(
             rank = entry['rank']
             break
     
+    # Check if perfect score
+    is_perfect = result['score']['percentage'] == 100
+    
     return {
         'attempt_number': next_attempt,
         'score': result['score'],
         'is_best': result['is_best'],
         'rank': rank,
         'attempts_remaining': 3 - next_attempt,
-        'can_view_answers': next_attempt >= 3
+        'can_view_answers': True,  # Can always view answers after submitting
+        'is_perfect': is_perfect,
+        'quiz_locked': next_attempt >= 3  # Quiz locked after 3rd attempt
     }
 
 @app.get("/api/quizzes/{quiz_index}/answers")
