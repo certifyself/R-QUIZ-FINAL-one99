@@ -73,6 +73,14 @@ export function ResultsPage() {
   const isExcellent = percentage >= 90;
   const isGood = percentage >= 70;
   const isFair = percentage >= 50;
+  
+  // Helper to get next quiz index
+  const getNextQuizIndex = () => {
+    const currentIndex = parseInt(quizIndex);
+    if (currentIndex < 9) return currentIndex + 1;  // Next regular quiz
+    if (currentIndex === 9) return 10;  // Go to bonus
+    return null;  // No next quiz (already at bonus)
+  };
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
