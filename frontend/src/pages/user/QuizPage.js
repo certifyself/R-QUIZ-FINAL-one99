@@ -25,6 +25,8 @@ export function QuizPage() {
   const [submitting, setSubmitting] = useState(false);
   const [showAdGate, setShowAdGate] = useState(false);
   const [adShown, setAdShown] = useState(false);
+  const [questionTimer, setQuestionTimer] = useState(12); // 12 seconds per question
+  const QUESTION_TIME_LIMIT = 12; // seconds
 
   useEffect(() => {
     loadQuiz();
