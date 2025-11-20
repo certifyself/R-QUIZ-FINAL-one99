@@ -1,22 +1,22 @@
 [
   {
     "content": "Phase 8: Add warning popup for viewing answers before attempt 3",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Phase 8: Implement score penalty (0 points) for early answer viewing",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 8: Update backend to handle early lock with penalty",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 8: Add Next Quiz button after viewing answers",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Phase 8: Test complete flow",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]
