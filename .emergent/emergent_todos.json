@@ -1,26 +1,22 @@
 [
   {
-    "content": "Phase 8: Add warning popup for viewing answers before attempt 3",
-    "status": "completed"
+    "content": "Phase 9: Add 12-second countdown timer per question",
+    "status": "in_progress"
   },
   {
-    "content": "Phase 8: Implement score penalty (0 points) for early answer viewing",
-    "status": "completed"
+    "content": "Phase 9: Auto-advance to next question when time expires",
+    "status": "pending"
   },
   {
-    "content": "Phase 8: Update backend to handle early lock with penalty",
-    "status": "completed"
+    "content": "Phase 9: Mark as wrong/unanswered if timer expires",
+    "status": "pending"
   },
   {
-    "content": "Phase 8: Add Next Quiz button after viewing answers",
-    "status": "completed"
+    "content": "Phase 9: Add visual timer countdown UI",
+    "status": "pending"
   },
   {
-    "content": "Phase 8: Test complete flow",
-    "status": "completed"
-  },
-  {
-    "content": "Phase 8: Updated quiz logic complete",
-    "status": "completed"
+    "content": "Phase 9: Test timer functionality",
+    "status": "pending"
   }
 ]
