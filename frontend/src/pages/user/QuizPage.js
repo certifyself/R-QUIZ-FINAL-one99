@@ -186,6 +186,22 @@ export function QuizPage() {
         exit={{ opacity: 0, x: -50 }}
         className="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg"
       >
+        {/* Question Image (if available) */}
+        {currentQ.image_url && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mb-6 rounded-xl overflow-hidden border border-slate-200"
+          >
+            <img 
+              src={currentQ.image_url} 
+              alt="Question visual" 
+              className="w-full h-64 object-cover"
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+          </motion.div>
+        )}
+        
         <motion.h2 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
