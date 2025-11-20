@@ -674,6 +674,69 @@ async def bulk_upload_questions(
         raise HTTPException(status_code=400, detail=f"Failed to process Excel file: {str(e)}")
 
 # ============================================================================
+# ADMIN - ADS MANAGEMENT
+# ============================================================================
+
+@app.get("/api/admin/ads/config")
+def get_ad_config(current_user: Dict = Depends(get_current_admin)):
+    """Get current ad configuration"""
+    config = ads_config_col.find_one({'type': 'global'})
+    if not config:
+        # Return default config
+        return {
+            'google_adsense': {
+                'enabled': False,
+                'client_id': '',
+                'banner_slot_id': '',
+                'video_slot_id': ''
+            },
+            'taboola': {
+                'enabled': False,
+                'publisher_id': '',
+                'placement_name': ''
+            }
+        }
+    return serialize_doc(config)
+
+@app.post("/api/admin/ads/config")
+def update_ad_config(
+    config_data: Dict[str, Any],
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Update ad configuration"""
+    config_data['type'] = 'global'
+    config_data['updated_at'] = datetime.utcnow()
+    
+    result = ads_config_col.update_one(
+        {'type': 'global'},
+        {'$set': config_data},
+        upsert=True
+    )
+    
+    return {'success': True, 'message': 'Ad configuration updated successfully'}
+
+@app.get("/api/ads/config")
+def get_public_ad_config():
+    """Get ad configuration for public use (without sensitive data)"""
+    config = ads_config_col.find_one({'type': 'global'})
+    if not config:
+        return {'ads_enabled': False}
+    
+    return {
+        'google_adsense': {
+            'enabled': config.get('google_adsense', {}).get('enabled', False),
+            'client_id': config.get('google_adsense', {}).get('client_id', ''),
+            'banner_slot_id': config.get('google_adsense', {}).get('banner_slot_id', ''),
+            'video_slot_id': config.get('google_adsense', {}).get('video_slot_id', '')
+        },
+        'taboola': {
+            'enabled': config.get('taboola', {}).get('enabled', False),
+            'publisher_id': config.get('taboola', {}).get('publisher_id', ''),
+            'placement_name': config.get('taboola', {}).get('placement_name', '')
+        }
+    }
+
+# ============================================================================
 # USER - DAILY PACKS
 # ============================================================================
 
