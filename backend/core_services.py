@@ -24,6 +24,9 @@ users_col = db['users']
 groups_col = db['groups']
 ads_config_col = db['ads_config']  # Ad configuration collection
 manual_ads_col = db['manual_ads']  # Manual ads collection
+notification_settings_col = db['notification_settings']  # User notification preferences
+notification_logs_col = db['notification_logs']  # Notification history
+user_devices_col = db['user_devices']  # FCM tokens
 
 
 def serialize_doc(doc: Optional[Dict]) -> Optional[Dict]:
