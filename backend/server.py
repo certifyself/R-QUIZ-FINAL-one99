@@ -987,8 +987,8 @@ def get_today_pack(current_user: Dict = Depends(get_current_user)):
     today_str = today.isoformat()
     
     quizzes = []
-    for idx, topic_id in enumerate(pack['quiz_topic_ids']):
-        topic = topics_col.find_one({'_id': ObjectId(topic_id)})
+    for quiz_data in pack['quizzes'][:10]:  # First 10 are regular
+        idx = quiz_data['index']
         
         # Get attempt count and lock status
         attempt_count = get_attempt_count(user_id, today, idx)
@@ -1008,19 +1008,25 @@ def get_today_pack(current_user: Dict = Depends(get_current_user)):
                 'time_ms': result.get('best_time_ms', 0)
             }
         
+        # Get topic names for this quiz
+        topic_names = []
+        for topic_id in quiz_data['topic_ids']:
+            topic = topics_col.find_one({'_id': ObjectId(topic_id)})
+            if topic:
+                topic_names.append(topic['name'])
+        
         quizzes.append({
             'index': idx,
-            'topic': serialize_doc(topic),
+            'topic_count': len(quiz_data['topic_ids']),
+            'topic_names': topic_names,
             'attempt_count': attempt_count,
             'is_locked': is_locked,
             'best_score': best_score,
             'status': 'locked' if is_locked else ('completed' if attempt_count >= 3 else ('in_progress' if attempt_count > 0 else 'available'))
         })
     
-    # Check if bonus unlocked (all 10 regular quizzes completed)
-    all_completed = all(q['attempt_count'] > 0 for q in quizzes)
-    
-    bonus_topic = topics_col.find_one({'_id': ObjectId(pack['bonus_topic_id'])})
+    # Bonus quiz (index 10)
+    bonus_data = pack['quizzes'][10]
     bonus_attempt_count = get_attempt_count(user_id, today, 10)
     bonus_locked = is_quiz_locked(user_id, today, 10)
     
@@ -1037,9 +1043,19 @@ def get_today_pack(current_user: Dict = Depends(get_current_user)):
             'time_ms': bonus_result.get('best_time_ms', 0)
         }
     
+    # Bonus unlocks when all 10 regular quizzes attempted at least once
+    all_completed = all(q['attempt_count'] > 0 for q in quizzes)
+    
+    bonus_topic_names = []
+    for topic_id in bonus_data['topic_ids']:
+        topic = topics_col.find_one({'_id': ObjectId(topic_id)})
+        if topic:
+            bonus_topic_names.append(topic['name'])
+    
     bonus_quiz = {
         'index': 10,
-        'topic': serialize_doc(bonus_topic),
+        'topic_count': len(bonus_data['topic_ids']),
+        'topic_names': bonus_topic_names,
         'unlocked': all_completed,
         'attempt_count': bonus_attempt_count,
         'is_locked': bonus_locked,
