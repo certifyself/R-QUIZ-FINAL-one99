@@ -235,6 +235,13 @@ export function QuizPage() {
         exit={{ opacity: 0, x: -50 }}
         className="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg"
       >
+        {/* Current Topic Badge */}
+        <div className="mb-4">
+          <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-semibold">
+            Topic {currentQ.topic_index + 1}: {currentQ.topic_name}
+          </span>
+        </div>
+        
         {/* Question Image (if available) */}
         {currentQ.image_url && (
           <motion.div
