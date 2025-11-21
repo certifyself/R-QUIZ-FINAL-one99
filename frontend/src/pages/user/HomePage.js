@@ -174,7 +174,7 @@ export function HomePage() {
                         {getStatusIcon(quiz)}
                       </motion.div>
                       <div>
-                        <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-lg">Topic {quiz.index + 1}</h3>
+                        <h3 className="font-bold text-slate-900 font-['Space_Grotesk'] text-lg">Quiz {quiz.index + 1}</h3>
                         <p className="text-xs text-slate-500 font-medium">{quiz.topic_count} topics • 30 questions</p>
                         <p className="text-sm text-slate-600 mt-1 truncate">{quiz.topic_names?.slice(0, 3).join(', ')}...</p>
                       </div>
