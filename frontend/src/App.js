@@ -169,6 +169,16 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/admin/notifications"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <AdminNotificationsPage />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
 
           {/* Catch all */}
           <Route path="*" element={<Navigate to="/" />} />
