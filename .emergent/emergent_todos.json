@@ -1,26 +1,26 @@
 [
   {
-    "content": "Phase 11: Create manual ads collection and model in backend",
+    "content": "Phase 12: Update daily pack generation - 11 quizzes with 10 topics each",
     "status": "in_progress"
   },
   {
-    "content": "Phase 11: Create endpoints for manual ad CRUD",
+    "content": "Phase 12: Update get_quiz_questions to return 30 questions (10 topics × 3)",
     "status": "pending"
   },
   {
-    "content": "Phase 11: Add Manual Ads section to Admin Ads page",
+    "content": "Phase 12: Update quiz validation to handle 30 answers",
     "status": "pending"
   },
   {
-    "content": "Phase 11: Update ad components to support manual ads",
+    "content": "Phase 12: Update QuizPage UI for 30 questions",
     "status": "pending"
   },
   {
-    "content": "Phase 11: Add priority system (manual > automated)",
+    "content": "Phase 12: Update scoring and progress display",
     "status": "pending"
   },
   {
-    "content": "Phase 11: Test manual ad display",
+    "content": "Phase 12: Clear old packs and test new structure",
     "status": "pending"
   }
 ]
