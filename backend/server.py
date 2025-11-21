@@ -1099,33 +1099,29 @@ def get_quiz(
     # Get pack
     pack = generate_daily_pack(today)
     
-    # Get topic ID
+    # Get quiz data
+    quiz_data = pack['quizzes'][quiz_index]
+    topic_ids = quiz_data['topic_ids']
+    
+    # Check bonus unlock
     if quiz_index == 10:
-        # Bonus quiz - check if unlocked
         regular_attempts = [get_attempt_count(user_id, today, i) for i in range(10)]
         if not all(count > 0 for count in regular_attempts):
             raise HTTPException(status_code=403, detail="Complete all 10 quizzes to unlock bonus")
-        topic_id = pack['bonus_topic_id']
-    else:
-        topic_id = pack['quiz_topic_ids'][quiz_index]
     
-    # Get topic
-    topic = topics_col.find_one({'_id': ObjectId(topic_id)})
-    if not topic:
-        raise HTTPException(status_code=404, detail="Topic not found")
-    
-    # Get questions with randomized options
+    # Get questions with randomized options (30 questions from 10 topics)
     next_attempt = attempt_count + 1
-    questions = get_quiz_questions(topic_id, next_attempt, lang)
+    questions = get_quiz_questions(topic_ids, next_attempt, lang)
     
-    # Remove correct_key from questions (only show after 3rd attempt)
+    # Remove correct_key from questions (only show after viewing answers)
     for q in questions:
         q.pop('correct_key', None)
     
     return {
         'quiz_index': quiz_index,
-        'topic': serialize_doc(topic),
+        'topic_count': len(topic_ids),
         'questions': questions,
+        'total_questions': len(questions),
         'attempt_number': next_attempt,
         'attempts_remaining': 3 - next_attempt
     }
