@@ -276,21 +276,21 @@ export function QuizPage() {
                 whileHover={{ scale: 1.02, x: 5 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleAnswer(currentQ._id, option.key)}
-                className={`w-full text-left p-5 rounded-xl border-2 transition-all shadow-sm hover:shadow-md ${
+                className={`w-full text-left p-3 rounded-lg border-2 transition-all shadow-sm hover:shadow-md ${
                   answers[currentQ._id] === option.key
                     ? 'border-teal-500 bg-gradient-to-r from-teal-50 to-cyan-50 shadow-lg shadow-teal-500/20'
                     : 'border-slate-200 bg-white hover:border-teal-300'
                 }`}
                 data-testid={`option-${option.key}`}
               >
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
                   <motion.div 
                     animate={answers[currentQ._id] === option.key ? {
                       scale: [1, 1.2, 1],
                       rotate: [0, 360]
                     } : {}}
                     transition={{ duration: 0.5 }}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-base ${
                       answers[currentQ._id] === option.key
                         ? 'bg-gradient-to-br from-teal-600 to-cyan-600 text-white shadow-lg'
                         : 'bg-slate-100 text-slate-700'
@@ -298,7 +298,7 @@ export function QuizPage() {
                   >
                     {option.key}
                   </motion.div>
-                  <span className="text-slate-700 font-medium">{option.label}</span>
+                  <span className="text-slate-700 text-sm font-medium">{option.label}</span>
                 </div>
               </motion.button>
             ))}
