@@ -63,14 +63,18 @@ def serialize_doc(doc: Optional[Dict]) -> Optional[Dict]:
 
 def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     """
-    Generate daily pack with 10 distinct topics + 1 bonus topic.
-    Deterministic for same date (uses date as seed).
+    Generate daily pack with 11 quizzes.
+    Each quiz contains 10 topics (30 questions total per quiz).
     
     Returns:
         {
             'date': str (YYYY-MM-DD),
-            'quiz_topic_ids': [ObjectId x 10],
-            'bonus_topic_id': ObjectId,
+            'quizzes': [
+                {
+                    'index': 0-10,
+                    'topic_ids': [ObjectId x 10]  # 10 topics per quiz
+                }
+            ],
             'generated_at': datetime
         }
     """
@@ -92,25 +96,34 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
         if q_count >= 3:
             active_topics.append(topic['_id'])
     
-    if len(active_topics) < 11:
-        raise ValueError(f"Need at least 11 topics with 3+ questions each. Found: {len(active_topics)}")
+    # Need at least 110 topics (11 quizzes × 10 topics each)
+    # But can reuse topics across different quizzes
+    if len(active_topics) < 10:
+        raise ValueError(f"Need at least 10 topics with 3+ questions each. Found: {len(active_topics)}")
     
     # Use date as seed for deterministic selection
     seed = int(pack_date.strftime('%Y%m%d'))
     rng = random.Random(seed)
     
-    # Shuffle and select 11 topics (10 + 1 bonus)
-    shuffled = active_topics.copy()
-    rng.shuffle(shuffled)
-    
-    quiz_topics = shuffled[:10]
-    bonus_topic = shuffled[10]
+    # Generate 11 quizzes, each with 10 topics
+    quizzes = []
+    for quiz_idx in range(11):
+        # Shuffle topics for this quiz
+        shuffled = active_topics.copy()
+        rng.shuffle(shuffled)
+        
+        # Select 10 topics for this quiz
+        quiz_topics = shuffled[:10]
+        
+        quizzes.append({
+            'index': quiz_idx,
+            'topic_ids': quiz_topics
+        })
     
     # Create pack document
     pack = {
         'date': date_str,
-        'quiz_topic_ids': quiz_topics,
-        'bonus_topic_id': bonus_topic,
+        'quizzes': quizzes,
         'generated_at': datetime.utcnow()
     }
     
