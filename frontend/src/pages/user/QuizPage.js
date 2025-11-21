@@ -246,12 +246,12 @@ export function QuizPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mb-6 rounded-xl overflow-hidden border border-slate-200"
+            className="mb-3 rounded-lg overflow-hidden border border-slate-200"
           >
             <img 
               src={currentQ.image_url} 
               alt="Question visual" 
-              className="w-full h-64 object-cover"
+              className="w-full h-48 object-cover"
               onError={(e) => { e.target.style.display = 'none'; }}
             />
           </motion.div>
@@ -260,12 +260,12 @@ export function QuizPage() {
         <motion.h2 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xl font-medium text-slate-900 mb-6 font-['Space_Grotesk'] leading-relaxed"
+          className="text-lg font-medium text-slate-900 mb-4 font-['Space_Grotesk'] leading-relaxed"
         >
           {currentQ.text}
         </motion.h2>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           <AnimatePresence mode="wait">
             {currentQ.options.map((option, idx) => (
               <motion.button
