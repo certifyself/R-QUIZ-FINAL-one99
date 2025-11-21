@@ -133,73 +133,84 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     return serialize_doc(pack)
 
 
-def get_quiz_questions(topic_id: str, attempt_num: int = 1, language: str = 'en') -> List[Dict[str, Any]]:
+def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'en') -> List[Dict[str, Any]]:
     """
-    Get 3 questions for a topic with randomized answer options.
+    Get questions for multiple topics with randomized answer options.
     Different randomization for each attempt.
     Returns questions in specified language.
     
     Args:
-        topic_id: Topic ID
+        topic_ids: List of topic IDs (10 topics)
         attempt_num: Attempt number (for randomization seed)
         language: 'en' or 'sk'
     
     Returns:
+        List of 30 questions (10 topics × 3 questions each)
         [
             {
                 '_id': str,
                 'text': str (in specified language),
-                'options': [{'key': 'A', 'label': str (in specified language)}, ...],
-                'correct_key': str (only for answer reveal)
+                'topic_name': str,
+                'topic_index': int (0-9),
+                'options': [{'key': 'A', 'label': str}, ...],
+                'correct_key': str
             }
         ]
     """
-    topic_oid = ObjectId(topic_id)
+    all_questions = []
     
-    # Get 3 random active questions for this topic
-    questions = list(questions_col.find({
-        'topic_id': topic_oid,
-        'active': True
-    }).limit(3))
-    
-    if len(questions) < 3:
-        raise ValueError(f"Topic {topic_id} has fewer than 3 active questions")
-    
-    # Randomize answer order for each question based on attempt number
-    result = []
-    for q in questions:
-        # Use question ID + attempt number as seed
-        seed = str(q['_id']) + str(attempt_num)
-        rng = random.Random(seed)
+    for topic_idx, topic_id in enumerate(topic_ids):
+        topic_oid = ObjectId(topic_id)
         
-        # Get text in specified language
-        text = q['text']
-        if isinstance(text, dict):
-            text = text.get(language, text.get('en', ''))
+        # Get topic info
+        topic = topics_col.find_one({'_id': topic_oid})
+        topic_name = topic['name'] if topic else 'Unknown'
         
-        # Get options and translate
-        options = []
-        for opt in q['options']:
-            label = opt['label']
-            if isinstance(label, dict):
-                label = label.get(language, label.get('en', ''))
-            options.append({
-                'key': opt['key'],
-                'label': label
+        # Get 3 random active questions for this topic
+        questions = list(questions_col.find({
+            'topic_id': topic_oid,
+            'active': True
+        }).limit(3))
+        
+        if len(questions) < 3:
+            raise ValueError(f"Topic {topic_id} ({topic_name}) has fewer than 3 active questions")
+        
+        # Process each question
+        for q in questions:
+            # Use question ID + attempt number as seed
+            seed = str(q['_id']) + str(attempt_num)
+            rng = random.Random(seed)
+            
+            # Get text in specified language
+            text = q['text']
+            if isinstance(text, dict):
+                text = text.get(language, text.get('en', ''))
+            
+            # Get options and translate
+            options = []
+            for opt in q['options']:
+                label = opt['label']
+                if isinstance(label, dict):
+                    label = label.get(language, label.get('en', ''))
+                options.append({
+                    'key': opt['key'],
+                    'label': label
+                })
+            
+            # Shuffle options
+            rng.shuffle(options)
+            
+            all_questions.append({
+                '_id': str(q['_id']),
+                'text': text,
+                'topic_name': topic_name,
+                'topic_index': topic_idx,
+                'options': options,
+                'correct_key': q['correct_key'],
+                'image_url': q.get('image_url', None)
             })
-        
-        # Shuffle options
-        rng.shuffle(options)
-        
-        result.append({
-            '_id': str(q['_id']),
-            'text': text,
-            'options': options,
-            'correct_key': q['correct_key'],
-            'image_url': q.get('image_url', None)  # Include image URL if present
-        })
     
-    return result
+    return all_questions
 
 
 def score_attempt(answers: List[Dict[str, str]]) -> Dict[str, Any]:
