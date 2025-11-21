@@ -1210,16 +1210,13 @@ def get_quiz_answers(
     if attempt_count < 3:
         raise HTTPException(status_code=403, detail="Complete 3 attempts to view answers")
     
-    # Get pack and topic
+    # Get pack and quiz data
     pack = generate_daily_pack(today)
+    quiz_data = pack['quizzes'][quiz_index]
+    topic_ids = quiz_data['topic_ids']
     
-    if quiz_index == 10:
-        topic_id = pack['bonus_topic_id']
-    else:
-        topic_id = pack['quiz_topic_ids'][quiz_index]
-    
-    # Get questions with correct answers
-    questions = get_quiz_questions(topic_id, attempt_num=1, language=lang)
+    # Get questions with correct answers (30 questions)
+    questions = get_quiz_questions(topic_ids, attempt_num=1, language=lang)
     
     # Get user's last attempt answers
     last_attempt = attempts_col.find_one(
