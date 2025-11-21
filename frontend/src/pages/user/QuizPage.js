@@ -161,7 +161,7 @@ export function QuizPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <Button
@@ -174,70 +174,69 @@ export function QuizPage() {
           {t('quiz.back')}
         </Button>
         
-        <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg border border-slate-200">
+        <div className="flex items-center space-x-2 bg-white px-3 py-1 rounded-lg border border-slate-200">
           <Clock className="w-4 h-4 text-teal-600" />
-          <span className="font-mono font-semibold text-teal-600">{formatTime(elapsedTime)}</span>
+          <span className="font-mono font-semibold text-teal-600 text-sm">{formatTime(elapsedTime)}</span>
         </div>
       </div>
 
-      {/* Quiz Info */}
-      <div className="bg-white rounded-xl p-6 border border-slate-200">
-        <div className="flex items-center justify-between mb-4">
+      {/* Quiz Info - Compact */}
+      <div className="bg-white rounded-xl p-4 border border-slate-200">
+        <div className="flex items-center justify-between mb-3">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 font-['Space_Grotesk']">
+            <h1 className="text-xl font-bold text-slate-900 font-['Space_Grotesk']">
               {quizIndex === '10' ? t('quiz.bonus_quiz') : `Quiz ${parseInt(quizIndex) + 1}`}
             </h1>
-            <p className="text-sm text-slate-600">{quiz.topic_count} topics • {quiz.total_questions} questions</p>
+            <p className="text-xs text-slate-600">{quiz.topic_count} topics • {quiz.total_questions} questions</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-slate-600">{t('quiz.attempt')} {quiz.attempt_number}/3</p>
-            <p className="text-xs text-slate-500">{quiz.attempts_remaining} {t('quiz.remaining')}</p>
+            <p className="text-xs text-slate-600">{t('quiz.attempt')} {quiz.attempt_number}/3</p>
           </div>
         </div>
 
-        {/* Question Timer - 12 seconds */}
-        <div className="mb-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-slate-700">Question Timer</span>
-            <span className={`text-2xl font-bold font-['Azeret_Mono'] ${
-              questionTimer <= 3 ? 'text-rose-600' : 'text-teal-600'
+        {/* Question Timer - 30 seconds */}
+        <div className="mb-3">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs font-medium text-slate-700">Timer</span>
+            <span className={`text-xl font-bold font-['Azeret_Mono'] ${
+              questionTimer <= 5 ? 'text-rose-600' : 'text-teal-600'
             }`}>
               {questionTimer}s
             </span>
           </div>
-          <div className="w-full bg-slate-200 rounded-full h-3">
+          <div className="w-full bg-slate-200 rounded-full h-2">
             <div 
-              className={`h-3 rounded-full transition-all duration-1000 ${
-                questionTimer <= 3 ? 'bg-rose-500' : 'bg-gradient-to-r from-teal-500 to-teal-600'
+              className={`h-2 rounded-full transition-all duration-1000 ${
+                questionTimer <= 5 ? 'bg-rose-500' : 'bg-gradient-to-r from-teal-500 to-teal-600'
               }`}
               style={{ width: `${(questionTimer / QUESTION_TIME_LIMIT) * 100}%` }}
             />
           </div>
         </div>
 
-        {/* Progress Bar */}
+        {/* Progress Bar - Compact */}
         <div className="w-full bg-slate-200 rounded-full h-2">
           <div 
             className="bg-gradient-to-r from-teal-500 to-teal-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="text-xs text-slate-600 mt-2 text-center">
+        <p className="text-xs text-slate-600 mt-1 text-center">
           {t('quiz.question')} {currentQuestion + 1} {t('quiz.of')} {quiz.questions.length}
         </p>
       </div>
 
-      {/* Question Card */}
+      {/* Question Card - Compact */}
       <motion.div 
         key={currentQuestion}
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -50 }}
-        className="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg"
+        className="bg-white rounded-xl p-5 border border-slate-200 shadow-lg"
       >
         {/* Current Topic Badge */}
-        <div className="mb-4">
-          <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-semibold">
+        <div className="mb-3">
+          <span className="px-3 py-1 bg-teal-100 text-teal-900 rounded-full text-xs font-bold">
             Topic {currentQ.topic_index + 1}: {currentQ.topic_name}
           </span>
         </div>
