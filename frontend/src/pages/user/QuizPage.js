@@ -187,7 +187,7 @@ export function QuizPage() {
             <h1 className="text-2xl font-bold text-slate-900 font-['Space_Grotesk']">
               {quizIndex === '10' ? t('quiz.bonus_quiz') : `Topic ${parseInt(quizIndex) + 1}`}
             </h1>
-            <p className="text-sm text-slate-600">{quiz.topic?.name}</p>
+            <p className="text-sm text-slate-600">{quiz.topic_count} topics • {quiz.total_questions} questions</p>
           </div>
           <div className="text-right">
             <p className="text-sm text-slate-600">{t('quiz.attempt')} {quiz.attempt_number}/3</p>
