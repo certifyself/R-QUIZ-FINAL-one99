@@ -820,6 +820,156 @@ def get_active_manual_ads(ad_type: str = Query('banner')):
     return {'ads': serialize_doc(ads)}
 
 # ============================================================================
+# PUSH NOTIFICATIONS
+# ============================================================================
+
+@app.post("/api/notifications/register-device")
+def register_device(
+    device_data: Dict[str, str],
+    current_user: Dict = Depends(get_current_user)
+):
+    """Register user's device token for push notifications"""
+    fcm_token = device_data.get('fcm_token')
+    platform = device_data.get('platform', 'web')
+    
+    if not fcm_token:
+        raise HTTPException(status_code=400, detail="fcm_token required")
+    
+    register_device_token(current_user['_id'], fcm_token, platform)
+    
+    return {'success': True, 'message': 'Device registered successfully'}
+
+@app.get("/api/notifications/settings")
+def get_notification_settings(current_user: Dict = Depends(get_current_user)):
+    """Get user's notification preferences"""
+    settings = notification_settings_col.find_one({'user_id': ObjectId(current_user['_id'])})
+    
+    if not settings:
+        # Return default settings
+        return {
+            'enabled': True,
+            'preferred_time': '09:00',
+            'categories_enabled': {
+                'daily_reminders': True,
+                'streak_alerts': True,
+                'leaderboard_updates': True,
+                'rewards': True
+            }
+        }
+    
+    return serialize_doc(settings)
+
+@app.post("/api/notifications/settings")
+def update_notification_settings(
+    settings_data: Dict[str, Any],
+    current_user: Dict = Depends(get_current_user)
+):
+    """Update user's notification preferences"""
+    settings_data['user_id'] = ObjectId(current_user['_id'])
+    settings_data['updated_at'] = datetime.utcnow()
+    
+    notification_settings_col.update_one(
+        {'user_id': ObjectId(current_user['_id'])},
+        {'$set': settings_data},
+        upsert=True
+    )
+    
+    return {'success': True, 'message': 'Notification settings updated'}
+
+# ============================================================================
+# ADMIN - PUSH NOTIFICATIONS
+# ============================================================================
+
+@app.get("/api/admin/notifications/templates")
+def get_notification_templates(current_user: Dict = Depends(get_current_admin)):
+    """Get all notification templates"""
+    return {'templates': NOTIFICATION_TEMPLATES}
+
+@app.post("/api/admin/notifications/send")
+def send_manual_notification(
+    notification_data: Dict[str, Any],
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Send manual notification to users"""
+    title = notification_data.get('title')
+    body = notification_data.get('body')
+    target = notification_data.get('target', 'all')  # all, active, inactive
+    
+    if not title or not body:
+        raise HTTPException(status_code=400, detail="title and body required")
+    
+    # Get target users
+    if target == 'all':
+        users = list(users_col.find({'role': 'user'}, {'_id': 1}))
+    elif target == 'active':
+        # Users who played in last 7 days
+        from datetime import timedelta
+        week_ago = (datetime.utcnow() - timedelta(days=7))
+        active_user_ids = attempts_col.distinct('user_id', {
+            'finished_at': {'$gte': week_ago}
+        })
+        users = [{'_id': uid} for uid in active_user_ids]
+    else:
+        users = []
+    
+    user_ids = [str(u['_id']) for u in users]
+    
+    # Send to all users
+    result = send_to_multiple_users(
+        user_ids,
+        title,
+        body,
+        'marketing',
+        notification_data.get('data')
+    )
+    
+    return {
+        'success': True,
+        'total_users': result['total_users'],
+        'delivered': result['delivered'],
+        'failed': result['failed']
+    }
+
+@app.get("/api/admin/notifications/logs")
+def get_notification_logs(
+    limit: int = Query(50, le=200),
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Get recent notification logs"""
+    logs = list(notification_logs_col.find().sort('sent_at', -1).limit(limit))
+    
+    # Add user info
+    for log in logs:
+        user = users_col.find_one({'_id': log['user_id']})
+        log['user_nickname'] = user['nickname'] if user else 'Unknown'
+    
+    return {'logs': serialize_doc(logs)}
+
+@app.get("/api/admin/notifications/stats")
+def get_notification_stats(current_user: Dict = Depends(get_current_admin)):
+    """Get notification analytics"""
+    total_sent = notification_logs_col.count_documents({})
+    
+    # Aggregate stats
+    pipeline = [
+        {
+            '$group': {
+                '_id': '$type',
+                'count': {'$sum': 1},
+                'total_delivered': {'$sum': '$delivered_count'},
+                'total_failed': {'$sum': '$failed_count'}
+            }
+        }
+    ]
+    
+    stats_by_type = list(notification_logs_col.aggregate(pipeline))
+    
+    return {
+        'total_sent': total_sent,
+        'stats_by_type': stats_by_type
+    }
+
+# ============================================================================
 # USER - DAILY PACKS
 # ============================================================================
 
