@@ -88,6 +88,16 @@ export function QuizPage() {
       ...prev,
       [questionId]: optionKey
     }));
+    
+    // Auto-advance to next question after answering
+    setTimeout(() => {
+      if (currentQuestion < quiz.questions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+      } else {
+        // Last question - auto submit
+        handleSubmit();
+      }
+    }, 500); // Small delay for animation
   };
 
   const handleTimeExpired = () => {
