@@ -316,57 +316,6 @@ export function QuizPage() {
         </div>
       </motion.div>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center">
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button
-            onClick={handlePrevious}
-            variant="outline"
-            disabled={currentQuestion === 0}
-            className="px-6"
-            data-testid="previous-button"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            {t('quiz.previous')}
-          </Button>
-        </motion.div>
-
-        {currentQuestion === quiz.questions.length - 1 ? (
-          <motion.div 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }}
-            animate={quiz.questions.every(q => answers[q._id]) ? {
-              boxShadow: [
-                '0 0 0 0 rgba(8, 131, 149, 0.4)',
-                '0 0 0 10px rgba(8, 131, 149, 0)',
-              ]
-            } : {}}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <Button
-              onClick={handleSubmit}
-              disabled={submitting || !quiz.questions.every(q => answers[q._id])}
-              className="bg-gradient-to-r from-teal-600 via-teal-500 to-cyan-600 px-8 shadow-lg"
-              data-testid="submit-button"
-            >
-              {submitting ? t('quiz.submitting') : t('quiz.submit_quiz')}
-            </Button>
-          </motion.div>
-        ) : (
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              onClick={handleNext}
-              disabled={!answers[currentQ._id]}
-              className="bg-gradient-to-r from-teal-500 to-cyan-600 px-6"
-              data-testid="next-button"
-            >
-              {t('quiz.next')}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </motion.div>
-        )}
-      </div>
-
       {/* Banner Ad */}
       <BannerAdPlaceholder />
     </div>
