@@ -32,7 +32,9 @@
     "attempts": "pokusy",
     "locked": "Zamknuté",
     "unlock_bonus": "Dokončite všetkých 10 kvízov na odomknutie",
-    "locked_after_answers": "Zamknuté po zobrazení odpovedí"
+    "locked_after_answers": "Zamknuté po zobrazení odpovedí",
+    "topics": "témy",
+    "questions": "otázky"
   },
   "quiz": {
     "back": "Späť",
@@ -45,7 +47,8 @@
     "submit_quiz": "Odoslať kvíz",
     "submitting": "Odosiela sa...",
     "bonus_quiz": "Bonusový kvíz",
-    "answer_all": "Pred odoslaním odpovedzte na všetky otázky"
+    "answer_all": "Pred odoslaním odpovedzte na všetky otázky",
+    "topic": "Téma"
   },
   "results": {
     "quiz_complete": "Kvíz dokončený!",
@@ -67,7 +70,15 @@
     "your_answer": "Vaša odpoveď",
     "lock_warning": "Po zobrazení odpovedí bude tento kvíz zamknutý a nebudete ho môcť znova vyskúšať.",
     "understand_lock": "Rozumiem, zamknúť kvíz",
-    "locking": "Zamykanie..."
+    "locking": "Zamykanie...",
+    "improve_time": "Zlepšiť čas",
+    "next_quiz": "Ďalší kvíz",
+    "try_again_btn": "Skúsiť znova",
+    "all_attempts_used": "Použité všetky 3 pokusy. Kvíz je teraz zamknutý.",
+    "view_all_answers": "Zobraziť všetky správne odpovede",
+    "back_to_home": "Späť domov",
+    "perfect_score": "Perfektné skóre!",
+    "perfect_message": "Výborne! Získali ste 100%. Chcete zlepšiť svoj čas?"
   },
   "rankings": {
     "title": "Rebríčky",
