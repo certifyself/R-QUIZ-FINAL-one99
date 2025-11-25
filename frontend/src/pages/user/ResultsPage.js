@@ -187,7 +187,7 @@ export function ResultsPage() {
                 className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
                 data-testid="improve-time-button"
               >
-                ⚡ Improve Time ({result.attempts_remaining} attempts left)
+                ⚡ {t('results.improve_time')} ({result.attempts_remaining} {t('results.attempts_left')})
               </Button>
               
               {getNextQuizIndex() !== null && (
@@ -197,7 +197,7 @@ export function ResultsPage() {
                   className="w-full border-teal-500 text-teal-700 hover:bg-teal-50"
                   data-testid="next-quiz-button"
                 >
-                  Next Quiz →
+                  {t('results.next_quiz')} →
                 </Button>
               )}
             </>
