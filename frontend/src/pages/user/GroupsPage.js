@@ -60,7 +60,9 @@ export function GroupsPage() {
       setJoinOpen(false);
       loadGroups();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to join group');
+      console.error('Join group error:', error.response?.data);
+      const errorMsg = error.response?.data?.detail || error.response?.data?.message || 'Failed to join group';
+      toast.error(typeof errorMsg === 'string' ? errorMsg : 'Failed to join group. Please check the code.');
     } finally {
       setJoining(false);
     }
