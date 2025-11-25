@@ -78,7 +78,19 @@
     "view_all_answers": "Zobraziť všetky správne odpovede",
     "back_to_home": "Späť domov",
     "perfect_score": "Perfektné skóre!",
-    "perfect_message": "Výborne! Získali ste 100%. Chcete zlepšiť svoj čas?"
+    "perfect_message": "Výborne! Získali ste 100%. Chcete zlepšiť svoj čas?",
+    "warning": "Upozornenie!",
+    "warning_title": "Ak si teraz pozriete správne odpovede:",
+    "warning_locked": "Váš kvíz bude",
+    "warning_permanently_locked": "permanentne zamknutý",
+    "warning_score_zero": "Vaše skóre bude nastavené na",
+    "warning_zero_points": "0 bodov",
+    "warning_cannot_retry": "Nebudete môcť tento kvíz opakovať",
+    "warning_attempts_remaining": "Máte",
+    "warning_attempts_text": "zostávajúce pokusy.",
+    "warning_confirm": "Naozaj chcete zobraziť odpovede a vzdať sa?",
+    "cancel_keep_playing": "Zrušiť - Pokračovať v hre",
+    "yes_view_answers": "Áno, zobraziť odpovede"
   },
   "rankings": {
     "title": "Rebríčky",
