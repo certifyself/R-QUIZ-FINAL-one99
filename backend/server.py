@@ -1205,10 +1205,10 @@ def get_quiz_answers(
     user_id = current_user['_id']
     today = date.today()
     
-    # Must have completed 3 attempts
+    # Can view answers after any attempt (warning shown in frontend for attempts < 3)
     attempt_count = get_attempt_count(user_id, today, quiz_index)
-    if attempt_count < 3:
-        raise HTTPException(status_code=403, detail="Complete 3 attempts to view answers")
+    if attempt_count < 1:
+        raise HTTPException(status_code=403, detail="Complete at least 1 attempt to view answers")
     
     # Get pack and quiz data
     pack = generate_daily_pack(today)
