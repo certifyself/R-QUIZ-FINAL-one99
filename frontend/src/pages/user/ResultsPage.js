@@ -264,24 +264,24 @@ export function ResultsPage() {
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-2 text-amber-700">
               <AlertTriangle className="w-6 h-6" />
-              <span>Warning!</span>
+              <span>{t('results.warning')}</span>
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
               <p className="text-amber-900 font-medium mb-2">
-                If you view the correct answers now:
+                {t('results.warning_title')}
               </p>
               <ul className="text-sm text-amber-800 space-y-1 list-disc list-inside">
-                <li>Your quiz will be <strong>permanently locked</strong> 🔒</li>
-                <li>Your score will be set to <strong>0 points</strong> ⚠️</li>
-                <li>You cannot attempt this quiz again</li>
+                <li>{t('results.warning_locked')} <strong>{t('results.warning_permanently_locked')}</strong> 🔒</li>
+                <li>{t('results.warning_score_zero')} <strong>{t('results.warning_zero_points')}</strong> ⚠️</li>
+                <li>{t('results.warning_cannot_retry')}</li>
               </ul>
             </div>
             
             <p className="text-slate-700 text-sm">
-              You have <strong>{result.attempts_remaining} attempts remaining</strong>. 
-              Are you sure you want to view answers and give up?
+              {t('results.warning_attempts_remaining')} <strong>{result.attempts_remaining}</strong> {t('results.warning_attempts_text')} 
+              {t('results.warning_confirm')}
             </p>
             
             <div className="flex space-x-3">
@@ -290,14 +290,14 @@ export function ResultsPage() {
                 variant="outline"
                 className="flex-1"
               >
-                Cancel - Keep Playing
+                {t('results.cancel_keep_playing')}
               </Button>
               <Button
                 onClick={confirmViewAnswersWithPenalty}
                 disabled={locking}
                 className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
               >
-                {locking ? 'Locking...' : 'Yes, View Answers'}
+                {locking ? t('results.locking') : t('results.yes_view_answers')}
               </Button>
             </div>
           </div>
