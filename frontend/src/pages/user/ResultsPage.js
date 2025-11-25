@@ -362,7 +362,7 @@ export function ResultsPage() {
           {!isLocked && showAnswers && (
             <div className="mt-6 bg-teal-50 border border-teal-200 rounded-lg p-4">
               <p className="text-sm text-teal-800 mb-3 font-medium">
-                Quiz is now locked. Choose what to do next:
+                {t('results.understand_lock')}
               </p>
               <div className="flex space-x-3">
                 {getNextQuizIndex() !== null && (
@@ -370,7 +370,7 @@ export function ResultsPage() {
                     onClick={() => navigate(`/quiz/${getNextQuizIndex()}`)}
                     className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600"
                   >
-                    Next Quiz <ArrowRight className="w-4 h-4 ml-2" />
+                    {t('results.next_quiz')} <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 )}
                 <Button
@@ -379,7 +379,7 @@ export function ResultsPage() {
                   className="flex-1"
                 >
                   <Home className="w-4 h-4 mr-2" />
-                  Back to Home
+                  {t('results.back_to_home')}
                 </Button>
               </div>
             </div>
