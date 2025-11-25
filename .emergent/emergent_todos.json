@@ -1,26 +1,18 @@
 [
   {
-    "content": "Phase 12: Update daily pack generation - 11 quizzes with 10 topics each",
+    "content": "Fix 1: Correct Answers button - ensure 30 questions display",
     "status": "in_progress"
   },
   {
-    "content": "Phase 12: Update get_quiz_questions to return 30 questions (10 topics × 3)",
+    "content": "Fix 2: Topic randomization - unique topics per quiz",
     "status": "pending"
   },
   {
-    "content": "Phase 12: Update quiz validation to handle 30 answers",
+    "content": "Fix 3: Slovak translation - translate missing UI text",
     "status": "pending"
   },
   {
-    "content": "Phase 12: Update QuizPage UI for 30 questions",
-    "status": "pending"
-  },
-  {
-    "content": "Phase 12: Update scoring and progress display",
-    "status": "pending"
-  },
-  {
-    "content": "Phase 12: Clear old packs and test new structure",
+    "content": "Test all fixes",
     "status": "pending"
   }
 ]
