@@ -165,9 +165,9 @@ export function ResultsPage() {
         <div className="text-center mb-6">
           {isPerfect && result.attempt_number === 1 && (
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
-              <p className="text-lg font-bold text-emerald-800 mb-2">🎉 Perfect Score!</p>
+              <p className="text-lg font-bold text-emerald-800 mb-2">{t('results.perfect_score')}</p>
               <p className="text-sm text-emerald-700">
-                Excellent! You scored 100%. Do you want to improve your time?
+                {t('results.perfect_message')}
               </p>
             </div>
           )}
