@@ -210,7 +210,7 @@ export function ResultsPage() {
               className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
               data-testid="retry-button"
             >
-              Try Again ({result.attempts_remaining} attempts left)
+              {t('results.try_again_btn')} ({result.attempts_remaining} {t('results.attempts_left')})
             </Button>
           )}
 
@@ -223,7 +223,7 @@ export function ResultsPage() {
               data-testid="view-answers-button"
             >
               <Eye className="w-4 h-4 mr-2" />
-              View Correct Answers (Optional)
+              {t('results.view_answers')}
             </Button>
           )}
           
@@ -232,7 +232,7 @@ export function ResultsPage() {
             <>
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <p className="text-sm text-amber-800 font-medium">
-                  🔒 All 3 attempts used. Quiz is now locked.
+                  🔒 {t('results.all_attempts_used')}
                 </p>
               </div>
               <Button
@@ -241,7 +241,7 @@ export function ResultsPage() {
                 data-testid="view-answers-button"
               >
                 <Eye className="w-4 h-4 mr-2" />
-                View All Correct Answers
+                {t('results.view_all_answers')}
               </Button>
             </>
           )}
