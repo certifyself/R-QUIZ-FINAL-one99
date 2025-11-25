@@ -197,8 +197,8 @@ def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'e
                     'label': label
                 })
             
-            # Shuffle options
-            rng.shuffle(options)
+            # Sort options by key to ensure A, B, C, D order
+            options.sort(key=lambda x: x['key'])
             
             all_questions.append({
                 '_id': str(q['_id']),
