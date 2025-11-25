@@ -249,7 +249,7 @@ export function QuizPage() {
         {/* Current Topic Badge */}
         <div className="mb-3">
           <span className="px-3 py-1 bg-teal-100 text-teal-900 rounded-full text-xs font-bold">
-            Topic {currentQ.topic_index + 1}: {currentQ.topic_name}
+            {t('quiz.topic')} {currentQ.topic_index + 1}: {currentQ.topic_name}
           </span>
         </div>
         
