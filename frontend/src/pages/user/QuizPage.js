@@ -195,9 +195,11 @@ export function QuizPage() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <h1 className="text-xl font-bold text-slate-900 font-['Space_Grotesk']">
-              {quizIndex === '10' ? t('quiz.bonus_quiz') : `Quiz ${parseInt(quizIndex) + 1}`}
+              {quizIndex === '10' ? t('quiz.bonus_quiz') : `${t('home.quiz')} ${parseInt(quizIndex) + 1}`}
             </h1>
-            <p className="text-xs text-slate-600">{quiz.topic_count} topics • {quiz.total_questions} questions</p>
+            <p className="text-xs text-slate-600">
+              {quiz.topic_count} {t('home.topics')} • {quiz.total_questions} {t('home.questions')}
+            </p>
           </div>
           <div className="text-right">
             <p className="text-xs text-slate-600">{t('quiz.attempt')} {quiz.attempt_number}/3</p>
