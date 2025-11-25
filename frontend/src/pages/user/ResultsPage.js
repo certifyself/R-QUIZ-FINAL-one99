@@ -171,10 +171,10 @@ export function ResultsPage() {
               </p>
             </div>
           )}
-          {isExcellent && !isPerfect && <p className="text-emerald-600 font-medium">Excellent work! Outstanding performance!</p>}
-          {isGood && !isExcellent && <p className="text-teal-600 font-medium">Great job! Well done!</p>}
-          {isFair && !isGood && <p className="text-amber-600 font-medium">Good effort! Keep practicing!</p>}
-          {!isFair && <p className="text-rose-600 font-medium">Nice try! Practice makes perfect!</p>}
+          {isExcellent && !isPerfect && <p className="text-emerald-600 font-medium">{t('results.excellent')}</p>}
+          {isGood && !isExcellent && <p className="text-teal-600 font-medium">{t('results.great')}</p>}
+          {isFair && !isGood && <p className="text-amber-600 font-medium">{t('results.good')}</p>}
+          {!isFair && <p className="text-rose-600 font-medium">{t('results.try_again')}</p>}
         </div>
 
         {/* Actions */}
