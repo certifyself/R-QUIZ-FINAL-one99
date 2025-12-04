@@ -291,6 +291,67 @@ def delete_topic_admin(topic_id: str, current_user: Dict = Depends(get_current_a
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Topic not found")
     
+
+@app.post("/api/admin/topics/bulk-delete")
+def bulk_delete_topics_admin(data: BulkTopicOperation, current_user: Dict = Depends(get_current_admin)):
+    """Delete multiple topics at once"""
+    deleted_count = 0
+    errors = []
+    
+    for topic_id in data.topic_ids:
+        try:
+            # Check if topic has questions
+            q_count = questions_col.count_documents({'topic_id': ObjectId(topic_id)})
+            if q_count > 0:
+                errors.append({
+                    'topic_id': topic_id,
+                    'error': f"Topic has {q_count} questions. Delete questions first."
+                })
+                continue
+            
+            result = topics_col.delete_one({'_id': ObjectId(topic_id)})
+            if result.deleted_count > 0:
+                deleted_count += 1
+            else:
+                errors.append({'topic_id': topic_id, 'error': 'Topic not found'})
+        except Exception as e:
+            errors.append({'topic_id': topic_id, 'error': str(e)})
+    
+    return {
+        'success': True,
+        'deleted_count': deleted_count,
+        'total_requested': len(data.topic_ids),
+        'errors': errors
+    }
+
+@app.patch("/api/admin/topics/bulk-active")
+def bulk_activate_topics_admin(data: BulkTopicOperation, current_user: Dict = Depends(get_current_admin)):
+    """Mark multiple topics as active"""
+    result = topics_col.update_many(
+        {'_id': {'$in': [ObjectId(tid) for tid in data.topic_ids]}},
+        {'$set': {'active': True, 'updated_at': datetime.utcnow()}}
+    )
+    
+    return {
+        'success': True,
+        'updated_count': result.modified_count,
+        'total_requested': len(data.topic_ids)
+    }
+
+@app.patch("/api/admin/topics/bulk-inactive")
+def bulk_deactivate_topics_admin(data: BulkTopicOperation, current_user: Dict = Depends(get_current_admin)):
+    """Mark multiple topics as inactive"""
+    result = topics_col.update_many(
+        {'_id': {'$in': [ObjectId(tid) for tid in data.topic_ids]}},
+        {'$set': {'active': False, 'updated_at': datetime.utcnow()}}
+    )
+    
+    return {
+        'success': True,
+        'updated_count': result.modified_count,
+        'total_requested': len(data.topic_ids)
+    }
+
     return {'success': True}
 
 # ============================================================================
