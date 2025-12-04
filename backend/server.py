@@ -635,18 +635,16 @@ async def bulk_upload_questions(
         contents = await file.read()
         df = pd.read_excel(io.BytesIO(contents))
         
-        # Validate required columns
+        # Validate required columns for new format
         required_cols = [
-            'topic_name', 'question_en', 'question_sk',
-            'option_a_en', 'option_a_sk',
-            'option_b_en', 'option_b_sk',
-            'option_c_en', 'option_c_sk',
-            'option_d_en', 'option_d_sk',
-            'correct_answer'
+            'topic_sk', 'topic_en', 'question_sk', 'question_en',
+            'a_sk', 'b_sk', 'c_sk', 'd_sk',
+            'a_en', 'b_en', 'c_en', 'd_en',
+            'correct'
         ]
         
-        # image_url is optional
-        optional_cols = ['image_url']
+        # image is optional
+        optional_cols = ['image']
         
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
