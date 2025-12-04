@@ -276,6 +276,29 @@ def update_topic_admin(topic_id: str, data: TopicUpdate, current_user: Dict = De
     topic = topics_col.find_one({'_id': ObjectId(topic_id)})
     return {'topic': serialize_doc(topic)}
 
+@app.delete("/api/admin/topics/delete-all")
+def delete_all_topics_and_questions(current_user: Dict = Depends(get_current_admin)):
+    """Delete all topics and questions - USE WITH CAUTION"""
+    try:
+        # Delete all questions
+        questions_result = questions_col.delete_many({})
+        
+        # Delete all topics
+        topics_result = topics_col.delete_many({})
+        
+        # Delete all daily packs (they reference topics)
+        packs_result = daily_packs_col.delete_many({})
+        
+        return {
+            'success': True,
+            'deleted_questions': questions_result.deleted_count,
+            'deleted_topics': topics_result.deleted_count,
+            'deleted_packs': packs_result.deleted_count,
+            'message': 'All topics, questions, and daily packs have been deleted'
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete data: {str(e)}")
+
 @app.delete("/api/admin/topics/{topic_id}")
 def delete_topic_admin(topic_id: str, current_user: Dict = Depends(get_current_admin)):
     # Check if topic has questions
