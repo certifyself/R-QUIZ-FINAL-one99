@@ -219,22 +219,43 @@ export function AdminTopicsPage() {
             <p className="text-slate-600">No topics yet. Create your first topic to get started.</p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-200">
-            {topics.map((topic) => (
-              <div key={topic._id} className="p-4 flex items-center justify-between hover:bg-slate-50">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3">
-                    <h3 className="font-semibold text-slate-900 text-lg">{topic.name}</h3>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      topic.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
-                    }`}>
-                      {topic.active ? 'Active' : 'Inactive'}
-                    </span>
+          <>
+            {/* Select All Header */}
+            <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center space-x-3">
+              <input
+                type="checkbox"
+                checked={selectedTopics.length === topics.length && topics.length > 0}
+                onChange={toggleSelectAll}
+                className="w-5 h-5 text-teal-600 border-gray-300 rounded"
+              />
+              <span className="text-sm font-medium text-slate-700">
+                {selectedTopics.length > 0 ? `${selectedTopics.length} selected` : 'Select All'}
+              </span>
+            </div>
+            
+            <div className="divide-y divide-slate-200">
+              {topics.map((topic) => (
+                <div key={topic._id} className="p-4 flex items-center space-x-4 hover:bg-slate-50">
+                  <input
+                    type="checkbox"
+                    checked={selectedTopics.includes(topic._id)}
+                    onChange={() => toggleTopicSelection(topic._id)}
+                    className="w-5 h-5 text-teal-600 border-gray-300 rounded"
+                  />
+                  
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3">
+                      <h3 className="font-semibold text-slate-900 text-lg">{topic.name}</h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        topic.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                      }`}>
+                        {topic.active ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600 mt-1">
+                      {topic.question_count || 0} questions
+                    </p>
                   </div>
-                  <p className="text-sm text-slate-600 mt-1">
-                    {topic.question_count || 0} questions
-                  </p>
-                </div>
                 
                 <div className="flex items-center space-x-2">
                   <Button
