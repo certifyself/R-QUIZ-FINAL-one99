@@ -47,6 +47,9 @@ export const adminAPI = {
   createTopic: (data) => api.post('/api/admin/topics', data),
   updateTopic: (id, data) => api.put(`/api/admin/topics/${id}`, data),
   deleteTopic: (id) => api.delete(`/api/admin/topics/${id}`),
+  bulkDeleteTopics: (topicIds) => api.post('/api/admin/topics/bulk-delete', { topic_ids: topicIds }),
+  bulkActivateTopics: (topicIds) => api.patch('/api/admin/topics/bulk-active', { topic_ids: topicIds }),
+  bulkDeactivateTopics: (topicIds) => api.patch('/api/admin/topics/bulk-inactive', { topic_ids: topicIds }),
   
   // Questions
   getQuestions: (topicId) => api.get('/api/admin/questions', { params: { topic_id: topicId } }),
