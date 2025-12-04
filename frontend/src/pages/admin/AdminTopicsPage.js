@@ -110,29 +110,62 @@ export function AdminTopicsPage() {
     }
 
     setDeleting(true);
-    let successCount = 0;
-    let errorCount = 0;
-
-    for (const topicId of selectedTopics) {
-      try {
-        await adminAPI.deleteTopic(topicId);
-        successCount++;
-      } catch (error) {
-        errorCount++;
-        console.error(`Failed to delete topic ${topicId}:`, error);
+    try {
+      const res = await adminAPI.bulkDeleteTopics(selectedTopics);
+      
+      if (res.data.deleted_count > 0) {
+        toast.success(`Deleted ${res.data.deleted_count} topic(s) successfully!`);
       }
+      
+      if (res.data.errors && res.data.errors.length > 0) {
+        toast.error(`Failed to delete ${res.data.errors.length} topic(s). They may have questions.`);
+      }
+      
+      setSelectedTopics([]);
+      loadTopics();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to delete topics');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleBulkActive = async () => {
+    if (selectedTopics.length === 0) {
+      toast.error('No topics selected');
+      return;
     }
 
-    if (successCount > 0) {
-      toast.success(`Deleted ${successCount} topic(s) successfully!`);
+    setDeleting(true);
+    try {
+      const res = await adminAPI.bulkActivateTopics(selectedTopics);
+      toast.success(`Activated ${res.data.updated_count} topic(s) successfully!`);
+      setSelectedTopics([]);
+      loadTopics();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to activate topics');
+    } finally {
+      setDeleting(false);
     }
-    if (errorCount > 0) {
-      toast.error(`Failed to delete ${errorCount} topic(s). They may have questions.`);
+  };
+
+  const handleBulkInactive = async () => {
+    if (selectedTopics.length === 0) {
+      toast.error('No topics selected');
+      return;
     }
 
-    setSelectedTopics([]);
-    setDeleting(false);
-    loadTopics();
+    setDeleting(true);
+    try {
+      const res = await adminAPI.bulkDeactivateTopics(selectedTopics);
+      toast.success(`Deactivated ${res.data.updated_count} topic(s) successfully!`);
+      setSelectedTopics([]);
+      loadTopics();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to deactivate topics');
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const openEditDialog = (topic) => {
