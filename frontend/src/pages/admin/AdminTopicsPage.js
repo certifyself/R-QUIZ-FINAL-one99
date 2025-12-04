@@ -156,13 +156,27 @@ export function AdminTopicsPage() {
           <h1 className="text-3xl font-bold text-slate-900 font-['Space_Grotesk']">Manage Topics</h1>
         </div>
         
-        <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-teal-500 to-teal-600" data-testid="create-topic-button">
-              <Plus className="w-4 h-4 mr-2" />
-              Create Topic
+        <div className="flex items-center space-x-2">
+          {selectedTopics.length > 0 && (
+            <Button 
+              onClick={handleBulkDelete}
+              disabled={deleting}
+              variant="outline"
+              className="border-rose-300 text-rose-700 hover:bg-rose-50"
+              data-testid="bulk-delete-button"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              {deleting ? 'Deleting...' : `Delete ${selectedTopics.length} Selected`}
             </Button>
-          </DialogTrigger>
+          )}
+          
+          <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-teal-500 to-teal-600" data-testid="create-topic-button">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Topic
+              </Button>
+            </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create New Topic</DialogTitle>
