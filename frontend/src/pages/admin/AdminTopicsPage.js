@@ -287,6 +287,7 @@ export function AdminTopicsPage() {
               </div>
             ))}
           </div>
+          </div>
         )}
       </div>
 
