@@ -659,14 +659,20 @@ async def bulk_upload_questions(
         
         for idx, row in df.iterrows():
             try:
-                # Find or create topic
-                topic_name = str(row['topic_name']).strip()
-                topic = topics_col.find_one({'name': topic_name})
+                # Get topic names (English and Slovak)
+                topic_en = str(row['topic_en']).strip()
+                topic_sk = str(row['topic_sk']).strip()
+                
+                # Find or create topic using English name as primary identifier
+                topic = topics_col.find_one({'name': {'en': topic_en}})
                 
                 if not topic:
-                    # Create topic if doesn't exist
+                    # Create topic if doesn't exist with multilingual name
                     result = topics_col.insert_one({
-                        'name': topic_name,
+                        'name': {
+                            'en': topic_en,
+                            'sk': topic_sk
+                        },
                         'active': True,
                         'created_at': datetime.utcnow()
                     })
@@ -675,9 +681,9 @@ async def bulk_upload_questions(
                     topic_id = topic['_id']
                 
                 # Validate correct answer
-                correct = str(row['correct_answer']).strip().upper()
+                correct = str(row['correct']).strip().upper()
                 if correct not in ['A', 'B', 'C', 'D']:
-                    errors.append(f"Row {idx + 2}: Invalid correct_answer '{correct}' (must be A, B, C, or D)")
+                    errors.append(f"Row {idx + 2}: Invalid correct answer '{correct}' (must be A, B, C, or D)")
                     continue
                 
                 # Build multilingual question
@@ -685,35 +691,35 @@ async def bulk_upload_questions(
                     'topic_id': topic_id,
                     'text': {
                         'en': str(row['question_en']).strip(),
-                        'sk': str(row.get('question_sk', row['question_en'])).strip()
+                        'sk': str(row['question_sk']).strip()
                     },
                     'options': [
                         {
                             'key': 'A',
                             'label': {
-                                'en': str(row['option_a_en']).strip(),
-                                'sk': str(row.get('option_a_sk', row['option_a_en'])).strip()
+                                'en': str(row['a_en']).strip(),
+                                'sk': str(row['a_sk']).strip()
                             }
                         },
                         {
                             'key': 'B',
                             'label': {
-                                'en': str(row['option_b_en']).strip(),
-                                'sk': str(row.get('option_b_sk', row['option_b_en'])).strip()
+                                'en': str(row['b_en']).strip(),
+                                'sk': str(row['b_sk']).strip()
                             }
                         },
                         {
                             'key': 'C',
                             'label': {
-                                'en': str(row['option_c_en']).strip(),
-                                'sk': str(row.get('option_c_sk', row['option_c_en'])).strip()
+                                'en': str(row['c_en']).strip(),
+                                'sk': str(row['c_sk']).strip()
                             }
                         },
                         {
                             'key': 'D',
                             'label': {
-                                'en': str(row['option_d_en']).strip(),
-                                'sk': str(row.get('option_d_sk', row['option_d_en'])).strip()
+                                'en': str(row['d_en']).strip(),
+                                'sk': str(row['d_sk']).strip()
                             }
                         }
                     ],
@@ -722,9 +728,15 @@ async def bulk_upload_questions(
                     'created_at': datetime.utcnow()
                 }
                 
-                # Add image URL if provided
-                if 'image_url' in row and pd.notna(row['image_url']) and str(row['image_url']).strip():
-                    question_doc['image_url'] = str(row['image_url']).strip()
+                # Add image if provided (check for 'yes' or actual URL)
+                if 'image' in row and pd.notna(row['image']):
+                    image_val = str(row['image']).strip().lower()
+                    # If value is 'yes', mark for image but no URL yet
+                    # If it's a URL (starts with http), use it
+                    if image_val.startswith('http'):
+                        question_doc['image_url'] = image_val
+                    elif image_val == 'yes':
+                        question_doc['has_image'] = True
                 
                 questions_col.insert_one(question_doc)
                 imported_count += 1
