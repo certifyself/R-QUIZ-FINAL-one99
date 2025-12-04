@@ -354,29 +354,6 @@ def bulk_deactivate_topics_admin(data: BulkTopicOperation, current_user: Dict = 
     }
 
 
-@app.delete("/api/admin/topics/delete-all")
-def delete_all_topics_and_questions(current_user: Dict = Depends(get_current_admin)):
-    """Delete all topics and questions - USE WITH CAUTION"""
-    try:
-        # Delete all questions
-        questions_result = questions_col.delete_many({})
-        
-        # Delete all topics
-        topics_result = topics_col.delete_many({})
-        
-        # Delete all daily packs (they reference topics)
-        packs_result = daily_packs_col.delete_many({})
-        
-        return {
-            'success': True,
-            'deleted_questions': questions_result.deleted_count,
-            'deleted_topics': topics_result.deleted_count,
-            'deleted_packs': packs_result.deleted_count,
-            'message': 'All topics, questions, and daily packs have been deleted'
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to delete data: {str(e)}")
-
 # ============================================================================
 # ADMIN - QUESTIONS
 # ============================================================================
