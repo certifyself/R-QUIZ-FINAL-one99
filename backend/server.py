@@ -87,6 +87,10 @@ class TopicUpdate(BaseModel):
     name: Optional[str] = None
     active: Optional[bool] = None
 
+class BulkTopicOperation(BaseModel):
+    topic_ids: List[str] = Field(min_items=1)
+
+
 class QuestionOption(BaseModel):
     key: str  # A, B, C, D
     label: str
