@@ -270,7 +270,7 @@ Located in `/app/backend/core_services.py`:
 - ✅ Serialization helpers implemented
 
 ### Application URL
-🌐 **Live Preview:** https://trivia-challenge-24.preview.emergentagent.com
+🌐 **Live Preview:** https://socraquest.preview.emergentagent.com
 
 ---
 
