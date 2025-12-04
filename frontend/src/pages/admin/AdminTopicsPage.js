@@ -209,6 +209,7 @@ export function AdminTopicsPage() {
             </form>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {/* Topics List */}
