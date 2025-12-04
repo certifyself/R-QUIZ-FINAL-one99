@@ -687,7 +687,7 @@ async def bulk_upload_questions(
                 topic_sk = str(row['topic_sk']).strip()
                 
                 # Find or create topic using English name as primary identifier
-                topic = topics_col.find_one({'name': {'en': topic_en}})
+                topic = topics_col.find_one({'name.en': topic_en})
                 
                 if not topic:
                     # Create topic if doesn't exist with multilingual name
