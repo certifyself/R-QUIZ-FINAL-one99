@@ -233,6 +233,7 @@ export function AdminTopicsPage() {
               </span>
             </div>
             
+            {/* Topics */}
             <div className="divide-y divide-slate-200">
               {topics.map((topic) => (
                 <div key={topic._id} className="p-4 flex items-center space-x-4 hover:bg-slate-50">
@@ -256,37 +257,37 @@ export function AdminTopicsPage() {
                       {topic.question_count || 0} questions
                     </p>
                   </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Button
-                    onClick={() => navigate(`/admin/questions?topic=${topic._id}`)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    Questions
-                  </Button>
-                  <Button
-                    onClick={() => openEditDialog(topic)}
-                    variant="ghost"
-                    size="sm"
-                    data-testid={`edit-topic-${topic._id}`}
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(topic._id)}
-                    variant="ghost"
-                    size="sm"
-                    className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
-                    data-testid={`delete-topic-${topic._id}`}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      onClick={() => navigate(`/admin/questions?topic=${topic._id}`)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Questions
+                    </Button>
+                    <Button
+                      onClick={() => openEditDialog(topic)}
+                      variant="ghost"
+                      size="sm"
+                      data-testid={`edit-topic-${topic._id}`}
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(topic._id)}
+                      variant="ghost"
+                      size="sm"
+                      className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                      data-testid={`delete-topic-${topic._id}`}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
