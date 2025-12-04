@@ -291,6 +291,7 @@ def delete_topic_admin(topic_id: str, current_user: Dict = Depends(get_current_a
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Topic not found")
     
+    return {'success': True}
 
 @app.post("/api/admin/topics/bulk-delete")
 def bulk_delete_topics_admin(data: BulkTopicOperation, current_user: Dict = Depends(get_current_admin)):
