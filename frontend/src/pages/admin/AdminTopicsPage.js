@@ -219,7 +219,7 @@ export function AdminTopicsPage() {
             <p className="text-slate-600">No topics yet. Create your first topic to get started.</p>
           </div>
         ) : (
-          <>
+          <div>
             {/* Select All Header */}
             <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center space-x-3">
               <input
