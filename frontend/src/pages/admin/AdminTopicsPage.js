@@ -17,6 +17,8 @@ export function AdminTopicsPage() {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [formData, setFormData] = useState({ name: '', active: true });
   const [submitting, setSubmitting] = useState(false);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
