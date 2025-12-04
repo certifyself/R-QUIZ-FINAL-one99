@@ -353,8 +353,6 @@ def bulk_deactivate_topics_admin(data: BulkTopicOperation, current_user: Dict = 
         'total_requested': len(data.topic_ids)
     }
 
-    return {'success': True}
-
 
 @app.delete("/api/admin/topics/delete-all")
 def delete_all_topics_and_questions(current_user: Dict = Depends(get_current_admin)):
