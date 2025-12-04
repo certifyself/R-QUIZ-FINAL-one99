@@ -191,16 +191,38 @@ export function AdminTopicsPage() {
         
         <div className="flex items-center space-x-2">
           {selectedTopics.length > 0 && (
-            <Button 
-              onClick={handleBulkDelete}
-              disabled={deleting}
-              variant="outline"
-              className="border-rose-300 text-rose-700 hover:bg-rose-50"
-              data-testid="bulk-delete-button"
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              {deleting ? 'Deleting...' : `Delete ${selectedTopics.length} Selected`}
-            </Button>
+            <>
+              <Button 
+                onClick={handleBulkActive}
+                disabled={deleting}
+                variant="outline"
+                className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                data-testid="bulk-active-button"
+              >
+                {deleting ? 'Processing...' : `Activate ${selectedTopics.length}`}
+              </Button>
+              
+              <Button 
+                onClick={handleBulkInactive}
+                disabled={deleting}
+                variant="outline"
+                className="border-amber-300 text-amber-700 hover:bg-amber-50"
+                data-testid="bulk-inactive-button"
+              >
+                {deleting ? 'Processing...' : `Deactivate ${selectedTopics.length}`}
+              </Button>
+              
+              <Button 
+                onClick={handleBulkDelete}
+                disabled={deleting}
+                variant="outline"
+                className="border-rose-300 text-rose-700 hover:bg-rose-50"
+                data-testid="bulk-delete-button"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {deleting ? 'Deleting...' : `Delete ${selectedTopics.length}`}
+              </Button>
+            </>
           )}
           
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
