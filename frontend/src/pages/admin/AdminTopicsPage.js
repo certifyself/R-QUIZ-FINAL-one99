@@ -83,6 +83,58 @@ export function AdminTopicsPage() {
     }
   };
 
+  const toggleTopicSelection = (topicId) => {
+    setSelectedTopics(prev => 
+      prev.includes(topicId) 
+        ? prev.filter(id => id !== topicId)
+        : [...prev, topicId]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedTopics.length === topics.length) {
+      setSelectedTopics([]);
+    } else {
+      setSelectedTopics(topics.map(t => t._id));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedTopics.length === 0) {
+      toast.error('No topics selected');
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to delete ${selectedTopics.length} topic(s)? This will also delete all associated questions.`)) {
+      return;
+    }
+
+    setDeleting(true);
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (const topicId of selectedTopics) {
+      try {
+        await adminAPI.deleteTopic(topicId);
+        successCount++;
+      } catch (error) {
+        errorCount++;
+        console.error(`Failed to delete topic ${topicId}:`, error);
+      }
+    }
+
+    if (successCount > 0) {
+      toast.success(`Deleted ${successCount} topic(s) successfully!`);
+    }
+    if (errorCount > 0) {
+      toast.error(`Failed to delete ${errorCount} topic(s). They may have questions.`);
+    }
+
+    setSelectedTopics([]);
+    setDeleting(false);
+    loadTopics();
+  };
+
   const openEditDialog = (topic) => {
     setSelectedTopic(topic);
     setFormData({ name: topic.name, active: topic.active });
