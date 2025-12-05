@@ -44,6 +44,11 @@ from push_service import (
     register_device_token,
     NOTIFICATION_TEMPLATES
 )
+from badge_service import (
+    check_and_award_badges,
+    get_user_badges,
+    BADGES
+)
 
 app = FastAPI(title="SocraQuest API")
 
