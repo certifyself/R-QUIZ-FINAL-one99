@@ -74,18 +74,49 @@ export function ProfilePage() {
 
       {/* Badges */}
       <div className="bg-white rounded-xl p-6 border border-slate-200">
-        <h2 className="text-lg font-bold text-slate-900 mb-4 font-['Space_Grotesk']">Badges</h2>
-        {profile.badges.length === 0 ? (
-          <p className="text-sm text-slate-600 text-center py-8">No badges earned yet. Complete quizzes to earn badges!</p>
-        ) : (
-          <div className="space-y-2">
-            {profile.badges.map((badge, idx) => (
-              <div key={idx} className="flex items-center space-x-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
-                <Trophy className="w-5 h-5 text-amber-600" />
-                <span className="text-sm font-medium text-amber-900">{badge}</span>
-              </div>
-            ))}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-slate-900 font-['Space_Grotesk']">Badges</h2>
+          {badges && (
+            <div className="text-sm text-slate-600">
+              <span className="font-bold text-teal-600">{badges.total_earned}</span>
+              <span className="mx-1">/</span>
+              <span>{badges.total_available}</span>
+            </div>
+          )}
+        </div>
+        
+        {!badges ? (
+          <LoadingSpinner />
+        ) : badges.earned.length === 0 ? (
+          <div className="text-center py-12">
+            <Award className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <p className="text-slate-600 mb-2">No badges earned yet</p>
+            <p className="text-sm text-slate-500">Complete quizzes to earn your first badge!</p>
           </div>
+        ) : (
+          <>
+            {/* Earned Badges */}
+            <div className="mb-8">
+              <h3 className="text-sm font-semibold text-slate-700 mb-4">Earned ({badges.earned.length})</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {badges.earned.map((badge) => (
+                  <BadgeCard key={badge.id} badge={badge} size="sm" />
+                ))}
+              </div>
+            </div>
+            
+            {/* Locked Badges */}
+            {badges.available.length > 0 && (
+              <div>
+                <h3 className="text-sm font-semibold text-slate-700 mb-4">Locked ({badges.available.length})</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {badges.available.slice(0, 6).map((badge) => (
+                    <BadgeCard key={badge.id} badge={badge} locked size="sm" />
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
