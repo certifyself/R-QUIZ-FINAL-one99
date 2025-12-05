@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { userAPI } from '../../lib/api';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { User, Trophy, Target } from 'lucide-react';
+import { User, Trophy, Target, Award } from 'lucide-react';
 import { toast } from 'sonner';
 import { getInitials } from '../../lib/utils';
+import { BadgeCard } from '../../components/BadgeCard';
 
 export function ProfilePage() {
   const [profile, setProfile] = useState(null);
+  const [badges, setBadges] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadProfile();
+    loadBadges();
   }, []);
 
   const loadProfile = async () => {
@@ -21,6 +24,15 @@ export function ProfilePage() {
       toast.error('Failed to load profile');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadBadges = async () => {
+    try {
+      const res = await userAPI.getBadges();
+      setBadges(res.data);
+    } catch (error) {
+      console.error('Failed to load badges:', error);
     }
   };
 
