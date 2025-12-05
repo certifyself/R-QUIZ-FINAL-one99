@@ -1011,6 +1011,12 @@ def send_manual_notification(
     
     user_ids = [str(u['_id']) for u in users]
     
+    # Check how many users have registered devices
+    registered_devices = user_devices_col.count_documents({
+        'user_id': {'$in': [u['_id'] for u in users]},
+        'active': True
+    })
+    
     # Send to all users
     result = send_to_multiple_users(
         user_ids,
@@ -1023,8 +1029,10 @@ def send_manual_notification(
     return {
         'success': True,
         'total_users': result['total_users'],
+        'registered_devices': registered_devices,
         'delivered': result['delivered'],
-        'failed': result['failed']
+        'failed': result['failed'],
+        'message': f"Sent to {result['delivered']} users. {registered_devices} of {len(users)} users have push notifications enabled."
     }
 
 @app.get("/api/admin/notifications/logs")
