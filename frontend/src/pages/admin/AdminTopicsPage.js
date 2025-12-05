@@ -113,12 +113,12 @@ export function AdminTopicsPage() {
     try {
       const res = await adminAPI.bulkDeleteTopics(selectedTopics);
       
-      if (res.data.deleted_count > 0) {
-        toast.success(`Deleted ${res.data.deleted_count} topic(s) successfully!`);
+      if (res.data.deleted_topics > 0) {
+        toast.success(`Deleted ${res.data.deleted_topics} topic(s) and ${res.data.deleted_questions} question(s) successfully!`);
       }
       
       if (res.data.errors && res.data.errors.length > 0) {
-        toast.error(`Failed to delete ${res.data.errors.length} topic(s). They may have questions.`);
+        toast.error(`Failed to delete ${res.data.errors.length} topic(s).`);
       }
       
       setSelectedTopics([]);
