@@ -171,6 +171,35 @@ export function AdminTopicsPage() {
     }
   };
 
+
+  const handleBulkUpload = async (e) => {
+    e.preventDefault();
+    if (!uploadFile) {
+      toast.error('Please select a file');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const res = await adminAPI.bulkUploadQuestions(uploadFile);
+      toast.success(res.data.message || `Imported ${res.data.imported} questions successfully!`);
+      
+      if (res.data.errors && res.data.errors.length > 0) {
+        toast.warning(`${res.data.errors.length} rows had errors. Check console for details.`);
+        console.error('Upload errors:', res.data.errors);
+      }
+      
+      setUploadOpen(false);
+      setUploadFile(null);
+      loadTopics();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to upload file');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+
   const openEditDialog = (topic) => {
     setSelectedTopic(topic);
     setFormData({ name: topic.name, active: topic.active });
