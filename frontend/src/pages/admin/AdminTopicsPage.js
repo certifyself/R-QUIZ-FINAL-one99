@@ -6,7 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { Plus, Edit2, Trash2, ArrowLeft, BookOpen } from 'lucide-react';
+import { Plus, Edit2, Trash2, ArrowLeft, BookOpen, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function AdminTopicsPage() {
@@ -14,11 +14,14 @@ export function AdminTopicsPage() {
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [uploadOpen, setUploadOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [formData, setFormData] = useState({ name: '', active: true });
   const [submitting, setSubmitting] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [deleting, setDeleting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadFile, setUploadFile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
