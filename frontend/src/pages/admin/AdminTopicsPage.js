@@ -278,6 +278,21 @@ export function AdminTopicsPage() {
               <DialogHeader>
                 <DialogTitle>Bulk Upload Questions</DialogTitle>
               </DialogHeader>
+              
+              {/* Download Template Button */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-sm text-blue-900 mb-2 font-medium">Need the template?</p>
+                <Button 
+                  type="button"
+                  onClick={handleDownloadTemplate}
+                  variant="outline"
+                  className="w-full border-blue-300 text-blue-700 hover:bg-blue-100"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download Excel Template
+                </Button>
+              </div>
+              
               <form onSubmit={handleBulkUpload} className="space-y-4">
                 <div className="space-y-2">
                   <Label>Excel File</Label>
@@ -291,7 +306,7 @@ export function AdminTopicsPage() {
                     Upload an Excel file with columns: topic_sk, topic_en, question_sk, question_en, a_sk, a_en, b_sk, b_en, c_sk, c_en, d_sk, d_en, correct, image
                   </p>
                 </div>
-                <Button type="submit" disabled={uploading} className="w-full">
+                <Button type="submit" disabled={uploading} className="w-full bg-gradient-to-r from-teal-500 to-teal-600">
                   {uploading ? 'Uploading...' : 'Upload Questions'}
                 </Button>
               </form>
