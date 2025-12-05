@@ -601,34 +601,31 @@ def get_metrics_admin(current_user: Dict = Depends(get_current_admin)):
 
 @app.get("/api/admin/questions/template")
 def download_excel_template(current_user: Dict = Depends(get_current_admin)):
-    """Download Excel template for bulk question upload"""
-    # Create sample template
+    """Download Excel template for bulk question upload (NEW FORMAT)"""
+    # Create sample template with new column format
     template_data = {
-        'topic_name': ['History', 'Geography', 'Science'],
-        'question_en': [
-            'In which year did World War II end?',
-            'What is the capital of France?',
-            'What is the chemical symbol for water?'
-        ],
+        'topic_sk': ['História', 'Geografia', 'Veda'],
+        'topic_en': ['History', 'Geography', 'Science'],
         'question_sk': [
             'V ktorom roku skončila druhá svetová vojna?',
             'Aké je hlavné mesto Francúzska?',
             'Aká je chemická značka pre vodu?'
         ],
-        'image_url': [
-            '',  # No image for History question
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/800px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg',  # Eiffel Tower for Paris
-            ''  # No image for Science question
+        'question_en': [
+            'In which year did World War II end?',
+            'What is the capital of France?',
+            'What is the chemical symbol for water?'
         ],
-        'option_a_en': ['1943', 'London', 'H2O'],
-        'option_a_sk': ['1943', 'Londýn', 'H2O'],
-        'option_b_en': ['1945', 'Berlin', 'CO2'],
-        'option_b_sk': ['1945', 'Berlín', 'CO2'],
-        'option_c_en': ['1947', 'Madrid', 'O2'],
-        'option_c_sk': ['1947', 'Madrid', 'O2'],
-        'option_d_en': ['1950', 'Paris', 'N2'],
-        'option_d_sk': ['1950', 'Paríž', 'N2'],
-        'correct_answer': ['B', 'D', 'A']
+        'a_sk': ['1943', 'Londýn', 'H2O'],
+        'b_sk': ['1945', 'Berlín', 'CO2'],
+        'c_sk': ['1947', 'Madrid', 'O2'],
+        'd_sk': ['1950', 'Paríž', 'N2'],
+        'a_en': ['1943', 'London', 'H2O'],
+        'b_en': ['1945', 'Berlin', 'CO2'],
+        'c_en': ['1947', 'Madrid', 'O2'],
+        'd_en': ['1950', 'Paris', 'N2'],
+        'correct': ['B', 'D', 'A'],
+        'image': ['', 'yes', '']  # Leave empty or put 'yes' to mark for image, or put full URL
     }
     
     df = pd.DataFrame(template_data)
@@ -643,7 +640,7 @@ def download_excel_template(current_user: Dict = Depends(get_current_admin)):
     return StreamingResponse(
         output,
         media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        headers={'Content-Disposition': 'attachment; filename=questions_template.xlsx'}
+        headers={'Content-Disposition': 'attachment; filename=socraquest_questions_template.xlsx'}
     )
 
 @app.post("/api/admin/questions/bulk-upload")
