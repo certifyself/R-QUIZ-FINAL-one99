@@ -104,6 +104,10 @@ export const userAPI = {
   // Profile
   getProfile: () => api.get('/api/profile'),
   
+  // Badges
+  getBadges: () => api.get('/api/badges'),
+  getAllBadges: () => api.get('/api/badges/all'),
+  
   // Public Ads Config
   getAdsConfig: () => api.get('/api/ads/config'),
   getManualAds: (type) => api.get('/api/ads/manual', { params: { ad_type: type } }),
