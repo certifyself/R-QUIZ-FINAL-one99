@@ -323,24 +323,21 @@ def delete_topic_admin(topic_id: str, current_user: Dict = Depends(get_current_a
 
 @app.post("/api/admin/topics/bulk-delete")
 def bulk_delete_topics_admin(data: BulkTopicOperation, current_user: Dict = Depends(get_current_admin)):
-    """Delete multiple topics at once"""
-    deleted_count = 0
+    """Delete multiple topics at once (including their questions)"""
+    deleted_topics = 0
+    deleted_questions = 0
     errors = []
     
     for topic_id in data.topic_ids:
         try:
-            # Check if topic has questions
-            q_count = questions_col.count_documents({'topic_id': ObjectId(topic_id)})
-            if q_count > 0:
-                errors.append({
-                    'topic_id': topic_id,
-                    'error': f"Topic has {q_count} questions. Delete questions first."
-                })
-                continue
+            # First, delete all questions associated with this topic
+            questions_result = questions_col.delete_many({'topic_id': ObjectId(topic_id)})
+            deleted_questions += questions_result.deleted_count
             
+            # Then delete the topic
             result = topics_col.delete_one({'_id': ObjectId(topic_id)})
             if result.deleted_count > 0:
-                deleted_count += 1
+                deleted_topics += 1
             else:
                 errors.append({'topic_id': topic_id, 'error': 'Topic not found'})
         except Exception as e:
@@ -348,7 +345,8 @@ def bulk_delete_topics_admin(data: BulkTopicOperation, current_user: Dict = Depe
     
     return {
         'success': True,
-        'deleted_count': deleted_count,
+        'deleted_topics': deleted_topics,
+        'deleted_questions': deleted_questions,
         'total_requested': len(data.topic_ids),
         'errors': errors
     }
