@@ -67,7 +67,13 @@ export function AdminNotificationsPage() {
       const data = await res.json();
       
       if (res.ok) {
-        toast.success(`Notification sent to ${data.delivered} users!`);
+        if (data.delivered === 0 && data.registered_devices === 0) {
+          toast.warning(`No users have push notifications enabled. ${data.total_users} users found but 0 have registered devices.`);
+        } else if (data.delivered === 0) {
+          toast.warning(`Notification not delivered. ${data.registered_devices} users have notifications enabled but delivery failed.`);
+        } else {
+          toast.success(`Notification sent to ${data.delivered} of ${data.total_users} users!`);
+        }
         setSendOpen(false);
         setNotificationForm({ title: '', body: '', target: 'all' });
         loadData();
