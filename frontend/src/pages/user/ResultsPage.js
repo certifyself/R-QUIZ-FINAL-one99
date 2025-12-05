@@ -7,6 +7,7 @@ import { Trophy, Clock, Home, Eye, Lock, AlertTriangle, ArrowRight } from 'lucid
 import { toast } from 'sonner';
 import { formatTime } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
+import { BadgeNotification } from '../../components/BadgeNotification';
 
 export function ResultsPage() {
   const { quizIndex } = useParams();
@@ -17,7 +18,15 @@ export function ResultsPage() {
   const [answers, setAnswers] = useState(null);
   const [locking, setLocking] = useState(false);
   const [showWarningDialog, setShowWarningDialog] = useState(false);
-  const { t, i18n } = useTranslation();
+  const [earnedBadges, setEarnedBadges] = useState([]);
+  const { t, i18n} = useTranslation();
+  
+  // Check for earned badges on mount
+  useEffect(() => {
+    if (result?.badges_earned && result.badges_earned.length > 0) {
+      setEarnedBadges(result.badges_earned);
+    }
+  }, [result]);
 
   const canViewAnswers = result?.can_view_answers;  // Can view after any attempt now
   const canRetry = result?.attempts_remaining > 0 && !result?.quiz_locked;
