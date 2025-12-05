@@ -124,6 +124,12 @@ export function ResultsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
+      {/* Badge Notification */}
+      <BadgeNotification 
+        badges={earnedBadges}
+        onClose={() => setEarnedBadges([])}
+      />
+      
       {/* Results Card */}
       <div className="bg-white rounded-2xl p-8 border border-slate-200 text-center">
         <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center">
