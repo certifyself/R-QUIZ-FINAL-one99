@@ -32,7 +32,9 @@
     "attempts": "attempts",
     "locked": "Locked",
     "unlock_bonus": "Complete all 10 quizzes to unlock",
-    "locked_after_answers": "Locked after viewing answers"
+    "locked_after_answers": "Locked after viewing answers",
+    "topics": "topics",
+    "questions": "questions"
   },
   "quiz": {
     "back": "Back",
