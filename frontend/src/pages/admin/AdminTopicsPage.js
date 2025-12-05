@@ -6,7 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { Plus, Edit2, Trash2, ArrowLeft, BookOpen, Upload } from 'lucide-react';
+import { Plus, Edit2, Trash2, ArrowLeft, BookOpen, Upload, Download } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function AdminTopicsPage() {
