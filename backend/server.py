@@ -1287,6 +1287,17 @@ def submit_quiz(
     # Check if perfect score
     is_perfect = result['score']['percentage'] == 100
     
+    # Check and award badges
+    newly_earned_badges = check_and_award_badges(
+        user_id=ObjectId(user_id),
+        quiz_index=quiz_index,
+        score=result['score']['correct'],
+        time_ms=data.time_ms,
+        users_col=users_col,
+        results_col=results_col,
+        daily_packs_col=daily_packs_col
+    )
+    
     return {
         'attempt_number': next_attempt,
         'score': result['score'],
@@ -1295,7 +1306,8 @@ def submit_quiz(
         'attempts_remaining': 3 - next_attempt,
         'can_view_answers': True,  # Can always view answers after submitting
         'is_perfect': is_perfect,
-        'quiz_locked': next_attempt >= 3  # Quiz locked after 3rd attempt
+        'quiz_locked': next_attempt >= 3,  # Quiz locked after 3rd attempt
+        'badges_earned': newly_earned_badges  # New badges earned from this quiz
     }
 
 @app.get("/api/quizzes/{quiz_index}/answers")
