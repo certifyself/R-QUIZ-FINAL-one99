@@ -172,6 +172,15 @@ export function AdminTopicsPage() {
   };
 
 
+  const handleDownloadTemplate = async () => {
+    try {
+      await adminAPI.downloadTemplate();
+      toast.success('Template downloaded successfully!');
+    } catch (error) {
+      toast.error('Failed to download template');
+    }
+  };
+
   const handleBulkUpload = async (e) => {
     e.preventDefault();
     if (!uploadFile) {
