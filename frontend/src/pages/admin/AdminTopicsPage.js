@@ -257,6 +257,38 @@ export function AdminTopicsPage() {
             </>
           )}
           
+          {/* Bulk Upload Button */}
+          <Dialog open={uploadOpen} onOpenChange={setUploadOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="border-violet-300 text-violet-700 hover:bg-violet-50" data-testid="bulk-upload-button">
+                <Upload className="w-4 h-4 mr-2" />
+                Bulk Upload
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Bulk Upload Questions</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleBulkUpload} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Excel File</Label>
+                  <Input
+                    type="file"
+                    accept=".xlsx,.xls"
+                    onChange={(e) => setUploadFile(e.target.files[0])}
+                    required
+                  />
+                  <p className="text-xs text-slate-500">
+                    Upload an Excel file with columns: topic_sk, topic_en, question_sk, question_en, a_sk, a_en, b_sk, b_en, c_sk, c_en, d_sk, d_en, correct, image
+                  </p>
+                </div>
+                <Button type="submit" disabled={uploading} className="w-full">
+                  {uploading ? 'Uploading...' : 'Upload Questions'}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-teal-500 to-teal-600" data-testid="create-topic-button">
