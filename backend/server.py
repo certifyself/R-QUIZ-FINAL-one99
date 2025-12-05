@@ -1550,6 +1550,19 @@ def get_profile(current_user: Dict = Depends(get_current_user)):
         'badges': current_user.get('badges', [])
     }
 
+
+@app.get("/api/badges")
+def get_badges(current_user: Dict = Depends(get_current_user)):
+    """Get user's badge progress"""
+    user_id = ObjectId(current_user['_id'])
+    return get_user_badges(user_id, users_col)
+
+@app.get("/api/badges/all")
+def get_all_badges():
+    """Get all available badge definitions"""
+    return {'badges': list(BADGES.values())}
+
+
 # ============================================================================
 # INITIALIZATION
 # ============================================================================
