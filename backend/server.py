@@ -1294,7 +1294,7 @@ def submit_quiz(
     newly_earned_badges = check_and_award_badges(
         user_id=ObjectId(user_id),
         quiz_index=quiz_index,
-        score=result['score']['correct'],
+        score=result['score']['correct_count'],
         time_ms=data.time_ms,
         users_col=users_col,
         results_col=results_col,
