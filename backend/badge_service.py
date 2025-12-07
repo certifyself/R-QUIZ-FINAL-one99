@@ -138,10 +138,12 @@ def check_and_award_badges(user_id: ObjectId, quiz_index: int, score: int, time_
     newly_earned = []
     
     # Get user's quiz history
-    total_quizzes = results_col.count_documents({'user_id': user_id})
+    # Count UNIQUE quizzes completed (not total attempts)
+    unique_quiz_indices = results_col.distinct('quiz_index', {'user_id': user_id})
+    total_unique_quizzes = len(unique_quiz_indices)
     
-    # 1. First Quiz Badge
-    if 'first_quiz' not in earned_badge_ids and total_quizzes == 1:
+    # 1. First Quiz Badge (check if this is the first unique quiz)
+    if 'first_quiz' not in earned_badge_ids and total_unique_quizzes == 1:
         newly_earned.append(_award_badge(user_id, 'first_quiz', users_col, quiz_index))
     
     # 2. Perfect Score Badge
