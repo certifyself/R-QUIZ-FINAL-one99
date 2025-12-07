@@ -171,12 +171,12 @@ def check_and_award_badges(user_id: ObjectId, quiz_index: int, score: int, time_
     if 'bonus_hunter' not in earned_badge_ids and quiz_index == 10:  # Bonus quiz
         newly_earned.append(_award_badge(user_id, 'bonus_hunter', users_col, quiz_index))
     
-    # 6. Completion Badges
-    if 'quizzes_5' not in earned_badge_ids and total_quizzes >= 5:
+    # 6. Completion Badges (based on unique quizzes completed)
+    if 'quizzes_5' not in earned_badge_ids and total_unique_quizzes >= 5:
         newly_earned.append(_award_badge(user_id, 'quizzes_5', users_col))
-    if 'quizzes_25' not in earned_badge_ids and total_quizzes >= 25:
+    if 'quizzes_25' not in earned_badge_ids and total_unique_quizzes >= 25:
         newly_earned.append(_award_badge(user_id, 'quizzes_25', users_col))
-    if 'quizzes_100' not in earned_badge_ids and total_quizzes >= 100:
+    if 'quizzes_100' not in earned_badge_ids and total_unique_quizzes >= 100:
         newly_earned.append(_award_badge(user_id, 'quizzes_100', users_col))
     
     # 7. Time-based Badges
