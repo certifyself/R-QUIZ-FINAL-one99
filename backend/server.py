@@ -1575,6 +1575,33 @@ def get_group_leaderboard(
 @app.get("/api/profile")
 def get_profile(current_user: Dict = Depends(get_current_user)):
     user_id = ObjectId(current_user['_id'])
+
+
+@app.get("/api/referrals")
+def get_referral_stats(current_user: Dict = Depends(get_current_user)):
+    """Get user's referral statistics"""
+    user_id = ObjectId(current_user['_id'])
+    user = users_col.find_one({'_id': user_id})
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    referral_code = user.get('referral_code', '')
+    referral_count = user.get('referral_count', 0)
+    
+    # Get list of referred users
+    referred_users = list(users_col.find(
+        {'referred_by': user_id},
+        {'nickname': 1, 'created_at': 1, 'stats': 1}
+    ).sort('created_at', -1).limit(50))
+    
+    return {
+        'referral_code': referral_code,
+        'referral_count': referral_count,
+        'referred_users': [serialize_doc(u) for u in referred_users],
+        'invite_url': f"https://socraquest.preview.emergentagent.com/auth?ref={referral_code}"
+    }
+
     
     # Calculate stats
     total_attempts = attempts_col.count_documents({'user_id': user_id})
