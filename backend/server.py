@@ -168,6 +168,30 @@ def get_current_admin(current_user: Dict = Depends(get_current_user)) -> Dict:
         raise HTTPException(status_code=403, detail="Admin access required")
     return current_user
 
+
+def _check_referral_badges(user_id: ObjectId, users_col):
+    """Check and award referral badges"""
+    user = users_col.find_one({'_id': user_id})
+    if not user:
+        return
+    
+    referral_count = user.get('referral_count', 0)
+    earned_badges = user.get('badges', [])
+    earned_badge_ids = [b['badge_id'] for b in earned_badges]
+    
+    from badge_service import _award_badge
+    
+    # Check each referral milestone
+    if 'referrer_1' not in earned_badge_ids and referral_count >= 1:
+        _award_badge(user_id, 'referrer_1', users_col)
+    if 'referrer_5' not in earned_badge_ids and referral_count >= 5:
+        _award_badge(user_id, 'referrer_5', users_col)
+    if 'referrer_10' not in earned_badge_ids and referral_count >= 10:
+        _award_badge(user_id, 'referrer_10', users_col)
+    if 'referrer_25' not in earned_badge_ids and referral_count >= 25:
+        _award_badge(user_id, 'referrer_25', users_col)
+
+
 # ============================================================================
 # AUTH ENDPOINTS
 # ============================================================================
