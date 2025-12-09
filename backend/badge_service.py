@@ -120,6 +120,40 @@ BADGES = {
         'color': '#6366f1',  # indigo
         'category': 'special'
     },
+    
+    # Referral Badges
+    'referrer_1': {
+        'id': 'referrer_1',
+        'name': {'en': 'Friend Bringer', 'sk': 'Prívod priateľa'},
+        'description': {'en': 'Invite 1 friend who joins', 'sk': 'Pozvite 1 priateľa, ktorý sa pripojí'},
+        'icon': 'Star',
+        'color': '#f59e0b',  # amber
+        'category': 'referral'
+    },
+    'referrer_5': {
+        'id': 'referrer_5',
+        'name': {'en': 'Social Butterfly', 'sk': 'Sociálny motýľ'},
+        'description': {'en': 'Invite 5 friends who join', 'sk': 'Pozvite 5 priateľov, ktorí sa pripoja'},
+        'icon': 'Star',
+        'color': '#ec4899',  # pink
+        'category': 'referral'
+    },
+    'referrer_10': {
+        'id': 'referrer_10',
+        'name': {'en': 'Community Builder', 'sk': 'Tvorca komunity'},
+        'description': {'en': 'Invite 10 friends who join', 'sk': 'Pozvite 10 priateľov, ktorí sa pripoja'},
+        'icon': 'Star',
+        'color': '#8b5cf6',  # violet
+        'category': 'referral'
+    },
+    'referrer_25': {
+        'id': 'referrer_25',
+        'name': {'en': 'Ambassador', 'sk': 'Veľvyslanec'},
+        'description': {'en': 'Invite 25 friends who join', 'sk': 'Pozvite 25 priateľov, ktorí sa pripoja'},
+        'icon': 'Star',
+        'color': '#7c3aed',  # purple
+        'category': 'referral'
+    },
 }
 
 
