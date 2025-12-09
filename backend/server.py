@@ -74,6 +74,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=6)
     nickname: str = Field(min_length=2, max_length=50)
+    referral_code: Optional[str] = None
 
 class LoginRequest(BaseModel):
     email: EmailStr
