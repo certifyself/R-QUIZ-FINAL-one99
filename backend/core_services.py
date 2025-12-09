@@ -166,11 +166,19 @@ def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'e
         topic = topics_col.find_one({'_id': topic_oid})
         topic_name = topic['name'] if topic else 'Unknown'
         
-        # Get 3 random active questions for this topic
-        questions = list(questions_col.find({
-            'topic_id': topic_oid,
-            'active': True
-        }).limit(3))
+        # Get 3 random active questions for this topic using MongoDB's $sample
+        # This ensures different questions are selected each time
+        questions = list(questions_col.aggregate([
+            {
+                '$match': {
+                    'topic_id': topic_oid,
+                    'active': True
+                }
+            },
+            {
+                '$sample': {'size': 3}
+            }
+        ]))
         
         if len(questions) < 3:
             raise ValueError(f"Topic {topic_id} ({topic_name}) has fewer than 3 active questions")
