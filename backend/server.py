@@ -178,6 +178,20 @@ def register(data: RegisterRequest):
     if users_col.find_one({'email': data.email}):
         raise HTTPException(status_code=400, detail="Email already registered")
     
+    # Generate unique referral code for this user
+    import secrets
+    referral_code = secrets.token_urlsafe(8)[:8].upper()
+    # Ensure uniqueness
+    while users_col.find_one({'referral_code': referral_code}):
+        referral_code = secrets.token_urlsafe(8)[:8].upper()
+    
+    # Check if referred by someone
+    referred_by = None
+    if data.referral_code:
+        referrer = users_col.find_one({'referral_code': data.referral_code})
+        if referrer:
+            referred_by = referrer['_id']
+    
     # Create user
     user_doc = {
         'email': data.email,
@@ -185,6 +199,9 @@ def register(data: RegisterRequest):
         'nickname': data.nickname,
         'role': 'user',
         'avatar_seed': data.nickname[0].upper(),
+        'referral_code': referral_code,
+        'referred_by': referred_by,
+        'referral_count': 0,
         'stats': {
             'quizzes_played': 0,
             'avg_correct': 0,
@@ -196,6 +213,15 @@ def register(data: RegisterRequest):
     
     result = users_col.insert_one(user_doc)
     user_doc['_id'] = result.inserted_id
+    
+    # If referred, increment referrer's count and check for badges
+    if referred_by:
+        users_col.update_one(
+            {'_id': referred_by},
+            {'$inc': {'referral_count': 1}}
+        )
+        # Check for referral badges
+        _check_referral_badges(referred_by, users_col)
     
     # Create token
     token = create_token(str(result.inserted_id), data.email, 'user')
