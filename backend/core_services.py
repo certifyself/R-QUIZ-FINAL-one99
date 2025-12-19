@@ -96,24 +96,26 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
         if q_count >= 3:
             active_topics.append(topic['_id'])
     
-    # Need at least 110 topics (11 quizzes × 10 topics each)
-    # But can reuse topics across different quizzes
-    if len(active_topics) < 10:
-        raise ValueError(f"Need at least 10 topics with 3+ questions each. Found: {len(active_topics)}")
+    # Need at least 110 unique topics (11 quizzes × 10 topics each)
+    # NO topic should repeat in a single day to avoid duplicate questions
+    if len(active_topics) < 110:
+        raise ValueError(f"Need at least 110 unique topics with 3+ questions each. Found: {len(active_topics)}")
     
     # Use date as seed for deterministic selection
     seed = int(pack_date.strftime('%Y%m%d'))
     rng = random.Random(seed)
     
-    # Generate 11 quizzes, each with 10 topics
+    # Shuffle all topics once for the day
+    shuffled_topics = active_topics.copy()
+    rng.shuffle(shuffled_topics)
+    
+    # Generate 11 quizzes, each with 10 UNIQUE topics (no repeats across quizzes)
     quizzes = []
     for quiz_idx in range(11):
-        # Shuffle topics for this quiz
-        shuffled = active_topics.copy()
-        rng.shuffle(shuffled)
-        
-        # Select 10 topics for this quiz
-        quiz_topics = shuffled[:10]
+        # Take next 10 topics from the shuffled list
+        start_idx = quiz_idx * 10
+        end_idx = start_idx + 10
+        quiz_topics = shuffled_topics[start_idx:end_idx]
         
         quizzes.append({
             'index': quiz_idx,
