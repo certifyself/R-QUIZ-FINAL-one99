@@ -102,7 +102,7 @@ export function GroupsPage() {
   };
 
   const handleWhatsAppInvite = (group) => {
-    const inviteUrl = `https://socraquest.preview.emergentagent.com/groups/join/${group.code}`;
+    const inviteUrl = `https://mindgames-19.preview.emergentagent.com/groups/join/${group.code}`;
     const message = t('groups.whatsapp_message', { 
       groupName: group.name, 
       groupCode: group.code, 

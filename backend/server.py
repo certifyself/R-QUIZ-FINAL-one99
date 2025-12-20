@@ -1592,7 +1592,7 @@ def send_group_invite(
     
     # For now, we'll just return the invite details
     # In production, you would integrate with an email service (SendGrid, AWS SES, etc.)
-    invite_url = f"https://socraquest.preview.emergentagent.com/groups/join/{group['code']}"
+    invite_url = f"https://mindgames-19.preview.emergentagent.com/groups/join/{group['code']}"
     
     # TODO: Send actual email using email service
     # For now, return the details that would be sent
@@ -1675,7 +1675,7 @@ def get_referral_stats(current_user: Dict = Depends(get_current_user)):
         'referral_code': referral_code,
         'referral_count': referral_count,
         'referred_users': [serialize_doc(u) for u in referred_users],
-        'invite_url': f"https://socraquest.preview.emergentagent.com/auth?ref={referral_code}"
+        'invite_url': f"https://mindgames-19.preview.emergentagent.com/auth?ref={referral_code}"
     }
 
     

@@ -22,7 +22,7 @@ Currently returns:
     "to": "friend@example.com",
     "group_name": "My Group",
     "group_code": "ABC123",
-    "invite_url": "https://socraquest.preview.emergentagent.com/groups/join/ABC123"
+    "invite_url": "https://mindgames-19.preview.emergentagent.com/groups/join/ABC123"
   }
 }
 ```

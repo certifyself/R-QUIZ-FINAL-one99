@@ -270,7 +270,7 @@ Located in `/app/backend/core_services.py`:
 - ✅ Serialization helpers implemented
 
 ### Application URL
-🌐 **Live Preview:** https://socraquest.preview.emergentagent.com
+🌐 **Live Preview:** https://mindgames-19.preview.emergentagent.com
 
 ---
 
