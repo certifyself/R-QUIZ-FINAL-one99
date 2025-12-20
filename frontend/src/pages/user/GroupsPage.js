@@ -84,12 +84,12 @@ export function GroupsPage() {
     setInviting(true);
     try {
       await userAPI.sendGroupInvite(selectedGroup._id, inviteEmail, inviteMessage);
-      toast.success(`Invitation sent to ${inviteEmail}!`);
+      toast.success(t('groups.invitation_sent', { email: inviteEmail }));
       setInviteEmail('');
       setInviteMessage('');
       setInviteOpen(false);
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to send invitation');
+      toast.error(error.response?.data?.detail || t('groups.failed_to_send_invitation'));
     } finally {
       setInviting(false);
     }
@@ -97,22 +97,22 @@ export function GroupsPage() {
 
   const openInviteDialog = (group) => {
     setSelectedGroup(group);
-    setInviteMessage(`Join my group "${group.name}" on SocraQuest! Let's compete and have fun together.`);
+    setInviteMessage(t('groups.default_invite_message', { groupName: group.name }));
     setInviteOpen(true);
   };
 
   const handleWhatsAppInvite = (group) => {
     const inviteUrl = `https://socraquest.preview.emergentagent.com/groups/join/${group.code}`;
-    const message = `🎮 *Join my SocraQuest group!*\n\n` +
-      `Group: *${group.name}*\n` +
-      `Code: *${group.code}*\n\n` +
-      `Let's compete and have fun together!\n\n` +
-      `Click to join: ${inviteUrl}`;
+    const message = t('groups.whatsapp_message', { 
+      groupName: group.name, 
+      groupCode: group.code, 
+      inviteUrl: inviteUrl 
+    });
     
     // Open WhatsApp with pre-filled message
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
-    toast.success('WhatsApp opened! Send to your friends.');
+    toast.success(t('groups.whatsapp_opened'));
   };
 
 
