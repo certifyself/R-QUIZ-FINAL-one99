@@ -36,7 +36,7 @@ export function GroupsPage() {
       const res = await userAPI.getGroups();
       setGroups(res.data.groups);
     } catch (error) {
-      toast.error('Failed to load groups');
+      toast.error(t('groups.failed_to_load'));
     } finally {
       setLoading(false);
     }
@@ -47,12 +47,12 @@ export function GroupsPage() {
     setCreating(true);
     try {
       await userAPI.createGroup({ name: groupName });
-      toast.success('Group created successfully!');
+      toast.success(t('groups.group_created'));
       setGroupName('');
       setCreateOpen(false);
       loadGroups();
     } catch (error) {
-      toast.error('Failed to create group');
+      toast.error(t('groups.failed_to_create'));
     } finally {
       setCreating(false);
     }
@@ -63,14 +63,14 @@ export function GroupsPage() {
     setJoining(true);
     try {
       await userAPI.joinGroup({ code: joinCode });
-      toast.success('Joined group successfully!');
+      toast.success(t('groups.joined_successfully'));
       setJoinCode('');
       setJoinOpen(false);
       loadGroups();
     } catch (error) {
       console.error('Join group error:', error.response?.data);
-      const errorMsg = error.response?.data?.detail || error.response?.data?.message || 'Failed to join group';
-      toast.error(typeof errorMsg === 'string' ? errorMsg : 'Failed to join group. Please check the code.');
+      const errorMsg = error.response?.data?.detail || error.response?.data?.message || t('groups.failed_to_join');
+      toast.error(typeof errorMsg === 'string' ? errorMsg : t('groups.failed_to_join_check_code'));
     } finally {
       setJoining(false);
     }
