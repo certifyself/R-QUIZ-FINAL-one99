@@ -308,7 +308,7 @@ export function HomePage() {
                   {pack.bonus_quiz.best_score && (
                     <div className="flex items-center space-x-4 text-sm mb-4">
                       <span className="px-4 py-2 bg-amber-200 text-amber-900 rounded-full font-bold shadow-sm">
-                        {t('home.best')}: {pack.bonus_quiz.best_score.percentage.toFixed(0)}%
+                        {t('home.best')}: {formatPercentage(pack.bonus_quiz.best_score.percentage, 1)}%
                       </span>
                       <span className="text-slate-700 font-mono font-semibold">
                         {(pack.bonus_quiz.best_score.time_ms / 1000).toFixed(0)}s
