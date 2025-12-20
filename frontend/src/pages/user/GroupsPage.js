@@ -99,6 +99,20 @@ export function GroupsPage() {
     setInviteOpen(true);
   };
 
+  const handleWhatsAppInvite = (group) => {
+    const inviteUrl = `https://socraquest.preview.emergentagent.com/groups/join/${group.code}`;
+    const message = `🎮 *Join my SocraQuest group!*\n\n` +
+      `Group: *${group.name}*\n` +
+      `Code: *${group.code}*\n\n` +
+      `Let's compete and have fun together!\n\n` +
+      `Click to join: ${inviteUrl}`;
+    
+    // Open WhatsApp with pre-filled message
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    toast.success('WhatsApp opened! Send to your friends.');
+  };
+
 
   if (loading) {
     return <LoadingSpinner className="py-20" />;
