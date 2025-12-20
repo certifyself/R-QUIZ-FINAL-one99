@@ -27,6 +27,7 @@ manual_ads_col = db['manual_ads']  # Manual ads collection
 notification_settings_col = db['notification_settings']  # User notification preferences
 notification_logs_col = db['notification_logs']  # Notification history
 user_devices_col = db['user_devices']  # FCM tokens
+used_questions_col = db['used_questions']  # Track globally used questions to prevent repeats
 
 
 def serialize_doc(doc: Optional[Dict]) -> Optional[Dict]:
