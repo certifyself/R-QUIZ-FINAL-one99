@@ -73,7 +73,7 @@ export function ProfilePage() {
         </div>
         <div className="bg-white rounded-xl p-6 border border-slate-200 text-center">
           <Trophy className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-slate-900 font-['Azeret_Mono']">{profile.stats?.best_score || 0}%</p>
+          <p className="text-2xl font-bold text-slate-900 font-['Azeret_Mono']">{formatPercentage(profile.stats?.best_score, 1)}%</p>
           <p className="text-xs text-slate-600 mt-1">Personal Best</p>
         </div>
       </div>
