@@ -74,6 +74,32 @@ export function GroupsPage() {
     }
   };
 
+
+  const handleInvite = async (e) => {
+    e.preventDefault();
+    if (!inviteEmail || !selectedGroup) return;
+
+    setInviting(true);
+    try {
+      await userAPI.sendGroupInvite(selectedGroup._id, inviteEmail, inviteMessage);
+      toast.success(`Invitation sent to ${inviteEmail}!`);
+      setInviteEmail('');
+      setInviteMessage('');
+      setInviteOpen(false);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Failed to send invitation');
+    } finally {
+      setInviting(false);
+    }
+  };
+
+  const openInviteDialog = (group) => {
+    setSelectedGroup(group);
+    setInviteMessage(`Join my group "${group.name}" on SocraQuest! Let's compete and have fun together.`);
+    setInviteOpen(true);
+  };
+
+
   if (loading) {
     return <LoadingSpinner className="py-20" />;
   }
