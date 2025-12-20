@@ -96,10 +96,11 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
         if q_count >= 3:
             active_topics.append(topic['_id'])
     
-    # Need at least 110 unique topics (11 quizzes × 10 topics each)
-    # NO topic should repeat in a single day to avoid duplicate questions
-    if len(active_topics) < 110:
-        raise ValueError(f"Need at least 110 unique topics with 3+ questions each. Found: {len(active_topics)}")
+    # Check how many topics we have
+    total_topics_needed = 110  # Ideal: 11 quizzes × 10 topics, no repeats
+    
+    if len(active_topics) < 10:
+        raise ValueError(f"Need at least 10 topics with 3+ questions each. Found: {len(active_topics)}")
     
     # Use date as seed for deterministic selection
     seed = int(pack_date.strftime('%Y%m%d'))
@@ -109,13 +110,37 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     shuffled_topics = active_topics.copy()
     rng.shuffle(shuffled_topics)
     
-    # Generate 11 quizzes, each with 10 UNIQUE topics (no repeats across quizzes)
+    # Generate 11 quizzes, minimizing topic repeats
     quizzes = []
+    used_topic_count = {}
+    
     for quiz_idx in range(11):
-        # Take next 10 topics from the shuffled list
-        start_idx = quiz_idx * 10
-        end_idx = start_idx + 10
-        quiz_topics = shuffled_topics[start_idx:end_idx]
+        quiz_topics = []
+        
+        # Try to select 10 topics, preferring those used least
+        candidates = shuffled_topics.copy()
+        
+        for _ in range(10):
+            if not candidates:
+                # Ran out of candidates, reshuffle and continue
+                candidates = shuffled_topics.copy()
+                rng.shuffle(candidates)
+            
+            # Find topic used least frequently
+            best_topic = None
+            min_usage = float('inf')
+            
+            for topic in candidates:
+                topic_str = str(topic)
+                usage = used_topic_count.get(topic_str, 0)
+                if usage < min_usage:
+                    min_usage = usage
+                    best_topic = topic
+            
+            if best_topic:
+                quiz_topics.append(best_topic)
+                used_topic_count[str(best_topic)] = used_topic_count.get(str(best_topic), 0) + 1
+                candidates.remove(best_topic)
         
         quizzes.append({
             'index': quiz_idx,
