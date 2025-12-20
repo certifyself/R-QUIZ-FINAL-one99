@@ -251,8 +251,8 @@ export function GroupsPage() {
       {groups.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-xl border border-slate-200">
           <UsersIcon className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-slate-900 mb-2">No groups yet</h3>
-          <p className="text-slate-600 mb-4">Create or join a group to compete with friends!</p>
+          <h3 className="text-lg font-medium text-slate-900 mb-2">{t('groups.no_groups')}</h3>
+          <p className="text-slate-600 mb-4">{t('groups.create_or_join')}</p>
         </div>
       ) : (
         <div className="grid gap-4">
@@ -261,10 +261,10 @@ export function GroupsPage() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 font-['Space_Grotesk']">{group.name}</h3>
-                  <p className="text-sm text-slate-600">{group.member_count} members</p>
+                  <p className="text-sm text-slate-600">{group.member_count} {t('groups.members')}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-slate-500 mb-1">Group Code</p>
+                  <p className="text-xs text-slate-500 mb-1">{t('groups.group_code')}</p>
                   <p className="text-lg font-mono font-bold text-teal-600">{group.code}</p>
                 </div>
               </div>
@@ -278,7 +278,7 @@ export function GroupsPage() {
                   data-testid="invite-email-button"
                 >
                   <Mail className="w-4 h-4 mr-2" />
-                  Email
+                  {t('groups.email')}
                 </Button>
                 
                 <Button
@@ -288,7 +288,7 @@ export function GroupsPage() {
                   data-testid="invite-whatsapp-button"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
-                  WhatsApp
+                  {t('groups.whatsapp')}
                 </Button>
               </div>
             </div>
