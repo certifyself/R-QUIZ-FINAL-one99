@@ -690,6 +690,71 @@ def create_indexes():
     print("✅ Indexes created successfully")
 
 
+def get_question_usage_stats() -> Dict[str, Any]:
+    """
+    Get statistics about question usage for the no-repeat system.
+    
+    Returns:
+        {
+            'total_questions': int,
+            'used_questions': int,
+            'remaining_questions': int,
+            'usage_percentage': float,
+            'last_reset': datetime or None,
+            'last_updated': datetime or None
+        }
+    """
+    total_active = questions_col.count_documents({'active': True})
+    
+    tracker = used_questions_col.find_one({'_id': 'global_tracker'})
+    
+    if tracker:
+        used_count = len(tracker.get('question_ids', []))
+        return {
+            'total_questions': total_active,
+            'used_questions': used_count,
+            'remaining_questions': total_active - used_count,
+            'usage_percentage': round((used_count / total_active * 100), 2) if total_active > 0 else 0,
+            'last_reset': tracker.get('last_reset'),
+            'last_updated': tracker.get('last_updated')
+        }
+    
+    return {
+        'total_questions': total_active,
+        'used_questions': 0,
+        'remaining_questions': total_active,
+        'usage_percentage': 0,
+        'last_reset': None,
+        'last_updated': None
+    }
+
+
+def reset_question_usage() -> Dict[str, Any]:
+    """
+    Manually reset the question usage tracker.
+    This will allow all questions to be used again.
+    
+    Returns:
+        {'success': True, 'message': str}
+    """
+    result = used_questions_col.update_one(
+        {'_id': 'global_tracker'},
+        {
+            '$set': {
+                'question_ids': [],
+                'last_reset': datetime.utcnow(),
+                'reset_reason': 'manual'
+            }
+        },
+        upsert=True
+    )
+    
+    return {
+        'success': True,
+        'message': 'Question usage tracker has been reset. All questions are now available.'
+    }
+
+
 if __name__ == '__main__':
     # Create indexes when module is run directly
     create_indexes()
