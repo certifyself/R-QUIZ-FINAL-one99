@@ -145,8 +145,7 @@ export function ResultsPage() {
       {/* Ad Gate before viewing answers */}
       {showAdGate && (
         <RewardedGate
-          onComplete={handleAdComplete}
-          onSkip={() => setShowAdGate(false)}
+          onFinish={handleAdComplete}
           message={t('results.watch_ad_for_answers') || "Watch a short ad to view correct answers"}
         />
       )}
