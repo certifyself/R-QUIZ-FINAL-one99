@@ -115,6 +115,11 @@ export const userAPI = {
   joinGroup: (data) => api.post('/api/groups/join', data),
   getGroupMembers: (groupId) => api.get(`/api/groups/${groupId}/members`),
   getGroupLeaderboard: (groupId, quizIndex) => api.get(`/api/groups/${groupId}/leaderboard`, { params: { quiz_index: quizIndex } }),
+  sendGroupInvite: (groupId, email, message) => api.post(`/api/groups/${groupId}/invite`, {
+    group_id: groupId,
+    email: email,
+    message: message
+  }),
   
   // Profile
   getProfile: () => api.get('/api/profile'),
