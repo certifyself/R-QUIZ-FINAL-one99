@@ -193,6 +193,17 @@ export function GroupsPage() {
           <DialogHeader>
             <DialogTitle>Invite Friends to {selectedGroup?.name}</DialogTitle>
           </DialogHeader>
+          
+          {/* Note about email service */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+            <p className="text-sm text-amber-900">
+              ⚠️ <strong>Note:</strong> Email service is not fully configured yet. 
+              Your friend will need to manually use the group code to join.
+              <br/>
+              <strong>Tip:</strong> Use WhatsApp button for instant sharing!
+            </p>
+          </div>
+          
           <form onSubmit={handleInvite} className="space-y-4">
             <div>
               <Label htmlFor="invite-email">Friend's Email</Label>
