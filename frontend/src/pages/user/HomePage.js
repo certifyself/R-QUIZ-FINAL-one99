@@ -187,7 +187,7 @@ export function HomePage() {
                     {quiz.best_score && (
                       <div className="flex items-center space-x-4 text-sm">
                         <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full font-semibold">
-                          {t('home.best')}: {quiz.best_score.percentage.toFixed(0)}%
+                          {t('home.best')}: {formatPercentage(quiz.best_score.percentage, 1)}%
                         </span>
                         <span className="text-slate-600 font-mono">
                           {(quiz.best_score.time_ms / 1000).toFixed(0)}s
