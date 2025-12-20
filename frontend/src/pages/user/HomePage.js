@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userAPI } from '../../lib/api';
+import { formatPercentage } from '../../lib/utils';
 import { Button } from '../../components/ui/button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { Lock, CheckCircle2, Play, Trophy, Sparkles, Clock } from 'lucide-react';
