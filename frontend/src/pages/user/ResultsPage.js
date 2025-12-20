@@ -138,6 +138,15 @@ export function ResultsPage() {
         onClose={() => setEarnedBadges([])}
       />
       
+      {/* Ad Gate before viewing answers */}
+      {showAdGate && (
+        <RewardedGate
+          onComplete={handleAdComplete}
+          onSkip={() => setShowAdGate(false)}
+          message={t('results.watch_ad_for_answers') || "Watch a short ad to view correct answers"}
+        />
+      )}
+      
       {/* Results Card */}
       <div className="bg-white rounded-2xl p-8 border border-slate-200 text-center">
         <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center">
