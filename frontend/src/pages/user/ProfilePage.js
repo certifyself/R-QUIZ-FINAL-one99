@@ -3,7 +3,7 @@ import { userAPI } from '../../lib/api';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { User, Trophy, Target, Award } from 'lucide-react';
 import { toast } from 'sonner';
-import { getInitials } from '../../lib/utils';
+import { getInitials, formatPercentage } from '../../lib/utils';
 import { BadgeCard } from '../../components/BadgeCard';
 
 export function ProfilePage() {
