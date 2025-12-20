@@ -116,13 +116,6 @@ class QuestionUpdate(BaseModel):
     active: Optional[bool] = None
 
 class AnswerSubmit(BaseModel):
-
-
-class GroupInvite(BaseModel):
-    group_id: str
-    email: EmailStr
-    message: Optional[str] = None
-
     question_id: str
     choice_key: str
 
@@ -131,10 +124,15 @@ class QuizSubmit(BaseModel):
     time_ms: int
 
 class GroupCreate(BaseModel):
-    name: str = Field(min_length=2, max_length=100)
+    name: str = Field(min_length=2, max_length=50)
 
 class GroupJoin(BaseModel):
     code: str = Field(min_length=6, max_length=10)
+
+class GroupInvite(BaseModel):
+    group_id: str
+    email: EmailStr
+    message: Optional[str] = None
 
 # ============================================================================
 # AUTH HELPERS
