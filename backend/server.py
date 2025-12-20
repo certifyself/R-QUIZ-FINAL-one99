@@ -1575,6 +1575,40 @@ def get_group_leaderboard(
 @app.get("/api/profile")
 def get_profile(current_user: Dict = Depends(get_current_user)):
     user_id = ObjectId(current_user['_id'])
+    user = users_col.find_one({'_id': user_id})
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Get user stats
+    total_quizzes = results_col.count_documents({'user_id': user_id})
+    
+    # Get unique quizzes completed
+    unique_quizzes = len(results_col.distinct('quiz_index', {'user_id': user_id}))
+    
+    # Get best score
+    best_result = results_col.find_one(
+        {'user_id': user_id},
+        sort=[('best_pct', -1)]
+    )
+    best_score_pct = best_result['best_pct'] if best_result else 0
+    
+    # Get badges count
+    badges_count = len(user.get('badges', []))
+    
+    return {
+        'nickname': user['nickname'],
+        'email': user['email'],
+        'avatar_seed': user.get('avatar_seed', user['nickname'][0].upper()),
+        'referral_code': user.get('referral_code', ''),
+        'stats': {
+            'total_quizzes': total_quizzes,
+            'unique_quizzes': unique_quizzes,
+            'best_score': best_score_pct
+        },
+        'badges_count': badges_count,
+        'created_at': user.get('created_at')
+    }
 
 
 @app.get("/api/referrals")
