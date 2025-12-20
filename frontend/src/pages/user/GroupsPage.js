@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { userAPI } from '../../lib/api';
 import { Button } from '../../components/ui/button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { Trophy, Plus, UserPlus, Users as UsersIcon, Mail } from 'lucide-react';
+import { Trophy, Plus, UserPlus, Users as UsersIcon, Mail, MessageCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
