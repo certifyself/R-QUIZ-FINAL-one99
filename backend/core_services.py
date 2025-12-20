@@ -67,13 +67,19 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     Generate daily pack with 11 quizzes.
     Each quiz contains 10 topics (30 questions total per quiz).
     
+    QUESTION NON-REPEAT LOGIC:
+    - Tracks all questions used globally in 'used_questions' collection
+    - Questions won't repeat until ALL questions in the database have been used
+    - Once all questions are exhausted, the tracking resets automatically
+    
     Returns:
         {
             'date': str (YYYY-MM-DD),
             'quizzes': [
                 {
                     'index': 0-10,
-                    'topic_ids': [ObjectId x 10]  # 10 topics per quiz
+                    'topic_ids': [ObjectId x 10],
+                    'question_ids': [[q1, q2, q3] x 10]  # Pre-selected questions
                 }
             ],
             'generated_at': datetime
@@ -97,13 +103,34 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
         if q_count >= 3:
             active_topics.append(topic['_id'])
     
-    # Check how many topics we have
-    total_topics_needed = 110  # Ideal: 11 quizzes × 10 topics, no repeats
-    
     if len(active_topics) < 10:
         raise ValueError(f"Need at least 10 topics with 3+ questions each. Found: {len(active_topics)}")
     
-    # Use date as seed for deterministic selection
+    # Get set of already-used question IDs
+    used_question_ids = set()
+    used_doc = used_questions_col.find_one({'_id': 'global_tracker'})
+    if used_doc and 'question_ids' in used_doc:
+        used_question_ids = set(used_doc['question_ids'])
+    
+    # Get total active questions count
+    total_active_questions = questions_col.count_documents({'active': True})
+    
+    # Check if we need to reset (all questions used)
+    # We need 330 questions per day (11 quizzes × 10 topics × 3 questions)
+    questions_needed_today = 330
+    available_unused = total_active_questions - len(used_question_ids)
+    
+    if available_unused < questions_needed_today:
+        # Reset tracking - all questions have been used
+        print(f"🔄 Resetting question tracker. Used: {len(used_question_ids)}, Total: {total_active_questions}")
+        used_question_ids = set()
+        used_questions_col.update_one(
+            {'_id': 'global_tracker'},
+            {'$set': {'question_ids': [], 'last_reset': datetime.utcnow()}},
+            upsert=True
+        )
+    
+    # Use date as seed for deterministic topic selection
     seed = int(pack_date.strftime('%Y%m%d'))
     rng = random.Random(seed)
     
@@ -114,9 +141,11 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     # Generate 11 quizzes, minimizing topic repeats
     quizzes = []
     used_topic_count = {}
+    newly_used_question_ids = []  # Track questions used in this pack
     
     for quiz_idx in range(11):
         quiz_topics = []
+        quiz_question_ids = []  # Store pre-selected question IDs for each topic
         
         # Try to select 10 topics, preferring those used least
         candidates = shuffled_topics.copy()
@@ -139,26 +168,108 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
                     best_topic = topic
             
             if best_topic:
-                quiz_topics.append(best_topic)
-                used_topic_count[str(best_topic)] = used_topic_count.get(str(best_topic), 0) + 1
-                candidates.remove(best_topic)
+                # Select 3 questions for this topic, excluding already-used ones
+                topic_questions = select_questions_for_topic(
+                    best_topic, 
+                    used_question_ids, 
+                    rng
+                )
+                
+                if len(topic_questions) >= 3:
+                    quiz_topics.append(best_topic)
+                    selected_q_ids = [str(q['_id']) for q in topic_questions[:3]]
+                    quiz_question_ids.append(selected_q_ids)
+                    
+                    # Mark these questions as used
+                    for q_id in selected_q_ids:
+                        used_question_ids.add(q_id)
+                        newly_used_question_ids.append(q_id)
+                    
+                    used_topic_count[str(best_topic)] = used_topic_count.get(str(best_topic), 0) + 1
+                    candidates.remove(best_topic)
+                else:
+                    # Topic doesn't have enough unused questions, skip it
+                    candidates.remove(best_topic)
         
         quizzes.append({
             'index': quiz_idx,
-            'topic_ids': quiz_topics
+            'topic_ids': quiz_topics,
+            'question_ids': quiz_question_ids  # Pre-selected questions
         })
+    
+    # Update the global used questions tracker
+    if newly_used_question_ids:
+        used_questions_col.update_one(
+            {'_id': 'global_tracker'},
+            {
+                '$addToSet': {'question_ids': {'$each': newly_used_question_ids}},
+                '$set': {'last_updated': datetime.utcnow()}
+            },
+            upsert=True
+        )
     
     # Create pack document
     pack = {
         'date': date_str,
         'quizzes': quizzes,
-        'generated_at': datetime.utcnow()
+        'generated_at': datetime.utcnow(),
+        'questions_used': len(newly_used_question_ids),
+        'total_used_after': len(used_question_ids)
     }
     
     result = daily_packs_col.insert_one(pack)
     pack['_id'] = result.inserted_id
     
+    print(f"✅ Generated pack for {date_str}: {len(newly_used_question_ids)} new questions used, {len(used_question_ids)}/{total_active_questions} total used")
+    
     return serialize_doc(pack)
+
+
+def select_questions_for_topic(topic_id, used_question_ids: set, rng: random.Random) -> List[Dict]:
+    """
+    Select questions for a topic, prioritizing unused questions.
+    
+    Args:
+        topic_id: The topic ObjectId
+        used_question_ids: Set of already-used question ID strings
+        rng: Random number generator for shuffling
+    
+    Returns:
+        List of question documents (up to 3)
+    """
+    topic_oid = ObjectId(topic_id) if not isinstance(topic_id, ObjectId) else topic_id
+    
+    # Get all active questions for this topic
+    all_questions = list(questions_col.find({
+        'topic_id': topic_oid,
+        'active': True
+    }))
+    
+    # Separate into unused and used
+    unused_questions = [q for q in all_questions if str(q['_id']) not in used_question_ids]
+    used_questions = [q for q in all_questions if str(q['_id']) in used_question_ids]
+    
+    # Shuffle both lists
+    rng.shuffle(unused_questions)
+    rng.shuffle(used_questions)
+    
+    # Prioritize unused questions
+    selected = []
+    
+    # First, take from unused
+    for q in unused_questions:
+        if len(selected) >= 3:
+            break
+        selected.append(q)
+    
+    # If we still need more, take from used (fallback)
+    if len(selected) < 3:
+        for q in used_questions:
+            if len(selected) >= 3:
+                break
+            selected.append(q)
+    
+    return selected
 
 
 def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'en') -> List[Dict[str, Any]]:
