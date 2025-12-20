@@ -653,6 +653,45 @@ def get_metrics_admin(current_user: Dict = Depends(get_current_admin)):
         'avg_success_rate': round(avg_success, 1)
     }
 
+
+# ============================================================================
+# ADMIN - QUESTION USAGE TRACKING (NO-REPEAT SYSTEM)
+# ============================================================================
+
+@app.get("/api/admin/questions/usage-stats")
+def get_usage_stats(current_user: Dict = Depends(get_current_admin)):
+    """
+    Get statistics about question usage for the no-repeat system.
+    Shows how many questions have been used and how many remain.
+    """
+    stats = get_question_usage_stats()
+    return {
+        'success': True,
+        'stats': stats,
+        'info': 'Questions will not repeat until all questions have been used. System auto-resets when exhausted.'
+    }
+
+
+@app.post("/api/admin/questions/reset-usage")
+def reset_usage_tracking(current_user: Dict = Depends(get_current_admin)):
+    """
+    Manually reset the question usage tracker.
+    This allows all questions to be used again from scratch.
+    Use this after uploading new questions or when you want to start fresh.
+    """
+    result = reset_question_usage()
+    
+    # Also delete today's pack so it regenerates with fresh questions
+    today = date.today().isoformat()
+    daily_packs_col.delete_one({'date': today})
+    
+    return {
+        'success': True,
+        'message': 'Question usage tracker reset. Today\'s pack will regenerate with fresh questions.',
+        'action_taken': 'Deleted today\'s pack to force regeneration'
+    }
+
+
 # ============================================================================
 # ADMIN - BULK UPLOAD
 # ============================================================================
