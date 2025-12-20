@@ -166,7 +166,7 @@ export function ResultsPage() {
             <p className={`text-4xl font-bold font-['Azeret_Mono'] ${
               isExcellent ? 'text-emerald-600' : isGood ? 'text-teal-600' : isFair ? 'text-amber-600' : 'text-rose-600'
             }`}>
-              {percentage.toFixed(0)}%
+              {formatPercentage(percentage, 1)}%
             </p>
             <p className="text-xs text-slate-500 mt-1">
               {result.score.correct_count}/{result.score.total} correct
