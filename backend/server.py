@@ -24,6 +24,8 @@ from core_services import (
     get_attempt_count,
     is_quiz_locked,
     serialize_doc,
+    get_question_usage_stats,
+    reset_question_usage,
     db,
     users_col,
     topics_col,
