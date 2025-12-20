@@ -20,3 +20,8 @@ export function getInitials(name) {
     .toUpperCase()
     .slice(0, 2);
 }
+
+export function formatPercentage(value, decimals = 1) {
+  if (value == null || isNaN(value)) return '0';
+  return Number(value).toFixed(decimals);
+}
