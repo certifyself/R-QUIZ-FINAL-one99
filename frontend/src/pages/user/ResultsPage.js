@@ -58,6 +58,7 @@ export function ResultsPage() {
   };
   
   const handleAdComplete = async () => {
+    console.log('Ad completed, loading answers...');
     // Ad completed, now load and show answers
     setShowAdGate(false);
     await loadAndShowAnswers();
@@ -65,12 +66,15 @@ export function ResultsPage() {
   
   const loadAndShowAnswers = async () => {
     try {
+      console.log('Loading answers for quiz:', quizIndex);
       const currentLang = i18n.language.startsWith('sk') ? 'sk' : 'en';
       const res = await userAPI.getAnswers(quizIndex, currentLang);
+      console.log('Answers loaded:', res.data.questions.length, 'questions');
       setAnswers(res.data.questions);
       setShowAnswers(true);
     } catch (error) {
-      toast.error('Failed to load answers');
+      console.error('Error loading answers:', error);
+      toast.error(error.response?.data?.detail || 'Failed to load answers');
     }
   };
   
