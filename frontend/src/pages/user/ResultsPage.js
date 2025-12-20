@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { formatTime } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
 import { BadgeNotification } from '../../components/BadgeNotification';
+import { RewardedGate } from '../../components/RewardedGate';
 
 export function ResultsPage() {
   const { quizIndex } = useParams();
@@ -18,6 +19,7 @@ export function ResultsPage() {
   const [answers, setAnswers] = useState(null);
   const [locking, setLocking] = useState(false);
   const [showWarningDialog, setShowWarningDialog] = useState(false);
+  const [showAdGate, setShowAdGate] = useState(false);
   const [earnedBadges, setEarnedBadges] = useState([]);
   const { t, i18n} = useTranslation();
   
