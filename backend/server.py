@@ -1390,7 +1390,8 @@ def get_quiz_answers(
     topic_ids = quiz_data['topic_ids']
     
     # Get questions with correct answers (30 questions)
-    questions = get_quiz_questions(topic_ids, attempt_num=1, language=lang)
+    # Pass pack_date and quiz_index to use pre-selected questions
+    questions = get_quiz_questions(topic_ids, attempt_num=1, language=lang, pack_date=today, quiz_index=quiz_index)
     
     # Get user's last attempt answers
     last_attempt = attempts_col.find_one(
