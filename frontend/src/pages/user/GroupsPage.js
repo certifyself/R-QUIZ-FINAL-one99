@@ -160,27 +160,27 @@ export function GroupsPage() {
             <DialogTrigger asChild>
               <Button variant="outline" data-testid="join-group-button">
                 <UserPlus className="w-4 h-4 mr-2" />
-                Join
+                {t('groups.join')}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Join Group</DialogTitle>
+                <DialogTitle>{t('groups.join_group')}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleJoinGroup} className="space-y-4">
                 <div>
-                  <Label htmlFor="joinCode">Group Code</Label>
+                  <Label htmlFor="joinCode">{t('groups.group_code')}</Label>
                   <Input
                     id="joinCode"
                     value={joinCode}
                     onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                    placeholder="Enter group code"
+                    placeholder={t('groups.enter_code')}
                     required
                     data-testid="join-code-input"
                   />
                 </div>
                 <Button type="submit" disabled={joining} className="w-full" data-testid="join-group-submit">
-                  {joining ? 'Joining...' : 'Join Group'}
+                  {joining ? t('groups.joining') : t('groups.join_group')}
                 </Button>
               </form>
             </DialogContent>
