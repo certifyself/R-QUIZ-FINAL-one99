@@ -116,6 +116,13 @@ class QuestionUpdate(BaseModel):
     active: Optional[bool] = None
 
 class AnswerSubmit(BaseModel):
+
+
+class GroupInvite(BaseModel):
+    group_id: str
+    email: EmailStr
+    message: Optional[str] = None
+
     question_id: str
     choice_key: str
 
