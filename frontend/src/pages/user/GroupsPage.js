@@ -257,16 +257,28 @@ export function GroupsPage() {
                 </div>
               </div>
               
-              {/* Invite Button */}
-              <Button
-                onClick={() => openInviteDialog(group)}
-                variant="outline"
-                className="w-full border-teal-300 text-teal-700 hover:bg-teal-50"
-                data-testid="invite-friends-button"
-              >
-                <Mail className="w-4 h-4 mr-2" />
-                Invite Friends
-              </Button>
+              {/* Invite Buttons */}
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => openInviteDialog(group)}
+                  variant="outline"
+                  className="flex-1 border-teal-300 text-teal-700 hover:bg-teal-50"
+                  data-testid="invite-email-button"
+                >
+                  <Mail className="w-4 h-4 mr-2" />
+                  Email
+                </Button>
+                
+                <Button
+                  onClick={() => handleWhatsAppInvite(group)}
+                  variant="outline"
+                  className="flex-1 border-green-300 text-green-700 hover:bg-green-50"
+                  data-testid="invite-whatsapp-button"
+                >
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  WhatsApp
+                </Button>
+              </div>
             </div>
           ))}
         </div>
