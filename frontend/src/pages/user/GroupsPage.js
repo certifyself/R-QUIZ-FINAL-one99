@@ -193,26 +193,25 @@ export function GroupsPage() {
       <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Invite Friends to {selectedGroup?.name}</DialogTitle>
+            <DialogTitle>{t('groups.invite_friends_to')} {selectedGroup?.name}</DialogTitle>
           </DialogHeader>
           
           {/* Note about email service */}
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
             <p className="text-sm text-amber-900">
-              ⚠️ <strong>Note:</strong> Email service is not fully configured yet. 
-              Your friend will need to manually use the group code to join.
+              ⚠️ <strong>{t('groups.note')}:</strong> {t('groups.email_not_configured')}
               <br/>
-              <strong>Tip:</strong> Use WhatsApp button for instant sharing!
+              <strong>{t('groups.tip')}:</strong> {t('groups.use_whatsapp')}
             </p>
           </div>
           
           <form onSubmit={handleInvite} className="space-y-4">
             <div>
-              <Label htmlFor="invite-email">Friend's Email</Label>
+              <Label htmlFor="invite-email">{t('groups.friend_email')}</Label>
               <Input
                 id="invite-email"
                 type="email"
-                placeholder="friend@example.com"
+                placeholder={t('groups.email_placeholder')}
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 required
@@ -220,10 +219,10 @@ export function GroupsPage() {
             </div>
             
             <div>
-              <Label htmlFor="invite-message">Personal Message (Optional)</Label>
+              <Label htmlFor="invite-message">{t('groups.personal_message')}</Label>
               <Textarea
                 id="invite-message"
-                placeholder="Add a personal message..."
+                placeholder={t('groups.message_placeholder')}
                 value={inviteMessage}
                 onChange={(e) => setInviteMessage(e.target.value)}
                 rows={4}
@@ -231,9 +230,9 @@ export function GroupsPage() {
             </div>
             
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-xs text-blue-900 mb-1 font-medium">Group Code:</p>
+              <p className="text-xs text-blue-900 mb-1 font-medium">{t('groups.group_code')}:</p>
               <p className="text-lg font-mono font-bold text-blue-700">{selectedGroup?.code}</p>
-              <p className="text-xs text-blue-600 mt-1">Share this code so they can join!</p>
+              <p className="text-xs text-blue-600 mt-1">{t('groups.share_code')}</p>
             </div>
             
             <Button 
@@ -241,7 +240,7 @@ export function GroupsPage() {
               disabled={inviting}
               className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
             >
-              {inviting ? 'Sending...' : 'Send Invitation'}
+              {inviting ? t('groups.sending') : t('groups.send_invitation')}
             </Button>
           </form>
         </DialogContent>
