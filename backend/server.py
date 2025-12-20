@@ -1271,8 +1271,9 @@ def get_quiz(
             raise HTTPException(status_code=403, detail="Complete all 10 quizzes to unlock bonus")
     
     # Get questions with randomized options (30 questions from 10 topics)
+    # Pass pack_date and quiz_index to use pre-selected questions (no-repeat logic)
     next_attempt = attempt_count + 1
-    questions = get_quiz_questions(topic_ids, next_attempt, lang)
+    questions = get_quiz_questions(topic_ids, next_attempt, lang, pack_date=today, quiz_index=quiz_index)
     
     # Remove correct_key from questions (only show after viewing answers)
     for q in questions:
