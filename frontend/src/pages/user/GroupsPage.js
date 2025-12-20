@@ -172,6 +172,55 @@ export function GroupsPage() {
         </div>
       </div>
 
+
+      {/* Invite Dialog */}
+      <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Invite Friends to {selectedGroup?.name}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleInvite} className="space-y-4">
+            <div>
+              <Label htmlFor="invite-email">Friend's Email</Label>
+              <Input
+                id="invite-email"
+                type="email"
+                placeholder="friend@example.com"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                required
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="invite-message">Personal Message (Optional)</Label>
+              <Textarea
+                id="invite-message"
+                placeholder="Add a personal message..."
+                value={inviteMessage}
+                onChange={(e) => setInviteMessage(e.target.value)}
+                rows={4}
+              />
+            </div>
+            
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-xs text-blue-900 mb-1 font-medium">Group Code:</p>
+              <p className="text-lg font-mono font-bold text-blue-700">{selectedGroup?.code}</p>
+              <p className="text-xs text-blue-600 mt-1">Share this code so they can join!</p>
+            </div>
+            
+            <Button 
+              type="submit" 
+              disabled={inviting}
+              className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
+            >
+              {inviting ? 'Sending...' : 'Send Invitation'}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+
       {/* Groups List */}
       {groups.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-xl border border-slate-200">
