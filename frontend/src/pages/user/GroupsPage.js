@@ -193,6 +193,17 @@ export function GroupsPage() {
                   <p className="text-lg font-mono font-bold text-teal-600">{group.code}</p>
                 </div>
               </div>
+              
+              {/* Invite Button */}
+              <Button
+                onClick={() => openInviteDialog(group)}
+                variant="outline"
+                className="w-full border-teal-300 text-teal-700 hover:bg-teal-50"
+                data-testid="invite-friends-button"
+              >
+                <Mail className="w-4 h-4 mr-2" />
+                Invite Friends
+              </Button>
             </div>
           ))}
         </div>
