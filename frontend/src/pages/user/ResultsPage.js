@@ -53,7 +53,13 @@ export function ResultsPage() {
       return;
     }
     
-    // After 3 attempts, directly show answers
+    // After 3 attempts, show ad gate first
+    setShowAdGate(true);
+  };
+  
+  const handleAdComplete = async () => {
+    // Ad completed, now load and show answers
+    setShowAdGate(false);
     await loadAndShowAnswers();
   };
   
@@ -77,11 +83,11 @@ export function ResultsPage() {
       await userAPI.lockQuiz(quizIndex, true);
       toast.warning('Quiz locked. Score set to 0.');
       
-      // Load and show answers
-      await loadAndShowAnswers();
+      // Show ad gate before showing answers
+      setLocking(false);
+      setShowAdGate(true);
     } catch (error) {
       toast.error('Failed to lock quiz');
-    } finally {
       setLocking(false);
     }
   };
