@@ -1575,6 +1575,43 @@ def get_group_leaderboard(
         'leaderboard': leaderboard
     }
 
+
+@app.post("/api/groups/{group_id}/invite")
+def send_group_invite(
+    group_id: str,
+    invite: GroupInvite,
+    current_user: Dict = Depends(get_current_user)
+):
+    """Send email invitation to join a group"""
+    # Verify group exists and user is a member
+    group = groups_col.find_one({'_id': ObjectId(group_id)})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    # Check if sender is member
+    if ObjectId(current_user['_id']) not in group.get('members', []):
+        raise HTTPException(status_code=403, detail="Not a member of this group")
+    
+    # For now, we'll just return the invite details
+    # In production, you would integrate with an email service (SendGrid, AWS SES, etc.)
+    invite_url = f"https://socraquest.preview.emergentagent.com/groups/join/{group['code']}"
+    
+    # TODO: Send actual email using email service
+    # For now, return the details that would be sent
+    return {
+        'success': True,
+        'message': f'Invitation details prepared (email service not configured)',
+        'invite_details': {
+            'to': invite.email,
+            'group_name': group['name'],
+            'group_code': group['code'],
+            'invite_url': invite_url,
+            'invited_by': current_user['nickname'],
+            'custom_message': invite.message
+        }
+    }
+
+
 # ============================================================================
 # USER - PROFILE
 # ============================================================================
