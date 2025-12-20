@@ -125,7 +125,7 @@ export function HomePage() {
         >
           <p className="text-sm text-slate-600 mb-1 font-medium">{t('home.best_score')}</p>
           <p className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent font-['Azeret_Mono']">
-            {Math.max(...pack.quizzes.map(q => q.best_score?.percentage || 0).concat(0)).toFixed(0)}%
+            {formatPercentage(Math.max(...pack.quizzes.map(q => q.best_score?.percentage || 0).concat(0)), 1)}%
           </p>
           <div className="flex items-center space-x-1 mt-2 text-amber-600">
             {[...Array(3)].map((_, i) => (
