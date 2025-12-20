@@ -124,33 +124,33 @@ export function GroupsPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-slate-900 font-['Space_Grotesk']">My Groups</h1>
+        <h1 className="text-3xl font-bold text-slate-900 font-['Space_Grotesk']">{t('groups.title')}</h1>
         <div className="flex space-x-2">
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-teal-500 to-teal-600" data-testid="create-group-button">
                 <Plus className="w-4 h-4 mr-2" />
-                Create
+                {t('groups.create')}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create Group</DialogTitle>
+                <DialogTitle>{t('groups.create_group')}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleCreateGroup} className="space-y-4">
                 <div>
-                  <Label htmlFor="groupName">Group Name</Label>
+                  <Label htmlFor="groupName">{t('groups.group_name')}</Label>
                   <Input
                     id="groupName"
                     value={groupName}
                     onChange={(e) => setGroupName(e.target.value)}
-                    placeholder="Enter group name"
+                    placeholder={t('groups.enter_name')}
                     required
                     data-testid="group-name-input"
                   />
                 </div>
                 <Button type="submit" disabled={creating} className="w-full" data-testid="create-group-submit">
-                  {creating ? 'Creating...' : 'Create Group'}
+                  {creating ? t('groups.creating') : t('groups.create_group')}
                 </Button>
               </form>
             </DialogContent>
