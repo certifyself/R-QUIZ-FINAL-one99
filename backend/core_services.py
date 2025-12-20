@@ -272,16 +272,22 @@ def select_questions_for_topic(topic_id, used_question_ids: set, rng: random.Ran
     return selected
 
 
-def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'en') -> List[Dict[str, Any]]:
+def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'en', 
+                       pack_date: date = None, quiz_index: int = None) -> List[Dict[str, Any]]:
     """
     Get questions for multiple topics with randomized answer options.
     Different randomization for each attempt.
     Returns questions in specified language.
     
+    Uses PRE-SELECTED questions from the daily pack to ensure no question repeats
+    until all 1000 questions have been used.
+    
     Args:
         topic_ids: List of topic IDs (10 topics)
         attempt_num: Attempt number (for randomization seed)
         language: 'en' or 'sk'
+        pack_date: Date of the pack (to retrieve pre-selected questions)
+        quiz_index: Index of the quiz in the pack
     
     Returns:
         List of 30 questions (10 topics × 3 questions each)
@@ -298,6 +304,17 @@ def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'e
     """
     all_questions = []
     
+    # Try to get pre-selected questions from pack
+    pre_selected_questions = None
+    if pack_date and quiz_index is not None:
+        date_str = pack_date.isoformat() if isinstance(pack_date, date) else pack_date
+        pack = daily_packs_col.find_one({'date': date_str})
+        if pack and 'quizzes' in pack:
+            for quiz in pack['quizzes']:
+                if quiz['index'] == quiz_index and 'question_ids' in quiz:
+                    pre_selected_questions = quiz['question_ids']
+                    break
+    
     for topic_idx, topic_id in enumerate(topic_ids):
         topic_oid = ObjectId(topic_id)
         
@@ -305,25 +322,34 @@ def get_quiz_questions(topic_ids: List, attempt_num: int = 1, language: str = 'e
         topic = topics_col.find_one({'_id': topic_oid})
         topic_name = topic['name'] if topic else 'Unknown'
         
-        # Get 3 random active questions for this topic using MongoDB's $sample
-        # This ensures different questions are selected each time
-        questions = list(questions_col.aggregate([
-            {
-                '$match': {
-                    'topic_id': topic_oid,
-                    'active': True
-                }
-            },
-            {
-                '$sample': {'size': 3}
-            }
-        ]))
+        # Use pre-selected questions if available
+        if pre_selected_questions and topic_idx < len(pre_selected_questions):
+            question_ids = pre_selected_questions[topic_idx]
+            questions = []
+            for q_id in question_ids:
+                q = questions_col.find_one({'_id': ObjectId(q_id), 'active': True})
+                if q:
+                    questions.append(q)
+            
+            # If some pre-selected questions are missing, fall back to random selection
+            if len(questions) < 3:
+                additional = list(questions_col.aggregate([
+                    {'$match': {'topic_id': topic_oid, 'active': True, '_id': {'$nin': [ObjectId(qid) for qid in question_ids]}}},
+                    {'$sample': {'size': 3 - len(questions)}}
+                ]))
+                questions.extend(additional)
+        else:
+            # Fallback: Get 3 random active questions for this topic
+            questions = list(questions_col.aggregate([
+                {'$match': {'topic_id': topic_oid, 'active': True}},
+                {'$sample': {'size': 3}}
+            ]))
         
         if len(questions) < 3:
             raise ValueError(f"Topic {topic_id} ({topic_name}) has fewer than 3 active questions")
         
         # Process each question
-        for q in questions:
+        for q in questions[:3]:
             # Use question ID + attempt number as seed
             seed = str(q['_id']) + str(attempt_num)
             rng = random.Random(seed)
