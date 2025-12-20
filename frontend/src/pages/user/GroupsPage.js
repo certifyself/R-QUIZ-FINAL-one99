@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { userAPI } from '../../lib/api';
 import { Button } from '../../components/ui/button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { Trophy, Plus, UserPlus, Users as UsersIcon } from 'lucide-react';
+import { Trophy, Plus, UserPlus, Users as UsersIcon, Mail } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
+import { Textarea } from '../../components/ui/textarea';
 import { toast } from 'sonner';
 import { getInitials } from '../../lib/utils';
 
@@ -14,10 +15,15 @@ export function GroupsPage() {
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
   const [joinOpen, setJoinOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [groupName, setGroupName] = useState('');
   const [joinCode, setJoinCode] = useState('');
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteMessage, setInviteMessage] = useState('');
   const [creating, setCreating] = useState(false);
   const [joining, setJoining] = useState(false);
+  const [inviting, setInviting] = useState(false);
 
   useEffect(() => {
     loadGroups();
