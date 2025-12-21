@@ -50,6 +50,14 @@ BADGES = {
         'color': '#ec4899',  # pink
         'category': 'achievement'
     },
+    'daily_champion': {
+        'id': 'daily_champion',
+        'name': {'en': 'Daily Champion', 'sk': 'Denný šampión'},
+        'description': {'en': 'Complete all 11 quizzes (10 + bonus) in one day', 'sk': 'Dokončite všetkých 11 kvízov (10 + bonus) v jeden deň'},
+        'icon': 'Star',
+        'color': '#eab308',  # yellow/gold
+        'category': 'achievement'
+    },
     
     # Streak Badges
     'streak_3': {
