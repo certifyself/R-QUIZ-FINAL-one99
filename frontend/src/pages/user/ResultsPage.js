@@ -292,52 +292,6 @@ export function ResultsPage() {
         </div>
       </div>
 
-      {/* Warning Dialog for Early Answer Viewing */}
-      <Dialog open={showWarningDialog} onOpenChange={setShowWarningDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2 text-amber-700">
-              <AlertTriangle className="w-6 h-6" />
-              <span>{t('results.warning')}</span>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <p className="text-amber-900 font-medium mb-2">
-                {t('results.warning_title')}
-              </p>
-              <ul className="text-sm text-amber-800 space-y-1 list-disc list-inside">
-                <li>{t('results.warning_locked')} <strong>{t('results.warning_permanently_locked')}</strong> 🔒</li>
-                <li>{t('results.warning_score_zero')} <strong>{t('results.warning_zero_points')}</strong> ⚠️</li>
-                <li>{t('results.warning_cannot_retry')}</li>
-              </ul>
-            </div>
-            
-            <p className="text-slate-700 text-sm">
-              {t('results.warning_attempts_remaining')} <strong>{result.attempts_remaining}</strong> {t('results.warning_attempts_text')} 
-              {t('results.warning_confirm')}
-            </p>
-            
-            <div className="flex space-x-3">
-              <Button
-                onClick={() => setShowWarningDialog(false)}
-                variant="outline"
-                className="flex-1"
-              >
-                {t('results.cancel_keep_playing')}
-              </Button>
-              <Button
-                onClick={confirmViewAnswersWithPenalty}
-                disabled={locking}
-                className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
-              >
-                {locking ? t('results.locking') : t('results.yes_view_answers')}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
       {/* Answers Review */}
       {showAnswers && answers && (
         <div className="bg-white rounded-xl p-6 border border-slate-200">
