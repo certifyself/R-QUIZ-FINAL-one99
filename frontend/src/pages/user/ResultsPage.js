@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { userAPI } from '../../lib/api';
 import { Button } from '../../components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog';
-import { Trophy, Clock, Home, Eye, Lock, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Trophy, Home, Eye, Lock, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
-import { formatTime, formatPercentage } from '../../lib/utils';
+import { formatPercentage } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
 import { BadgeNotification } from '../../components/BadgeNotification';
 import { RewardedGate } from '../../components/RewardedGate';
@@ -18,7 +17,6 @@ export function ResultsPage() {
   const [showAnswers, setShowAnswers] = useState(false);
   const [answers, setAnswers] = useState(null);
   const [locking, setLocking] = useState(false);
-  const [showWarningDialog, setShowWarningDialog] = useState(false);
   const [showAdGate, setShowAdGate] = useState(false);
   const [showCompletionAd, setShowCompletionAd] = useState(true); // Show ad after quiz completion
   const [earnedBadges, setEarnedBadges] = useState([]);
