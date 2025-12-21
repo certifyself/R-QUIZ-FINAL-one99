@@ -161,6 +161,16 @@ function App() {
             }
           />
           <Route
+            path="/admin/image-quiz"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <AdminImageQuizPage />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/admin/ads"
             element={
               <PrivateRoute>
