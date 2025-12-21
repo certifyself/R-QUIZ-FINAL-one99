@@ -101,20 +101,22 @@ class BulkTopicOperation(BaseModel):
 
 class QuestionOption(BaseModel):
     key: str  # A, B, C, D
-    label: str
+    label: Any  # Can be string or dict {en: str, sk: str}
 
 class QuestionCreate(BaseModel):
     topic_id: str
-    text: str = Field(min_length=5)
+    text: Any = Field(min_length=5)  # Can be string or dict {en: str, sk: str}
     options: List[QuestionOption] = Field(min_length=4, max_length=4)
     correct_key: str  # A, B, C, or D
     image_url: Optional[str] = None  # Optional image URL
     active: bool = True
 
 class QuestionUpdate(BaseModel):
-    text: Optional[str] = None
+    topic_id: Optional[str] = None
+    text: Optional[Any] = None  # Can be string or dict
     options: Optional[List[QuestionOption]] = None
     correct_key: Optional[str] = None
+    image_url: Optional[str] = None
     active: Optional[bool] = None
 
 class AnswerSubmit(BaseModel):
