@@ -65,6 +65,11 @@ export function ResultsPage() {
     await loadAndShowAnswers();
   };
   
+  const handleCompletionAdFinish = () => {
+    console.log('Completion ad finished');
+    setShowCompletionAd(false);
+  };
+  
   const loadAndShowAnswers = async () => {
     try {
       console.log('Loading answers for quiz:', quizIndex);
