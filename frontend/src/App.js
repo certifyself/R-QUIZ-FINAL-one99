@@ -23,6 +23,7 @@ import { AdminTopicsPage } from './pages/admin/AdminTopicsPage';
 import { AdminQuestionsPage } from './pages/admin/AdminQuestionsPage';
 import { AdminAdsPage } from './pages/admin/AdminAdsPage';
 import { AdminNotificationsPage } from './pages/admin/AdminNotificationsPage';
+import { AdminImageQuizPage } from './pages/admin/AdminImageQuizPage';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
