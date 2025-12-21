@@ -20,6 +20,7 @@ export function ResultsPage() {
   const [locking, setLocking] = useState(false);
   const [showWarningDialog, setShowWarningDialog] = useState(false);
   const [showAdGate, setShowAdGate] = useState(false);
+  const [showCompletionAd, setShowCompletionAd] = useState(true); // Show ad after quiz completion
   const [earnedBadges, setEarnedBadges] = useState([]);
   const { t, i18n} = useTranslation();
   
