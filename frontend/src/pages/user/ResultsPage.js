@@ -262,8 +262,8 @@ export function ResultsPage() {
           {/* After 3 attempts - Show answers and locked message */}
           {isLocked && !showAnswers && (
             <>
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                <p className="text-sm text-amber-800 font-medium">
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                <p className="text-sm text-teal-800 font-medium">
                   🔒 {t('results.all_attempts_used')}
                 </p>
               </div>
