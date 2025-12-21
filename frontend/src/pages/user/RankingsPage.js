@@ -128,11 +128,11 @@ export function RankingsPage() {
                     <p className="text-sm text-slate-600">
                       {viewMode === 'daily' ? (
                         <>
-                          {entry.quizzes_completed} {t('rankings.quizzes') || 'quizzes'} • {entry.avg_percentage.toFixed(1)}% {t('rankings.avg') || 'avg'}
+                          {entry.quizzes_completed} {t('rankings.quizzes') || 'quizzes'} • {(entry.avg_percentage || 0).toFixed(1)}% {t('rankings.avg') || 'avg'}
                         </>
                       ) : (
                         <>
-                          {entry.percentage.toFixed(1)}% • {(entry.time_ms / 1000).toFixed(0)}s
+                          {(entry.percentage || 0).toFixed(1)}% • {((entry.time_ms || 0) / 1000).toFixed(0)}s
                         </>
                       )}
                     </p>
