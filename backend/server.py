@@ -1560,6 +1560,17 @@ def get_my_groups(current_user: Dict = Depends(get_current_user)):
     
     for group in groups:
         group['member_count'] = len(group.get('members', []))
+        # Get member details (nicknames)
+        member_details = []
+        for member_id in group.get('members', []):
+            member = users_col.find_one({'_id': member_id})
+            if member:
+                member_details.append({
+                    '_id': str(member_id),
+                    'nickname': member.get('nickname', 'Unknown'),
+                    'is_owner': member_id == group.get('owner_id')
+                })
+        group['member_details'] = member_details
     
     return {'groups': serialize_doc(groups)}
 
