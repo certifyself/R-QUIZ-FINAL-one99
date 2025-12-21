@@ -213,6 +213,17 @@ def check_and_award_badges(user_id: ObjectId, quiz_index: int, score: int, time_
     if 'bonus_hunter' not in earned_badge_ids and quiz_index == 10:  # Bonus quiz
         newly_earned.append(_award_badge(user_id, 'bonus_hunter', users_col, quiz_index))
     
+    # 6. Daily Champion Badge (all 11 quizzes in one day)
+    if 'daily_champion' not in earned_badge_ids:
+        today = date.today().isoformat()
+        completed_all_today = results_col.count_documents({
+            'user_id': user_id,
+            'date': today,
+            'quiz_index': {'$in': list(range(11))}  # quizzes 0-10
+        })
+        if completed_all_today >= 11:
+            newly_earned.append(_award_badge(user_id, 'daily_champion', users_col))
+    
     # 6. Completion Badges (based on unique quizzes completed)
     if 'quizzes_5' not in earned_badge_ids and total_unique_quizzes >= 5:
         newly_earned.append(_award_badge(user_id, 'quizzes_5', users_col))
