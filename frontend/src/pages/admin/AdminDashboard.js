@@ -84,7 +84,7 @@ export function AdminDashboard() {
       {/* Quick Actions */}
       <div className="bg-white rounded-xl p-6 border border-slate-200">
         <h2 className="text-xl font-bold text-slate-900 mb-4 font-['Space_Grotesk']">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <Button
             onClick={handleGeneratePack}
             className="h-20 bg-gradient-to-r from-teal-500 to-teal-600"
@@ -100,6 +100,15 @@ export function AdminDashboard() {
           >
             <BookOpen className="w-5 h-5 mr-2" />
             Manage Topics & Questions
+          </Button>
+          <Button
+            onClick={() => navigate('/admin/image-quiz')}
+            variant="outline"
+            className="h-20 border-teal-300 text-teal-700 hover:bg-teal-50"
+            data-testid="image-quiz-button"
+          >
+            <Image className="w-5 h-5 mr-2" />
+            Image Quiz
           </Button>
           <Button
             onClick={() => navigate('/admin/ads')}
