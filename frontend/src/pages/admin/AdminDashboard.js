@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { adminAPI } from '../../lib/api';
 import { Button } from '../../components/ui/button';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
-import { Plus, Users, BookOpen, Calendar, BarChart, Bell } from 'lucide-react';
+import { Plus, Users, BookOpen, Calendar, BarChart, Bell, Image } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function AdminDashboard() {
