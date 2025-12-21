@@ -79,6 +79,9 @@ export const adminAPI = {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
+  uploadImage: (formData) => api.post('/api/admin/upload-image', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
   
   // Packs
   getPacks: (date) => api.get('/api/admin/packs', { params: { date } }),
