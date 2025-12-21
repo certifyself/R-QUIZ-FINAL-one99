@@ -1488,6 +1488,64 @@ def get_quiz_leaderboard(
         'current_user_id': current_user['_id']
     }
 
+
+@app.get("/api/rankings/daily")
+def get_daily_overall_leaderboard(
+    group_id: Optional[str] = Query(None),
+    current_user: Dict = Depends(get_current_user)
+):
+    """
+    Get overall daily challenge leaderboard.
+    Rankings based on: total percentage across all completed quizzes, then total time.
+    """
+    today = date.today()
+    today_str = today.isoformat()
+    
+    # Build filter
+    query = {'date': today_str}
+    
+    # Filter by group if provided
+    if group_id:
+        group = groups_col.find_one({'_id': ObjectId(group_id)})
+        if group and 'members' in group:
+            query['user_id'] = {'$in': group['members']}
+    
+    # Aggregate results per user for today
+    pipeline = [
+        {'$match': query},
+        {'$group': {
+            '_id': '$user_id',
+            'total_pct': {'$sum': '$best_pct'},
+            'total_time_ms': {'$sum': '$best_time_ms'},
+            'quizzes_completed': {'$sum': 1},
+            'avg_pct': {'$avg': '$best_pct'}
+        }},
+        {'$sort': {'avg_pct': -1, 'total_time_ms': 1}}
+    ]
+    
+    aggregated = list(results_col.aggregate(pipeline))
+    
+    leaderboard = []
+    for idx, entry in enumerate(aggregated):
+        user = users_col.find_one({'_id': entry['_id']})
+        
+        leaderboard.append({
+            'rank': idx + 1,
+            'user_id': str(entry['_id']),
+            'nickname': user['nickname'] if user else 'Unknown',
+            'quizzes_completed': entry['quizzes_completed'],
+            'avg_percentage': round(entry['avg_pct'], 2),
+            'total_percentage': round(entry['total_pct'], 2),
+            'total_time_ms': entry['total_time_ms']
+        })
+    
+    return {
+        'date': today_str,
+        'leaderboard': leaderboard,
+        'current_user_id': current_user['_id']
+    }
+
+
 # ============================================================================
 # USER - GROUPS
 # ============================================================================
