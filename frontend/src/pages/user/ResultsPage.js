@@ -86,9 +86,6 @@ export function ResultsPage() {
       toast.error(error.response?.data?.detail || 'Failed to load answers');
     }
   };
-      setLocking(false);
-    }
-  };
 
   const handleLockQuiz = async () => {
     // Quiz is already locked after 3rd attempt, just navigate away
@@ -101,7 +98,7 @@ export function ResultsPage() {
     // Manual lock (when viewing answers before 3 attempts)
     setLocking(true);
     try {
-      await userAPI.lockQuiz(quizIndex);
+      await userAPI.lockQuiz(quizIndex, false);  // No penalty
       toast.success('Quiz locked. You can no longer attempt this quiz.');
       setTimeout(() => navigate('/'), 1500);
     } catch (error) {
