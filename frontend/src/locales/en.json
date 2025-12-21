@@ -98,7 +98,11 @@
     "title": "Rankings",
     "select_quiz": "Select Quiz",
     "no_rankings": "No rankings available yet",
-    "you": "You"
+    "you": "You",
+    "daily_challenge": "Daily Challenge",
+    "per_quiz": "Per Quiz",
+    "quizzes": "quizzes",
+    "avg": "avg"
   },
   "groups": {
     "title": "My Groups",
