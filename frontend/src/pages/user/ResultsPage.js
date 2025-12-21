@@ -148,8 +148,16 @@ export function ResultsPage() {
         onClose={() => setEarnedBadges([])}
       />
       
-      {/* Ad Gate before viewing answers */}
-      {showAdGate && (
+      {/* Ad shown after EVERY quiz completion */}
+      {showCompletionAd && (
+        <RewardedGate
+          onFinish={handleCompletionAdFinish}
+          message={t('results.ad_after_quiz') || "Thanks for completing the quiz! Watch a short ad to continue."}
+        />
+      )}
+      
+      {/* Ad Gate before viewing answers (separate from completion ad) */}
+      {!showCompletionAd && showAdGate && (
         <RewardedGate
           onFinish={handleAdComplete}
           message={t('results.watch_ad_for_answers') || "Watch a short ad to view correct answers"}
