@@ -693,6 +693,53 @@ def reset_usage_tracking(current_user: Dict = Depends(get_current_admin)):
 
 
 # ============================================================================
+# ADMIN - IMAGE UPLOAD
+# ============================================================================
+
+import base64
+import uuid as uuid_module
+
+# Directory to store uploaded images
+UPLOAD_DIR = "/app/uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+@app.post("/api/admin/upload-image")
+async def upload_image(
+    file: UploadFile = File(...),
+    current_user: Dict = Depends(get_current_admin)
+):
+    """Upload an image and return its URL"""
+    # Validate file type
+    allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    if file.content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail=f"Invalid file type. Allowed: {', '.join(allowed_types)}")
+    
+    # Generate unique filename
+    ext = file.filename.split('.')[-1] if '.' in file.filename else 'jpg'
+    filename = f"{uuid_module.uuid4()}.{ext}"
+    filepath = os.path.join(UPLOAD_DIR, filename)
+    
+    # Save file
+    contents = await file.read()
+    with open(filepath, 'wb') as f:
+        f.write(contents)
+    
+    # Return the URL (served by nginx or static files)
+    image_url = f"/uploads/{filename}"
+    
+    return {
+        'success': True,
+        'image_url': image_url,
+        'filename': filename
+    }
+
+from fastapi.staticfiles import StaticFiles
+
+# Serve uploaded files
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+
+
+# ============================================================================
 # ADMIN - BULK UPLOAD
 # ============================================================================
 
