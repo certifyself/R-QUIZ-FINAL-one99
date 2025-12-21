@@ -108,6 +108,7 @@ export const userAPI = {
   getAnswers: (quizIndex, lang = 'en') => api.get(`/api/quizzes/${quizIndex}/answers`, { params: { lang } }),
   lockQuiz: (quizIndex, applyPenalty = false) => api.post(`/api/quizzes/${quizIndex}/lock`, null, { params: { apply_penalty: applyPenalty } }),
   getLeaderboard: (quizIndex, groupId) => api.get(`/api/quizzes/${quizIndex}/leaderboard`, { params: { group_id: groupId } }),
+  getDailyLeaderboard: (groupId) => api.get('/api/rankings/daily', { params: { group_id: groupId } }),
   
   // Groups
   getGroups: () => api.get('/api/groups'),
