@@ -269,6 +269,27 @@ export function GroupsPage() {
                 </div>
               </div>
               
+              {/* Member List */}
+              {group.member_details && group.member_details.length > 0 && (
+                <div className="mb-4 p-3 bg-slate-50 rounded-lg">
+                  <p className="text-xs text-slate-500 mb-2 font-medium">{t('groups.member_list') || 'Members'}:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {group.member_details.map((member) => (
+                      <span 
+                        key={member._id} 
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          member.is_owner 
+                            ? 'bg-teal-100 text-teal-800' 
+                            : 'bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {member.nickname} {member.is_owner && '👑'}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               {/* Invite Buttons */}
               <div className="flex gap-2">
                 <Button
