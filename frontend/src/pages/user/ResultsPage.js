@@ -48,20 +48,23 @@ export function ResultsPage() {
   });
 
   const handleViewAnswers = async () => {
-    // If before 3rd attempt, show warning
-    if (!isLocked) {
-      setShowWarningDialog(true);
-      return;
-    }
-    
-    // After 3 attempts, show ad gate first
+    // Show ad gate first, then show answers
+    // No penalty for viewing answers - quiz just gets locked
     setShowAdGate(true);
   };
   
   const handleAdComplete = async () => {
     console.log('Ad completed, loading answers...');
-    // Ad completed, now load and show answers
+    // Ad completed, now lock quiz and show answers
     setShowAdGate(false);
+    
+    // Lock the quiz (no penalty)
+    try {
+      await userAPI.lockQuiz(quizIndex, false);
+    } catch (error) {
+      console.log('Quiz already locked or lock failed:', error);
+    }
+    
     await loadAndShowAnswers();
   };
   
@@ -83,21 +86,6 @@ export function ResultsPage() {
       toast.error(error.response?.data?.detail || 'Failed to load answers');
     }
   };
-  
-  const confirmViewAnswersWithPenalty = async () => {
-    setShowWarningDialog(false);
-    setLocking(true);
-    
-    try {
-      // Lock quiz with penalty
-      await userAPI.lockQuiz(quizIndex, true);
-      toast.warning('Quiz locked. Score set to 0.');
-      
-      // Show ad gate before showing answers
-      setLocking(false);
-      setShowAdGate(true);
-    } catch (error) {
-      toast.error('Failed to lock quiz');
       setLocking(false);
     }
   };
