@@ -98,7 +98,11 @@
     "title": "Rebríčky",
     "select_quiz": "Vyberte kvíz",
     "no_rankings": "Zatiaľ žiadne rebríčky nie sú k dispozícii",
-    "you": "Vy"
+    "you": "Vy",
+    "daily_challenge": "Denná výzva",
+    "per_quiz": "Podľa kvízu",
+    "quizzes": "kvízov",
+    "avg": "priem."
   },
   "groups": {
     "title": "Moje skupiny",
