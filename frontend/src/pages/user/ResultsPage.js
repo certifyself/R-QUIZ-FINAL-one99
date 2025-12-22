@@ -30,9 +30,9 @@ export function ResultsPage() {
   }, [result]);
 
   const canViewAnswers = result?.can_view_answers;  // Can view after any attempt now
-  const canRetry = result?.attempts_remaining > 0 && !result?.quiz_locked;
+  const canRetry = result?.attempts_remaining > 0 && !result?.quiz_locked && !showAnswers;
   const isPerfect = result?.is_perfect || result?.score?.percentage === 100;
-  const isLocked = result?.quiz_locked || result?.attempt_number >= 3;
+  const isLocked = result?.quiz_locked || result?.attempt_number >= 3 || showAnswers;
 
   // Debug logging
   console.log('Results Debug:', {
