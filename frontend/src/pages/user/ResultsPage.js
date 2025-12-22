@@ -59,6 +59,12 @@ export function ResultsPage() {
     // Lock the quiz (no penalty)
     try {
       await userAPI.lockQuiz(quizIndex, false);
+      // Update local state to reflect quiz is now locked
+      setResult(prev => ({
+        ...prev,
+        quiz_locked: true,
+        attempts_remaining: 0
+      }));
     } catch (error) {
       console.log('Quiz already locked or lock failed:', error);
     }
