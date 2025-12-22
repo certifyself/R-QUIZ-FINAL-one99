@@ -138,6 +138,10 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
     shuffled_topics = active_topics.copy()
     rng.shuffle(shuffled_topics)
     
+    # Find Image Quiz topic (for Quiz 5, Topic 1)
+    image_quiz_topic = topics_col.find_one({'name': 'Image Quiz', 'active': True})
+    image_quiz_topic_id = image_quiz_topic['_id'] if image_quiz_topic else None
+    
     # Generate 11 quizzes, minimizing topic repeats
     quizzes = []
     used_topic_count = {}
@@ -150,7 +154,30 @@ def generate_daily_pack(pack_date: date) -> Dict[str, Any]:
         # Try to select 10 topics, preferring those used least
         candidates = shuffled_topics.copy()
         
-        for _ in range(10):
+        for topic_slot in range(10):
+            # SPECIAL CASE: Quiz 5 (index 4), Topic 1 (slot 0) = Image Quiz
+            if quiz_idx == 4 and topic_slot == 0 and image_quiz_topic_id:
+                # Force Image Quiz topic for Quiz 5, first topic
+                topic_questions = select_questions_for_topic(
+                    image_quiz_topic_id, 
+                    used_question_ids, 
+                    rng
+                )
+                
+                if len(topic_questions) >= 3:
+                    quiz_topics.append(image_quiz_topic_id)
+                    selected_q_ids = [str(q['_id']) for q in topic_questions[:3]]
+                    quiz_question_ids.append(selected_q_ids)
+                    
+                    for q_id in selected_q_ids:
+                        used_question_ids.add(q_id)
+                        newly_used_question_ids.append(q_id)
+                    
+                    used_topic_count[str(image_quiz_topic_id)] = used_topic_count.get(str(image_quiz_topic_id), 0) + 1
+                    if image_quiz_topic_id in candidates:
+                        candidates.remove(image_quiz_topic_id)
+                    continue
+            
             if not candidates:
                 # Ran out of candidates, reshuffle and continue
                 candidates = shuffled_topics.copy()
