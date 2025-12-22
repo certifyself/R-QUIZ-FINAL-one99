@@ -77,6 +77,7 @@
     "next_quiz": "Next Quiz",
     "try_again_btn": "Try Again",
     "all_attempts_used": "All 3 attempts used. Quiz is now locked.",
+    "quiz_now_locked": "This quiz is now locked. You cannot attempt it again.",
     "view_all_answers": "View All Correct Answers",
     "back_to_home": "Back to Home",
     "perfect_score": "🎉 Perfect Score!",

@@ -77,6 +77,7 @@
     "next_quiz": "Ďalší kvíz",
     "try_again_btn": "Skúsiť znova",
     "all_attempts_used": "Použité všetky 3 pokusy. Kvíz je teraz zamknutý.",
+    "quiz_now_locked": "Tento kvíz je teraz zamknutý. Nemôžete ho znova skúsiť.",
     "view_all_answers": "Zobraziť všetky správne odpovede",
     "back_to_home": "Späť domov",
     "perfect_score": "Perfektné skóre!",
