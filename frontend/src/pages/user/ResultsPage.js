@@ -270,7 +270,7 @@ export function ResultsPage() {
             <>
               <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
                 <p className="text-sm text-teal-800 font-medium">
-                  🔒 {t('results.all_attempts_used')}
+                  🔒 {t('results.all_attempts_used') || 'Quiz is locked.'}
                 </p>
               </div>
               <Button
@@ -282,6 +282,15 @@ export function ResultsPage() {
                 {t('results.view_all_answers')}
               </Button>
             </>
+          )}
+          
+          {/* Show locked message when viewing answers */}
+          {showAnswers && (
+            <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+              <p className="text-sm text-teal-800 font-medium">
+                🔒 {t('results.quiz_now_locked') || 'This quiz is now locked. You cannot attempt it again.'}
+              </p>
+            </div>
           )}
 
           <Button
