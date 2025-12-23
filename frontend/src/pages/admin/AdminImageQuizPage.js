@@ -210,6 +210,49 @@ export function AdminImageQuizPage() {
     setEditOpen(true);
   };
 
+  const handleDownloadTemplate = async () => {
+    try {
+      await adminAPI.downloadImageQuizTemplate();
+      toast.success('Template downloaded!');
+    } catch (error) {
+      toast.error('Failed to download template');
+    }
+  };
+
+  const handleBulkUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    setBulkUploading(true);
+    toast.info('Uploading and generating images... This may take a few minutes.');
+    
+    try {
+      const response = await adminAPI.bulkUploadImageQuiz(file);
+      const { imported, errors } = response.data;
+      
+      if (imported > 0) {
+        toast.success(`Successfully imported ${imported} image quiz questions with AI-generated images!`);
+      }
+      
+      if (errors && errors.length > 0) {
+        errors.slice(0, 3).forEach(err => toast.error(err));
+        if (errors.length > 3) {
+          toast.warning(`...and ${errors.length - 3} more errors`);
+        }
+      }
+      
+      setBulkUploadOpen(false);
+      loadData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Bulk upload failed');
+    } finally {
+      setBulkUploading(false);
+      if (bulkFileInputRef.current) {
+        bulkFileInputRef.current.value = '';
+      }
+    }
+  };
+
   const QuestionForm = ({ onSubmit, submitText }) => (
     <form onSubmit={onSubmit} className="space-y-6">
       {/* Topic Selection */}
