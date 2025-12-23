@@ -431,16 +431,27 @@ export function AdminImageQuizPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 font-['Space_Grotesk']">Image Quiz Questions</h1>
-          <p className="text-slate-600 mt-1">Create and manage questions with images</p>
+          <p className="text-slate-600 mt-1">Create and manage questions with AI-generated images</p>
         </div>
-        <Button 
-          onClick={() => { resetForm(); setCreateOpen(true); }}
-          className="bg-gradient-to-r from-teal-500 to-teal-600"
-          data-testid="create-image-question-btn"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Image Question
-        </Button>
+        <div className="flex space-x-2">
+          <Button 
+            onClick={() => setBulkUploadOpen(true)}
+            variant="outline"
+            className="border-teal-300 text-teal-700 hover:bg-teal-50"
+            data-testid="bulk-upload-btn"
+          >
+            <Sparkles className="w-4 h-4 mr-2" />
+            Bulk Upload (AI Images)
+          </Button>
+          <Button 
+            onClick={() => { resetForm(); setCreateOpen(true); }}
+            className="bg-gradient-to-r from-teal-500 to-teal-600"
+            data-testid="create-image-question-btn"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Question
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -464,11 +475,17 @@ export function AdminImageQuizPage() {
         <div className="text-center py-20 bg-white rounded-xl border border-slate-200">
           <Image className="w-16 h-16 text-slate-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-slate-900 mb-2">No Image Questions Yet</h3>
-          <p className="text-slate-600 mb-4">Create your first image-based question to get started.</p>
-          <Button onClick={() => { resetForm(); setCreateOpen(true); }} className="bg-gradient-to-r from-teal-500 to-teal-600">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Image Question
-          </Button>
+          <p className="text-slate-600 mb-4">Upload an Excel file to auto-generate images with AI, or create questions manually.</p>
+          <div className="flex justify-center space-x-3">
+            <Button onClick={() => setBulkUploadOpen(true)} variant="outline" className="border-teal-300 text-teal-700">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Bulk Upload (AI)
+            </Button>
+            <Button onClick={() => { resetForm(); setCreateOpen(true); }} className="bg-gradient-to-r from-teal-500 to-teal-600">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Manually
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
