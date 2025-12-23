@@ -735,10 +735,16 @@ async def upload_image(
         'filename': filename
     }
 
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
-# Serve uploaded files
-app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+# Serve uploaded files through API route (because ingress only routes /api/* to backend)
+@app.get("/api/uploads/{filename}")
+async def get_uploaded_file(filename: str):
+    """Serve uploaded image files"""
+    filepath = os.path.join(UPLOAD_DIR, filename)
+    if not os.path.exists(filepath):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(filepath, media_type="image/png")
 
 
 # ============================================================================
