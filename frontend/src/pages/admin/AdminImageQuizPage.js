@@ -593,6 +593,80 @@ export function AdminImageQuizPage() {
           <QuestionForm onSubmit={handleEdit} submitText="Update Question" />
         </DialogContent>
       </Dialog>
+
+      {/* Bulk Upload Dialog */}
+      <Dialog open={bulkUploadOpen} onOpenChange={setBulkUploadOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <Sparkles className="w-5 h-5 text-teal-600" />
+              <span>Bulk Upload with AI Images</span>
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 rounded-lg p-4">
+              <h4 className="font-medium text-teal-900 mb-2">🤖 How it works:</h4>
+              <ol className="text-sm text-teal-800 space-y-1 list-decimal list-inside">
+                <li>Download the Excel template</li>
+                <li>Fill in questions and <strong>image prompts</strong></li>
+                <li>Upload the file - AI generates images automatically!</li>
+              </ol>
+            </div>
+            
+            <div className="flex space-x-3">
+              <Button
+                onClick={handleDownloadTemplate}
+                variant="outline"
+                className="flex-1"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download Template
+              </Button>
+            </div>
+            
+            <div className="border-t pt-4">
+              <Label className="text-sm font-medium">Upload Excel File</Label>
+              <p className="text-xs text-slate-500 mb-2">
+                Each row will generate an AI image based on the "image_prompt" column
+              </p>
+              
+              <input
+                type="file"
+                ref={bulkFileInputRef}
+                onChange={handleBulkUpload}
+                accept=".xlsx,.xls"
+                className="hidden"
+              />
+              
+              <Button
+                onClick={() => bulkFileInputRef.current?.click()}
+                disabled={bulkUploading}
+                className="w-full bg-gradient-to-r from-teal-500 to-teal-600"
+              >
+                {bulkUploading ? (
+                  <>
+                    <LoadingSpinner className="w-4 h-4 mr-2" />
+                    Generating AI Images... (this may take a few minutes)
+                  </>
+                ) : (
+                  <>
+                    <FileSpreadsheet className="w-4 h-4 mr-2" />
+                    Select Excel File & Generate
+                  </>
+                )}
+              </Button>
+            </div>
+            
+            {bulkUploading && (
+              <div className="text-center text-sm text-slate-600">
+                <p>⏳ AI is generating images for each question...</p>
+                <p>Please don't close this window.</p>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
