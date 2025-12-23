@@ -57,10 +57,9 @@ async def generate_quiz_image(question_text: str, topic_name: str = "") -> Optio
             with open(filepath, "wb") as f:
                 f.write(images[0])
             
-            # Return absolute URL for the image
-            # Get the base URL from environment or use default
+            # Return absolute URL for the image using /api/uploads/ route
             base_url = os.environ.get('BASE_URL', 'https://mindgames-19.preview.emergentagent.com')
-            image_url = f"{base_url}/uploads/{filename}"
+            image_url = f"{base_url}/api/uploads/{filename}"
             print(f"✅ Image generated and saved: {image_url}")
             return image_url
         else:
