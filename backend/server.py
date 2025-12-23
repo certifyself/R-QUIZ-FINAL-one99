@@ -789,6 +789,182 @@ def download_excel_template(current_user: Dict = Depends(get_current_admin)):
         headers={'Content-Disposition': 'attachment; filename=socraquest_questions_template.xlsx'}
     )
 
+
+@app.get("/api/admin/image-quiz/template")
+def download_image_quiz_template(current_user: Dict = Depends(get_current_admin)):
+    """Download Excel template for image quiz bulk upload"""
+    template_data = {
+        'question_sk': [
+            'Ktorá slávna pamiatka je zobrazená?',
+            'Aká budova je na obrázku?',
+            'Ktoré zviera vidíte?'
+        ],
+        'question_en': [
+            'Which famous landmark is shown?',
+            'What building is in the picture?',
+            'Which animal do you see?'
+        ],
+        'image_prompt': [
+            'Eiffel Tower in Paris, France',
+            'Colosseum in Rome, Italy',
+            'African elephant in savanna'
+        ],
+        'a_sk': ['Eiffelova veža', 'Koloseum', 'Slon'],
+        'b_sk': ['Big Ben', 'Parthenon', 'Lev'],
+        'c_sk': ['Socha slobody', 'Pyramída', 'Žirafa'],
+        'd_sk': ['Pisa veža', 'Taj Mahal', 'Zebra'],
+        'a_en': ['Eiffel Tower', 'Colosseum', 'Elephant'],
+        'b_en': ['Big Ben', 'Parthenon', 'Lion'],
+        'c_en': ['Statue of Liberty', 'Pyramid', 'Giraffe'],
+        'd_en': ['Leaning Tower of Pisa', 'Taj Mahal', 'Zebra'],
+        'correct': ['A', 'A', 'A']
+    }
+    
+    df = pd.DataFrame(template_data)
+    
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Image Quiz')
+        
+        # Add instructions sheet
+        instructions = pd.DataFrame({
+            'Instructions': [
+                'Image Quiz Template - Questions with AI-Generated Images',
+                '',
+                'Columns:',
+                '- question_sk: Question text in Slovak',
+                '- question_en: Question text in English',
+                '- image_prompt: Description for AI to generate the image (be specific!)',
+                '- a_sk, b_sk, c_sk, d_sk: Answer options in Slovak',
+                '- a_en, b_en, c_en, d_en: Answer options in English',
+                '- correct: Correct answer (A, B, C, or D)',
+                '',
+                'Tips for image_prompt:',
+                '- Be specific: "Eiffel Tower in Paris at sunset" is better than "a tower"',
+                '- Include context: "African elephant in savanna" not just "elephant"',
+                '- Avoid text in images: AI will generate visual content only'
+            ]
+        })
+        instructions.to_excel(writer, index=False, sheet_name='Instructions')
+    
+    output.seek(0)
+    
+    return StreamingResponse(
+        output,
+        media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={'Content-Disposition': 'attachment; filename=socraquest_image_quiz_template.xlsx'}
+    )
+
+
+@app.post("/api/admin/image-quiz/bulk-upload")
+async def bulk_upload_image_quiz(
+    file: UploadFile = File(...),
+    current_user: Dict = Depends(get_current_admin)
+):
+    """
+    Bulk upload image quiz questions from Excel file.
+    AI will automatically generate images based on the 'image_prompt' column.
+    """
+    from image_service import generate_quiz_image
+    
+    if not file.filename.endswith(('.xlsx', '.xls')):
+        raise HTTPException(status_code=400, detail="File must be Excel format (.xlsx or .xls)")
+    
+    try:
+        contents = await file.read()
+        df = pd.read_excel(io.BytesIO(contents))
+        
+        # Validate required columns
+        required_cols = [
+            'question_sk', 'question_en', 'image_prompt',
+            'a_sk', 'b_sk', 'c_sk', 'd_sk',
+            'a_en', 'b_en', 'c_en', 'd_en',
+            'correct'
+        ]
+        
+        missing_cols = [col for col in required_cols if col not in df.columns]
+        if missing_cols:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Missing required columns: {', '.join(missing_cols)}"
+            )
+        
+        # Find or create "Image Quiz" topic
+        image_topic = topics_col.find_one({'name': 'Image Quiz'})
+        if not image_topic:
+            result = topics_col.insert_one({
+                'name': 'Image Quiz',
+                'name_sk': 'Obrázkový kvíz',
+                'active': True,
+                'created_at': datetime.utcnow()
+            })
+            topic_id = result.inserted_id
+        else:
+            topic_id = image_topic['_id']
+        
+        imported_count = 0
+        errors = []
+        
+        for idx, row in df.iterrows():
+            try:
+                # Get the image prompt
+                image_prompt = str(row['image_prompt']).strip()
+                if not image_prompt or image_prompt == 'nan':
+                    errors.append(f"Row {idx + 2}: Missing image_prompt")
+                    continue
+                
+                # Generate image using AI
+                print(f"🎨 Generating image for row {idx + 2}: {image_prompt[:50]}...")
+                image_url = await generate_quiz_image(image_prompt, "Image Quiz")
+                
+                if not image_url:
+                    errors.append(f"Row {idx + 2}: Failed to generate image for '{image_prompt[:30]}...'")
+                    continue
+                
+                # Create the question
+                question_doc = {
+                    'topic_id': topic_id,
+                    'text': {
+                        'en': str(row['question_en']).strip(),
+                        'sk': str(row['question_sk']).strip()
+                    },
+                    'options': [
+                        {'key': 'A', 'label': {'en': str(row['a_en']).strip(), 'sk': str(row['a_sk']).strip()}},
+                        {'key': 'B', 'label': {'en': str(row['b_en']).strip(), 'sk': str(row['b_sk']).strip()}},
+                        {'key': 'C', 'label': {'en': str(row['c_en']).strip(), 'sk': str(row['c_sk']).strip()}},
+                        {'key': 'D', 'label': {'en': str(row['d_en']).strip(), 'sk': str(row['d_sk']).strip()}}
+                    ],
+                    'correct_key': str(row['correct']).strip().upper(),
+                    'image_url': image_url,
+                    'image_prompt': image_prompt,  # Store the prompt for reference
+                    'active': True,
+                    'created_at': datetime.utcnow()
+                }
+                
+                questions_col.insert_one(question_doc)
+                imported_count += 1
+                print(f"✅ Imported question {imported_count}: {row['question_en'][:40]}...")
+                
+            except Exception as e:
+                errors.append(f"Row {idx + 2}: {str(e)}")
+        
+        # Update topic question count
+        q_count = questions_col.count_documents({'topic_id': topic_id})
+        topics_col.update_one({'_id': topic_id}, {'$set': {'question_count': q_count}})
+        
+        return {
+            'success': True,
+            'imported': imported_count,
+            'errors': errors,
+            'message': f'Successfully imported {imported_count} image quiz questions with AI-generated images'
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
+
 @app.post("/api/admin/questions/bulk-upload")
 async def bulk_upload_questions(
     file: UploadFile = File(...),
